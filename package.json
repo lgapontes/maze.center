@@ -1,0 +1,17 @@
+{
+    "name": "maze.center",
+    "description": "Game",
+    "version": "0.0.1",
+    "private": true,	
+	"author": "lgapontes.com",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lgapontes/maze.center.git"
+	},
+    "dependencies": {
+        "winston": "^2.2.0",
+		"express": "^4.13.4",
+		"mongoose": "4.4.12"
+    }
+}
