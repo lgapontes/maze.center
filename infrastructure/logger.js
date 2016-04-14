@@ -17,7 +17,7 @@ var logger = new (winston.Logger)({
 	transports: [
 		new winston.transports.Console({			
 			'colorize':true,
-			'level':'error'
+			'level':'info'
 		}),
 		new winston.transports.File({
 			'timestamp':function(){ return getTimestamp(); },
