@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>maze.center</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">		
+		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+		<script type="text/javascript" src="js/restfull-building-0.0.1.js"></script>
+	</head>
+<body>
+	<script type="text/javascript">
+		function Foo(obj) {
+			this.test = function() {console.log(this.name + ' blz');};		
+			for (var prop in obj) this[prop] = obj[prop];
+		}
+		
+		getPlaces(function(error,places){
+			if (error) {
+				console.log(error);
+			} else {
+				var array = [];
+				places.forEach(function(entry){
+					array.push(new Foo(entry));
+				});		
+				
+				array.forEach(function(entry){
+					entry.test();
+				});
+			}
+		});
+	</script>
+
+	<canvas id="canvas"></canvas>
+	
+	<script type="text/javascript">
+		(function() {
+			var canvas = document.getElementById('canvas'),
+				context = canvas.getContext('2d');
+
+			// resize the canvas to fill browser window dynamically
+			window.addEventListener('resize', resizeCanvas, false);
+
+			function resizeCanvas() {
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+
+					/**
+					 * Your drawings need to be inside this function otherwise they will be reset when 
+					 * you resize the browser window and the canvas goes will be cleared.
+					 */
+					drawStuff(); 
+			}
+			resizeCanvas();
+
+			function drawStuff() {
+					// do your drawing stuff here
+			}
+		})();
+	</script>
+</body>
+</html>
