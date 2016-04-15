@@ -23,6 +23,7 @@ var server = http.createServer(app);
 
 /* URLs */
 app.get('/restfull/places', building.getPlaces);
+app.get('/restfull/createRoom', building.createRoom);
 
 server.listen(PORT, function(error) {
 	if (error) {

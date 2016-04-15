@@ -14,6 +14,7 @@
 		"express": "^4.13.4",
 		"mongoose": "^4.4.12",
 		"moment-timezone": "^0.5.3",
-		"properties-reader": "^0.0.15"
+		"properties-reader": "^0.0.15",
+		"mongoose-schema-extend": "0.2.0"
     }
 }

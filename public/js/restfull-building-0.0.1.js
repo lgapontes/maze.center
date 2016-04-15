@@ -8,7 +8,7 @@ function getPlaces(callback) {
 			callback(null,resultData);			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			callback(error);
+			callback(errorThrown);
 		},
 
 		timeout: 120000,

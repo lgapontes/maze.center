@@ -1,14 +1,49 @@
-var mongoose = require("mongoose");
+var mongoose 	= require("mongoose"),
+	extend 		= require('mongoose-schema-extend');	
+	
 var Schema = mongoose.Schema;
 
 /* Place */
 var PlaceSchema = new Schema({
 	number: Number,
-	invisible: Boolean,
-	unknown: Boolean
+	position: {
+		x: Number,
+		y: Number
+	},	
+	neighbors: [{
+		parent_id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Place'
+		},
+		axis: Number,		
+		door: {			
+			width: Number,
+			height: Number,
+			alignment: Number
+		}		
+	}]
+}, { collection : 'placeCollection' });
+
+/* Room */
+var RoomSchema = PlaceSchema.extend({	
+	size: {
+		width: Number,
+		height: Number	
+	},
+	alignment: Number
 });
 
-var Place = mongoose.model('Place',PlaceSchema); 
+/* Tower */
+var TowerSchema = PlaceSchema.extend({	
+	diameter: Number,
+	start: Boolean,
+	finish: Boolean
+});
+
+/* Model */
+var Room = mongoose.model('Room', RoomSchema, 'placeCollection');
+var Tower = mongoose.model('Tower', TowerSchema, 'placeCollection');
+
 
 /*
 Place.prototype = {
@@ -18,6 +53,13 @@ Place.prototype = {
 };
 */
 
-exports.getPlace = function() {
-    return Place;
+/* Clear all data */
+mongoose.connection.collections['placeCollection'].drop();
+
+exports.getRoom = function() {
+    return Room;
+};
+
+exports.getTower = function() {
+    return Tower;
 };

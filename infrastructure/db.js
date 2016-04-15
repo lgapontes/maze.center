@@ -25,8 +25,12 @@ mongoose.connect(getConnectionString(), options);
 
 /* Connected handler */
 mongoose.connection.on('connected', function (err) {
-	var status = 'success';
-	if (err) status = 'error: ' + err;
+	var status = undefined;
+	if (err) {
+		status = 'error: ' + err;
+	} else {
+		status = 'success';		
+	}
 	logger.info("Connected to DB: " + status);
 });
 
