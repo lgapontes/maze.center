@@ -1,9 +1,11 @@
-var Room 		= require('./building').getRoom(),
-	Tower 		= require('./building').getTower(),
-	alignments	= require('./enum').getAlignments(),
-	axis		= require('./enum').getAxis(),
-	sizes		= require('./enum').getSizes(),
-	logger   	= require('../infrastructure/logger').get();
+var Room 			= require('./building').getRoom(),
+	Tower 			= require('./building').getTower(),
+	alignments		= require('./enum').getAlignments(),
+	axis			= require('./enum').getAxis(),
+	sizes			= require('./enum').getSizes(),
+	thickness		= require('./enum').getThickness(),
+	doorThickness	= require('./enum').getDoorThickness(),
+	logger   		= require('../infrastructure/logger').get();
 
 function BuildingFactory() {
 	this.places = [];
@@ -41,8 +43,7 @@ BuildingFactory.prototype = {
 		}		
 		return this;
 	},
-	addNeighbor: function(_nextNumber,_axis,_alignment) {
-		
+	addNeighbor: function(_nextNumber,_axis,_alignment) {		
 		this.neighbors.push({
 			neighbor: {
 				parent: this.place.number,
@@ -50,8 +51,8 @@ BuildingFactory.prototype = {
 			},
 			axis: _axis,	
 			door: {			
-				width: 60,
-				height: 6,
+				width: doorThickness,
+				height: thickness * 2,
 				alignment: _alignment
 			}
 		});

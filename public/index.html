@@ -10,11 +10,15 @@
 		<script type="text/javascript" src="js/model-0.0.1.js"></script>
 	</head>
 <body>
+	<img id="jonny" src="img/jonny.png" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
 	<script type="text/javascript">
 		
-		var DEBUG = true;
+		var DEBUG = {
+			active: true,
+			painted: false
+		};
 	
 		var canvas;
 		var ctx;
@@ -92,7 +96,13 @@
 				}
 				
 				/* Jonny */
-				ctx.beginPath();
+				ctx.drawImage(
+					jonny,
+					(WIDTH-player.width)/2,
+					(HEIGHT-player.height)/2
+				);
+				/*
+				ctx.beginPath();				
 				ctx.fillStyle = playerColor;						
 				ctx.rect(
 					(WIDTH-player.width)/2,
@@ -100,8 +110,9 @@
 					player.width, 
 					player.height
 				);
-				ctx.closePath();
+				ctx.closePath();								
 				ctx.fill();
+				*/
 			};
 			
 			function myMove(e){

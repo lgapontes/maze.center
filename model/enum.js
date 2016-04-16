@@ -1,12 +1,26 @@
+/* Defines */
+var thickness = 6;
+var doorThickness = 100 + thickness;
+
 /* Sizes */
 var sizes = {
 	smallSquare: {
 		width: 150,
 		height: 150		
 	},
+	
 	smallVerticalCorridor: {
-		width: 64,
+		width: doorThickness + thickness*2,
 		height: 150		
+	},
+	smallHorizontalCorridor: {
+		width: 150,
+		height: doorThickness
+	},
+	
+	tinyVerticalCorridor: {
+		width: doorThickness,
+		height: (doorThickness * 2) + thickness
 	}
 };
 
@@ -39,5 +53,9 @@ exports.getAxis = function() {
 };
 
 exports.getThickness = function() {
-    return 2;
+    return thickness;
+};
+
+exports.getDoorThickness = function() {
+    return doorThickness;
 };

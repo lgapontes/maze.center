@@ -11,6 +11,7 @@ process.on('uncaughtException', (err) => {
 });
 
 var PORT = properties.get('server.port');
+var HOST = properties.get('server.host');
 
 /* Create app express */
 var app = express();
@@ -24,7 +25,7 @@ var server = http.createServer(app);
 /* URLs */
 app.get('/restfull/building/:level', building.get);
 
-server.listen(PORT, function(error) {
+server.listen(PORT, HOST, function(error) {
 	if (error) {
 		logger.error(error);
 	} else {

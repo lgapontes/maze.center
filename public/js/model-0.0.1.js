@@ -28,8 +28,8 @@ function extend(base, sub) {
 };
 
 player = {
-	width: 16,
-	height: 16
+	width: 60,
+	height: 60
 };
 
 function Zone(_x,_y,_width,_height) {
@@ -205,6 +205,7 @@ Neighbor.prototype = {
 };
 
 function Place(obj) {
+	this.painted = false;
 	for (var prop in obj) {
 		if (prop === 'neighbors') {
 			this[prop] = [];
@@ -220,6 +221,11 @@ function Place(obj) {
 Place.prototype = {
 	
 	draw: function() {
+		if (!this.painted) this.drawMe();
+		this.painted = true;
+	},
+	
+	drawMe: function() {
 		// Abstract
 	},
 	
@@ -258,7 +264,7 @@ function Room(obj) {
 };
 
 Room.prototype = {
-	draw: function() {
+	drawMe: function() {		
 	
 		// Wall
 		ctx.beginPath();		
@@ -278,6 +284,41 @@ Room.prototype = {
 		for(var i=0;i<this.neighbors.length;i++) {
 			this.neighbors[i].drawNeighbor(this);
 		}
+		
+		if (DEBUG.active) {
+			this.drawRoomNumber();
+			
+			if (!DEBUG.painted) {
+				console.log('Place ' + this.number + ' painted');
+			}			
+		}
+	},
+	
+	drawRoomNumber: function() {
+		// Room Number Arc
+		ctx.beginPath();
+		ctx.arc(
+			this.position.x + this.size.width/2,
+			this.position.y + this.size.height/2,
+			20,
+			0,
+			2*Math.PI
+		);
+		ctx.fillStyle = wallColor;
+		ctx.closePath();
+		ctx.fill();
+		
+		// Room Number
+		ctx.beginPath();
+		ctx.font = "bold 22px Courier New";
+		ctx.fillStyle = floorColor;
+		ctx.textAlign = "center";
+		ctx.closePath();
+		ctx.fillText(
+			this.number,
+			this.position.x + this.size.width/2,
+			this.position.y + this.size.height/2+6
+		);
 	},
 	
     setNorth: function(_neighbor,_door) {
@@ -287,13 +328,13 @@ Room.prototype = {
 		} else { // Room		
 			if (_neighbor.next.alignment === alignments.right) {
 				_neighbor.next.position.x = _door.zone.min().x - thickness;
-				_neighbor.next.position.y = this.position.y - _neighbor.next.size.height + 2;
+				_neighbor.next.position.y = this.position.y - _neighbor.next.size.height + thickness;
 			} else if (_neighbor.next.alignment === alignments.left) {
 				_neighbor.next.position.x = _door.zone.max().x + thickness - _neighbor.next.size.width;
-				_neighbor.next.position.y = this.position.y - _neighbor.next.size.height + 2;
+				_neighbor.next.position.y = this.position.y - _neighbor.next.size.height + thickness;
 			} else { // center
 				_neighbor.next.position.x = _door.zone.x + _door.zone.width/2 - _neighbor.next.size.width/2;				
-				_neighbor.next.position.y = this.position.y - _neighbor.next.size.height + 2;
+				_neighbor.next.position.y = this.position.y - _neighbor.next.size.height + thickness;
 			}
 		}
 	},
@@ -301,18 +342,34 @@ Room.prototype = {
 		if (_neighbor.next instanceof Tower) {									
 			_neighbor.next.position.x = this.position.x + this.size.width + _neighbor.next.size/2 + 27;
 			_neighbor.next.position.y = this.position.y + this.size.height/2;			
-		} else { // Room			
-			_neighbor.next.position.x = this.position.x + this.size.width - 2;
-			_neighbor.next.position.y = this.position.y + this.size.height/2 - _neighbor.next.size.height/2;							
+		} else { // Room									
+			if (_neighbor.next.alignment === alignments.top) {
+				_neighbor.next.position.x = this.position.x + this.size.width - thickness;
+				_neighbor.next.position.y = _door.zone.max().y - _neighbor.next.size.height + thickness;
+			} else if (_neighbor.next.alignment === alignments.bottom) {
+				_neighbor.next.position.x = this.position.x + this.size.width - thickness;
+				_neighbor.next.position.y = _door.zone.min().y - thickness;
+			} else { // center
+				_neighbor.next.position.x = this.position.x + this.size.width - thickness;
+				_neighbor.next.position.y = _door.zone.min().y + _door.zone.height/2 - _neighbor.next.size.height/2;
+			}
 		}
 	},
 	setSouth: function(_neighbor,_door) {
 		if (_neighbor.next instanceof Tower) {			
 			_neighbor.next.position.x = this.position.x + this.size.width/2;
 			_neighbor.next.position.y = this.position.y + this.size.height + _neighbor.next.size - 3;										
-		} else { // Room			
-			_neighbor.next.position.x = this.position.x + this.size.width/2 - _neighbor.next.size.width/2;
-			_neighbor.next.position.y = this.position.y + this.size.height - 2;							
+		} else { // Room
+			if (_neighbor.next.alignment === alignments.right) {
+				_neighbor.next.position.x = _door.zone.min().x - thickness;
+				_neighbor.next.position.y = this.position.y + this.size.height - thickness;
+			} else if (_neighbor.next.alignment === alignments.left) {
+				_neighbor.next.position.x = _door.zone.max().x + thickness - _neighbor.next.size.width;
+				_neighbor.next.position.y = this.position.y + this.size.height - thickness;
+			} else { // center
+				_neighbor.next.position.x = _door.zone.x + _door.zone.width/2 - _neighbor.next.size.width/2;				
+				_neighbor.next.position.y = this.position.y + this.size.height - thickness;
+			}
 		}
 	},
 	setWest: function(_neighbor,_door) {
@@ -320,8 +377,16 @@ Room.prototype = {
 			_neighbor.next.position.x = this.position.x - _neighbor.next.size/2 - 27;
 			_neighbor.next.position.y = this.position.y + this.size.height/2;
 		} else { // Room
-			_neighbor.next.position.x = this.position.x - _neighbor.next.size.width + 2;
-			_neighbor.next.position.y = this.position.y + this.size.height/2 - _neighbor.next.size.height/2;				
+			if (_neighbor.next.alignment === alignments.top) {
+				_neighbor.next.position.x = this.position.x - _neighbor.next.size.width + thickness;
+				_neighbor.next.position.y = _door.zone.max().y - _neighbor.next.size.height + thickness;
+			} else if (_neighbor.next.alignment === alignments.bottom) {
+				_neighbor.next.position.x = this.position.x - _neighbor.next.size.width + thickness;
+				_neighbor.next.position.y = _door.zone.min().y - thickness;
+			} else { // center
+				_neighbor.next.position.x = this.position.x - _neighbor.next.size.width + thickness;
+				_neighbor.next.position.y = _door.zone.min().y + _door.zone.height/2 - _neighbor.next.size.height/2;
+			}
 		}
 	}
 };
@@ -358,13 +423,22 @@ BuildingFactory.prototype = {
 				this.dict[prop].neighbors[i].next = this.dict[id_next];
 			}
 		}
-		
-		if (DEBUG) console.log(this.dict);
 	},
 	getMaster: function() {
 		return this.dict[this.master_id];
-	},
+	},	
+	preparing: function() {
+		for (var prop in this.dict) {
+			this.dict[prop].painted = false;
+		}
+	},	
 	draw: function() {
 		this.getMaster().draw();
+		this.preparing();
+		
+		if (DEBUG.active && !DEBUG.painted) {
+			console.log(this.dict);
+			DEBUG.painted = true;
+		}
 	}
 };
