@@ -11,7 +11,7 @@ var PlaceSchema = new Schema({
 		y: Number
 	},	
 	neighbors: [{
-		parent_id: {
+		next: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Place'
 		},
@@ -35,7 +35,10 @@ var RoomSchema = PlaceSchema.extend({
 
 /* Tower */
 var TowerSchema = PlaceSchema.extend({	
-	diameter: Number,
+	diameter: {
+		type: Number,
+		default: 64
+	},
 	start: Boolean,
 	finish: Boolean
 });
@@ -54,7 +57,7 @@ Place.prototype = {
 */
 
 /* Clear all data */
-mongoose.connection.collections['placeCollection'].drop();
+//mongoose.connection.collections['placeCollection'].drop();
 
 exports.getRoom = function() {
     return Room;

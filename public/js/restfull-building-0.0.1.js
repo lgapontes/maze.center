@@ -1,6 +1,6 @@
-function getPlaces(callback) {
+function getBuilding(level,callback) {
 	jQuery.ajax({
-		url: "/restfull/places",
+		url: "/restfull/building/" + level,
 		type: "GET",
 
 		contentType: 'application/json; charset=utf-8',

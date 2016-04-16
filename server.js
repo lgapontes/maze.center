@@ -22,8 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var server = http.createServer(app);
 
 /* URLs */
-app.get('/restfull/places', building.getPlaces);
-app.get('/restfull/createRoom', building.createRoom);
+app.get('/restfull/building/:level', building.get);
 
 server.listen(PORT, function(error) {
 	if (error) {

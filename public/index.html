@@ -7,40 +7,184 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css">		
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
 		<script type="text/javascript" src="js/restfull-building-0.0.1.js"></script>
+		<script type="text/javascript" src="js/model-0.0.1.js"></script>
 	</head>
 <body>
-	<script type="text/javascript">
-		function Foo(obj) {
-			this.test = function() {console.log(this.name + ' blz');};		
-			for (var prop in obj) this[prop] = obj[prop];
-		}
-		
-		getPlaces(function(error,places){
-			if (error) {
-				console.log(error);
-			} else {
-			
-				console.log(places);
-				/*
-				var array = [];
-				places.forEach(function(entry){
-					array.push(new Foo(entry));
-				});		
-				
-				array.forEach(function(entry){
-					entry.test();
-				});
-				*/
-			}
-		});
-	</script>
-
 	<canvas id="canvas"></canvas>
 	
 	<script type="text/javascript">
+		
+		var DEBUG = true;
+	
+		var canvas;
+		var ctx;
+
+		/* Default value */
+		var axis = undefined;
+		var alignments = undefined;
+		var thickness = undefined;
+	
 		(function() {
-			var canvas = document.getElementById('canvas'),
-				context = canvas.getContext('2d');
+			var WIDTH = window.innerWidth;
+			var HEIGHT = window.innerHeight;
+			var dragok = false;
+			
+			var dataCreated = false;
+			
+			/* Initial position */
+			var initial_position_x = WIDTH/2;
+			var initial_position_y = HEIGHT/2;
+			
+			/* Mouse drag */
+			var x;
+			var y;
+			
+			var clickY;
+			var clickX;
+			var touchX;
+			var touchY;
+			
+			var diffY = 0;
+			var diffX = 0;
+			
+			var buildingFactory = new BuildingFactory();
+			
+			function data(callback) {		
+				
+				/* Places */
+				var level = 1;
+				getBuilding(level,function(error,building){
+					if (error) {
+						console.log(error);
+					} else {
+					
+						/* Enuns */
+						axis = building.axis;
+						alignments = building.alignments;
+						thickness = building.thickness;
+					
+						/* Places */
+						building.places.forEach(function(entry){
+							buildingFactory.add(new Room(entry));
+						});
+						buildingFactory.updateNeighbors();
+						
+						/* Set position */
+						buildingFactory.getMaster().position.x = initial_position_x - buildingFactory.getMaster().size.width/2;
+						buildingFactory.getMaster().position.y = initial_position_y - buildingFactory.getMaster().size.height/2;
+												
+						callback();
+					}
+				});
+			};
+			
+			function draw() {
+				/* Clear */
+				ctx.beginPath();
+				ctx.fillStyle = clearColor;
+				ctx.rect(0, 0, WIDTH, HEIGHT);
+				ctx.closePath();
+				ctx.fill();
+				
+				/* Draw */
+				if (dataCreated) {
+					buildingFactory.draw();
+				}
+				
+				/* Jonny */
+				ctx.beginPath();
+				ctx.fillStyle = playerColor;						
+				ctx.rect(
+					(WIDTH-player.width)/2,
+					(HEIGHT-player.height)/2, 
+					player.width, 
+					player.height
+				);
+				ctx.closePath();
+				ctx.fill();
+			};
+			
+			function myMove(e){
+				if (dragok){
+					x = e.pageX;
+					y = e.pageY;
+					diffX = (x - clickX);
+					diffY = (y - clickY);
+					clickX = e.pageX;
+					clickY = e.pageY;
+					moveMap();
+				}
+			};
+			
+			function myDown(e){
+				clickX = e.pageX;
+				clickY = e.pageY;
+				dragok = true;
+				canvas.onmousemove = myMove;
+			};
+
+			function myUp(){
+				dragok = false;
+				canvas.onmousemove = null;
+			};
+			
+			function moveMap() {
+				initial_position_x = initial_position_x + diffX;
+				initial_position_y = initial_position_y + diffY;
+			
+				/* Set position */
+				buildingFactory.getMaster().position.x = initial_position_x - buildingFactory.getMaster().size.width/2;
+				buildingFactory.getMaster().position.y = initial_position_y - buildingFactory.getMaster().size.height/2;
+			};
+			
+			function startTouch(e){			
+				touchX=e.touches[0].pageX;
+				touchY=e.touches[0].pageY;
+				dragok = true;
+			};
+			
+			function endTouch(){
+				dragok = false;
+			};
+			
+			function moveTouch(e){
+				if (dragok){
+					x=e.touches[0].pageX;
+					y=e.touches[0].pageY;
+					diffX = (x - touchX);
+					diffY = (y - touchY);
+					touchX=e.touches[0].pageX;
+					touchY=e.touches[0].pageY;
+					moveMap();
+				}
+			}
+			
+			function init() {
+				/* Get canvas and context */
+				canvas = document.getElementById("canvas");
+				ctx = canvas.getContext("2d");
+				
+				data(function(){
+					x = canvas.width/2 - buildingFactory.getMaster().size.width/2;
+					y = canvas.height/2 - buildingFactory.getMaster().size.height/2;			
+					clickX = 0;
+					clickY = 0;
+					touchX = 0;
+					touchY = 0;
+					moveMap();
+					dataCreated = true;
+				});
+				
+				return setInterval(draw, 10);
+			}
+			
+			/* Draw */
+			init();
+			canvas.onmousedown = myDown;
+			canvas.onmouseup = myUp;
+			canvas.addEventListener('touchstart',startTouch);
+			canvas.addEventListener('touchmove',moveTouch);
+			canvas.addEventListener('touchend',endTouch);
 
 			// resize the canvas to fill browser window dynamically
 			window.addEventListener('resize', resizeCanvas, false);
@@ -48,18 +192,23 @@
 			function resizeCanvas() {
 					canvas.width = window.innerWidth;
 					canvas.height = window.innerHeight;
+					WIDTH = canvas.width;
+					HEIGHT = canvas.height;
 
 					/**
 					 * Your drawings need to be inside this function otherwise they will be reset when 
 					 * you resize the browser window and the canvas goes will be cleared.
 					 */
-					drawStuff(); 
+					//drawStuff();
 			}
 			resizeCanvas();
 
+			/*
 			function drawStuff() {
 					// do your drawing stuff here
 			}
+			*/
+			
 		})();
 	</script>
 </body>
