@@ -31,10 +31,28 @@ BuildingFactory.prototype = {
 		});
 		return this;
 	},
+	newTower: function(_number) {
+		this.place = new Tower({
+			number: _number,
+			position: {
+				x: 0,
+				y: 0
+			},
+			neighbors: [],
+			finish: false
+		});
+		return this;
+	},
 	setSize: function(_size) {
 		if (this.place instanceof Room) {
 			this.place.size = _size;
 		}		
+		return this;
+	},
+	setFinish: function() {
+		if (this.place instanceof Tower) {
+			this.place.finish = true;
+		}
 		return this;
 	},
 	setAlignment: function(_alignment) {
@@ -43,17 +61,23 @@ BuildingFactory.prototype = {
 		}		
 		return this;
 	},
-	addNeighbor: function(_nextNumber,_axis,_alignment) {		
+	addNeighbor: function(_nextNumber,_axis,_alignment) {
+
+		var temp_alignment = alignments.center;
+		if (typeof _alignment !== "undefined") {
+             temp_alignment = _alignment;
+        }
+	
 		this.neighbors.push({
 			neighbor: {
 				parent: this.place.number,
 				next: _nextNumber
 			},
-			axis: _axis,	
+			axis: _axis,
 			door: {			
 				width: doorThickness,
 				height: thickness * 2,
-				alignment: _alignment
+				alignment: temp_alignment
 			}
 		});
 		return this;
@@ -69,7 +93,7 @@ BuildingFactory.prototype = {
 			}
 		}
 	},	
-	finish: function() {
+	creationCompleted: function() {
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];			
 			var place = this.getPlace(entry.neighbor.parent);

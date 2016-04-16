@@ -2,6 +2,12 @@
 var thickness = 6;
 var doorThickness = 100 + thickness;
 
+/* Types */
+var types = {
+	room: 0,
+	tower: 1
+};
+
 /* Sizes */
 var sizes = {
 	smallSquare: {
@@ -15,12 +21,12 @@ var sizes = {
 	},
 	smallHorizontalCorridor: {
 		width: 150,
-		height: doorThickness
+		height: doorThickness + thickness*2,
 	},
 	
 	tinyVerticalCorridor: {
-		width: doorThickness,
-		height: (doorThickness * 2) + thickness
+		width: doorThickness + thickness*2,
+		height: (doorThickness * 2) + thickness*3
 	}
 };
 
@@ -38,6 +44,10 @@ var axis = {
 	east: 1,
 	south: 2,
 	west: 3
+};
+
+exports.getTypes = function() {
+    return types;
 };
 
 exports.getAlignments = function() {

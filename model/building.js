@@ -1,5 +1,6 @@
 var mongoose 	= require("mongoose"),
-	extend 		= require('mongoose-schema-extend');	
+	extend 		= require('mongoose-schema-extend'),
+	types		= require('./enum').getTypes();
 	
 var Schema = mongoose.Schema;
 
@@ -26,6 +27,10 @@ var PlaceSchema = new Schema({
 
 /* Room */
 var RoomSchema = PlaceSchema.extend({	
+	type: {
+		type: Number,
+		default: types.room
+	},
 	size: {
 		width: Number,
 		height: Number	
@@ -35,26 +40,20 @@ var RoomSchema = PlaceSchema.extend({
 
 /* Tower */
 var TowerSchema = PlaceSchema.extend({	
-	diameter: {
+	type: {
 		type: Number,
-		default: 64
+		default: types.tower
 	},
-	start: Boolean,
+	radius: {
+		type: Number,
+		default: 92
+	},
 	finish: Boolean
 });
 
 /* Model */
 var Room = mongoose.model('Room', RoomSchema, 'placeCollection');
 var Tower = mongoose.model('Tower', TowerSchema, 'placeCollection');
-
-
-/*
-Place.prototype = {
-	metodo: function() {
-		console.log("blz");
-	}
-};
-*/
 
 /* Clear all data */
 //mongoose.connection.collections['placeCollection'].drop();

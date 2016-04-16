@@ -27,6 +27,7 @@
 		var axis = undefined;
 		var alignments = undefined;
 		var thickness = undefined;
+		var types = undefined;
 	
 		(function() {
 			var WIDTH = window.innerWidth;
@@ -66,10 +67,15 @@
 						axis = building.axis;
 						alignments = building.alignments;
 						thickness = building.thickness;
+						types = building.types;
 					
 						/* Places */
 						building.places.forEach(function(entry){
-							buildingFactory.add(new Room(entry));
+							if (entry.type === types.room) {
+								buildingFactory.add(new Room(entry));
+							} else {
+								buildingFactory.add(new Tower(entry));
+							}							
 						});
 						buildingFactory.updateNeighbors();
 						

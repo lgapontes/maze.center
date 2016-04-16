@@ -4,6 +4,9 @@ var floorColor = '#FFFFFF';
 var clearColor = '#FFFFFF';
 var playerColor = '#0000FF';
 
+var radiusArcNumber = 20;
+var fontArcNumber = "bold 22px Courier New";
+
 /* Libraries */
 function extend(base, sub) {
   // Avoid instantiating the base class just to setup inheritance
@@ -96,70 +99,70 @@ Door.prototype = {
 		return y;
 	},
 	
-	drawNorth: function() {
-		if (this.place instanceof Room) {		
+	drawNorth: function() {		
+		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.calcAlignmentX(),
 				this.place.position.y - this.height/2 + 1,
 				this.width,
 				this.height
 			);			
-		} else { // Tower
+		} else { // Tower			
 			this.zone = new Zone(
 				this.place.position.x - this.width/2,
-				this.place.position.y - this.height/2 - this.place.size + 3,
+				this.place.position.y - this.height/2 - this.place.radius,
 				this.width,
-				this.height
+				this.height*4
 			);			
 		}
 	},
 	drawEast: function() {
-		if (this.place instanceof Room) {
+		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.place.position.x + this.place.size.width - this.height/2 - 1,
 				this.calcAlignmentY(),
 				this.height, 
 				this.width
 			);			
-		} else { // Tower
+		} else { // Tower			
 			this.zone = new Zone(
-				this.place.position.x + this.place.size - this.height/2 - 3,
+				this.place.position.x + this.place.radius - this.height/2 - thickness*4,
 				this.place.position.y - this.width/2,
-				this.height, 
+				this.height*4,
 				this.width
 			);			
 		}
 	},
 	drawSouth: function() {
-		if (this.place instanceof Room) {
+		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.calcAlignmentX(),
 				this.place.position.y + this.place.size.height - this.height/2 - 1,
 				this.width, 
 				this.height
 			);						
-		} else { // Tower
+		} else { // Tower			
 			this.zone = new Zone(
 				this.place.position.x - this.width/2,
-				this.place.position.y + this.place.size - this.height/2 - 3,
+				this.place.position.y + this.place.radius - thickness*4,
 				this.width, 
-				this.height
+				this.height*4
 			);						
 		}
 	},
 	drawWest: function() {
-		if (this.place instanceof Room) {
+		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.place.position.x - this.height/2 + 1,
 				this.calcAlignmentY(),
 				this.height, 
 				this.width
 			);						
-		} else { // Tower
+		} else { // Tower			
 			this.zone = new Zone(
-				this.place.position.x - this.place.size - this.height/2 + 3,
+				this.place.position.x - this.place.radius - thickness*4,
 				this.place.position.y - this.width/2,
-				this.height, 
+				this.height*4, 
 				this.width
 			);						
 		}
@@ -180,7 +183,7 @@ Door.prototype = {
 	draw: function() {		
 		ctx.beginPath();
 		ctx.fillStyle = floorColor;
-		this.zone.rect();		
+		this.zone.rect();
 	}
 	
 };
@@ -199,7 +202,9 @@ Neighbor.prototype = {
 	drawNeighbor: function(_parent) {
 		this.door.setPosition(this.axis);
 		_parent.setPositionWith(this,this.door);
-		this.next.draw(this.axis);
+		this.next.draw(this.axis);		
+	},
+	drawDoor: function(_parent) {		
 		this.door.draw();
 	}
 };
@@ -266,6 +271,11 @@ function Room(obj) {
 Room.prototype = {
 	drawMe: function() {		
 	
+		// Draw neighbors
+		for(var i=0;i<this.neighbors.length;i++) {
+			this.neighbors[i].drawNeighbor(this);
+		}
+	
 		// Wall
 		ctx.beginPath();		
 		ctx.fillStyle = wallColor;
@@ -280,9 +290,9 @@ Room.prototype = {
 		ctx.closePath();
 		ctx.fill();
 		
-		// Draw neighbors
+		// Draw doors
 		for(var i=0;i<this.neighbors.length;i++) {
-			this.neighbors[i].drawNeighbor(this);
+			this.neighbors[i].drawDoor(this);
 		}
 		
 		if (DEBUG.active) {
@@ -295,12 +305,12 @@ Room.prototype = {
 	},
 	
 	drawRoomNumber: function() {
-		// Room Number Arc
+		// Room Arc Number
 		ctx.beginPath();
 		ctx.arc(
 			this.position.x + this.size.width/2,
 			this.position.y + this.size.height/2,
-			20,
+			radiusArcNumber,
 			0,
 			2*Math.PI
 		);
@@ -310,7 +320,7 @@ Room.prototype = {
 		
 		// Room Number
 		ctx.beginPath();
-		ctx.font = "bold 22px Courier New";
+		ctx.font = fontArcNumber;
 		ctx.fillStyle = floorColor;
 		ctx.textAlign = "center";
 		ctx.closePath();
@@ -323,9 +333,9 @@ Room.prototype = {
 	
     setNorth: function(_neighbor,_door) {
 		if (_neighbor.next instanceof Tower) {
-			_neighbor.next.position.x = this.position.x + this.size.width/2;
-			_neighbor.next.position.y = this.position.y - _neighbor.next.size + 5;
-		} else { // Room		
+			_neighbor.next.position.x = _door.zone.min().x + _door.zone.width/2;
+			_neighbor.next.position.y = this.position.y - _neighbor.next.radius + thickness*4;
+		} else { // Room
 			if (_neighbor.next.alignment === alignments.right) {
 				_neighbor.next.position.x = _door.zone.min().x - thickness;
 				_neighbor.next.position.y = this.position.y - _neighbor.next.size.height + thickness;
@@ -340,8 +350,8 @@ Room.prototype = {
 	},
 	setEast: function(_neighbor,_door) {
 		if (_neighbor.next instanceof Tower) {									
-			_neighbor.next.position.x = this.position.x + this.size.width + _neighbor.next.size/2 + 27;
-			_neighbor.next.position.y = this.position.y + this.size.height/2;			
+			_neighbor.next.position.x = this.position.x + this.size.width + _neighbor.next.radius/2 + thickness*4;
+			_neighbor.next.position.y = _door.zone.min().y + _door.zone.height/2;
 		} else { // Room									
 			if (_neighbor.next.alignment === alignments.top) {
 				_neighbor.next.position.x = this.position.x + this.size.width - thickness;
@@ -357,8 +367,8 @@ Room.prototype = {
 	},
 	setSouth: function(_neighbor,_door) {
 		if (_neighbor.next instanceof Tower) {			
-			_neighbor.next.position.x = this.position.x + this.size.width/2;
-			_neighbor.next.position.y = this.position.y + this.size.height + _neighbor.next.size - 3;										
+			_neighbor.next.position.x = _door.zone.min().x + _door.zone.width/2;
+			_neighbor.next.position.y = this.position.y + this.size.height + _neighbor.next.radius - thickness*4;			
 		} else { // Room
 			if (_neighbor.next.alignment === alignments.right) {
 				_neighbor.next.position.x = _door.zone.min().x - thickness;
@@ -374,8 +384,8 @@ Room.prototype = {
 	},
 	setWest: function(_neighbor,_door) {
 		if (_neighbor.next instanceof Tower) {						
-			_neighbor.next.position.x = this.position.x - _neighbor.next.size/2 - 27;
-			_neighbor.next.position.y = this.position.y + this.size.height/2;
+			_neighbor.next.position.x = this.position.x - _neighbor.next.radius/2 - thickness*4;
+			_neighbor.next.position.y = _door.zone.min().y + _door.zone.height/2;
 		} else { // Room
 			if (_neighbor.next.alignment === alignments.top) {
 				_neighbor.next.position.x = this.position.x - _neighbor.next.size.width + thickness;
@@ -393,6 +403,130 @@ Room.prototype = {
 
 function Tower(obj) {
 	Place.call(this, obj);
+};
+
+Tower.prototype = {
+	drawMe: function() {
+	
+		// Draw neighbors
+		for(var i=0;i<this.neighbors.length;i++) {
+			this.neighbors[i].drawNeighbor(this);
+		}
+	
+		// Wall
+		ctx.beginPath();
+		ctx.arc(
+			this.position.x,
+			this.position.y,
+			this.radius,
+			0,
+			2*Math.PI
+		);
+		ctx.fillStyle = wallColor;
+		ctx.closePath();
+		ctx.fill();
+		
+		// Floor
+		ctx.beginPath();
+		ctx.arc(
+			this.position.x,
+			this.position.y,
+			this.radius - thickness,
+			0,
+			2*Math.PI
+		);
+		ctx.fillStyle = floorColor;
+		ctx.closePath();
+		ctx.fill();
+		
+		/* Finished? */ 
+		if (this.finish) {
+			
+		}
+		
+		// Draw doors
+		for(var i=0;i<this.neighbors.length;i++) {
+			this.neighbors[i].drawDoor(this);
+		}
+		
+		if (DEBUG.active) {
+			this.drawTowerNumber();
+			
+			if (!DEBUG.painted) {
+				console.log('Place ' + this.number + ' painted');
+			}			
+		}
+		
+	},
+	
+	drawTowerNumber: function() {		
+		// Tower Arc Number
+		ctx.beginPath();
+		ctx.arc(
+			this.position.x,
+			this.position.y,
+			radiusArcNumber,
+			0,
+			2*Math.PI
+		);
+		ctx.fillStyle = wallColor;
+		ctx.closePath();
+		ctx.fill();
+		
+		// Tower Number
+		ctx.beginPath();
+		ctx.font = fontArcNumber;
+		ctx.fillStyle = floorColor;
+		ctx.textAlign = "center";
+		ctx.closePath();
+		ctx.fillText(
+			this.number,
+			this.position.x,
+			this.position.y+6
+		);
+	},
+	
+	setNorth: function(_neighbor) {		
+		if (_neighbor.next.type === types.tower) {
+			// AQUI!!!!!!!!
+			_neighbor.next.position.x = this.position.x;
+			_neighbor.next.position.y = this.position.y - _neighbor.next.size*2 + 6;
+		} else {
+			_neighbor.next.position.x = this.position.x - _neighbor.next.size.width/2;
+			_neighbor.next.position.y = this.position.y - _neighbor.next.size.height - this.radius + thickness*4;
+		}
+	},
+	setEast: function(_neighbor) {
+		if (_neighbor.next.type === types.tower) {
+			// AQUI!!!!!!!!
+			_neighbor.next.position.x = this.position.x + this.size*2 - 6;
+			_neighbor.next.position.y = this.position.y;
+		} else {			
+			_neighbor.next.position.x = this.position.x + this.radius - thickness*4;
+			_neighbor.next.position.y = this.position.y - _neighbor.next.size.height/2;		
+		}
+	},
+	setSouth: function(_neighbor) {
+		if (_neighbor.next.type === types.tower) {
+			// AQUI!!!!!!!!
+			_neighbor.next.position.x = this.position.x;
+			_neighbor.next.position.y = this.position.y + this.size*2 - 5;
+		} else {
+			_neighbor.next.position.x = this.position.x - _neighbor.next.size.width/2;
+			_neighbor.next.position.y = this.position.y + this.radius - thickness*4;						
+		}
+	},
+	setWest: function(_neighbor) {
+		if (_neighbor.next.type === types.tower) {
+			// AQUI!!!!!!!!
+			_neighbor.next.position.x = this.position.x - _neighbor.next.size*2 + 5;
+			_neighbor.next.position.y = this.position.y;
+		} else {			
+			_neighbor.next.position.x = this.position.x - _neighbor.next.size.width - this.radius + thickness*4;
+			_neighbor.next.position.y = this.position.y - _neighbor.next.size.height/2;								
+		}
+	}
+	
 };
 
 // Setup the prototype chain the right way

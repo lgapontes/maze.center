@@ -6,6 +6,7 @@ var logger  		= require('../infrastructure/logger').get(),
 	axis			= require('../model/enum').getAxis(),
 	thickness		= require('../model/enum').getThickness(),
 	sizes			= require('../model/enum').getSizes(),
+	types			= require('../model/enum').getTypes(),
 	BuildingFactory	= require('../model/factory').getBuildingFactory();
 	
 exports.get = function(request, response) {
@@ -23,6 +24,7 @@ exports.get = function(request, response) {
 	buildingFactory.newRoom(1)
 		.setSize(sizes.smallVerticalCorridor)
 		.setAlignment(alignments.right)
+		.addNeighbor(8,axis.north,alignments.center)
 		.create();
 		
 	buildingFactory.newRoom(2)
@@ -44,6 +46,7 @@ exports.get = function(request, response) {
 		
 	buildingFactory.newRoom(5)
 		.setAlignment(alignments.center)
+		.addNeighbor(10,axis.east,alignments.center)
 		.create();
 		
 	buildingFactory.newRoom(6)
@@ -53,11 +56,50 @@ exports.get = function(request, response) {
 	
 	buildingFactory.newRoom(7)
 		.setAlignment(alignments.bottom)
+		.addNeighbor(9,axis.south,alignments.right)
+		.addNeighbor(11,axis.west,alignments.bottom)
 		.create();
 		
-	var places = buildingFactory.finish();
+	buildingFactory.newTower(8)
+		.addNeighbor(12,axis.north)
+		.addNeighbor(13,axis.east)
+		.addNeighbor(14,axis.west)
+		.create();
+		
+	buildingFactory.newTower(9)
+		.create();
+		
+	buildingFactory.newTower(10)
+		.addNeighbor(15,axis.south)
+		.create();
+		
+	buildingFactory.newTower(11)
+		.create();
+		
+	buildingFactory.newRoom(12)
+		.addNeighbor(16,axis.east,alignments.center)
+		.create();
+		
+	buildingFactory.newRoom(13)
+		.setSize(sizes.smallHorizontalCorridor)
+		.create();
+	
+	buildingFactory.newRoom(14)
+		.setSize(sizes.smallHorizontalCorridor)
+		.create();
+		
+	buildingFactory.newRoom(15)
+		.setSize(sizes.smallVerticalCorridor)
+		.create();
+		
+	buildingFactory.newRoom(16)
+		.setSize(sizes.smallHorizontalCorridor)
+		.create();
+		
+	var places = buildingFactory.creationCompleted();
 	
 	var building = {
+		types: types,
 		places: places,
 		axis: axis,
 		alignments: alignments,
