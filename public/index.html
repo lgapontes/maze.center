@@ -46,6 +46,7 @@
 		/* Collision and Winner check */
 		var WON = false;
 		var COL = false;
+		var heldLock = false;
 		
 		/* Default value */
 		var axis = undefined;
@@ -115,49 +116,65 @@
 			};
 			
 			function draw() {
-				/* Clear */
-				ctx.beginPath();
-				ctx.fillStyle = clearColor;
-				ctx.rect(0, 0, WIDTH, HEIGHT);
-				ctx.closePath();
-				ctx.fill();
+			
+				/* Blocks Interactions */
+				if (WON || COL) {
+					
+					if (!heldLock) {
+						heldLock = true;
+						
+						if (WON) {
+							ctx.beginPath();					
+							ctx.fillStyle = wonColor;
+							ctx.globalAlpha = 0.3;
+							ctx.rect(0, 0, WIDTH, HEIGHT);
+							ctx.closePath();
+							ctx.fill();
+							ctx.globalAlpha = 1;
+						}
+						if (COL) {
+							ctx.beginPath();					
+							ctx.fillStyle = collisionColor;
+							ctx.globalAlpha = 0.3;
+							ctx.rect(0, 0, WIDTH, HEIGHT);
+							ctx.closePath();
+							ctx.fill();
+							ctx.globalAlpha = 1;
+						}
+					}
+					
+				} else {
 				
-				/* Draw */
-				if (dataCreated) {
-					buildingFactory.draw();
-				}
-				
-				/* There was a collision? */
-				COL = headsman.checkCollision();
-				
-				/* Big Jonny */
-				ctx.drawImage(
-					bigJonny,
-					bigJonnyX,
-					bigJonnyY
-				);
-				
-				if (WON) {
-					ctx.beginPath();					
-					ctx.fillStyle = wonColor;
-					ctx.globalAlpha = 0.3;
+					/* Clear */
+					ctx.beginPath();
+					ctx.fillStyle = clearColor;
 					ctx.rect(0, 0, WIDTH, HEIGHT);
 					ctx.closePath();
 					ctx.fill();
-					ctx.globalAlpha = 1;
+					
+					/* Draw */
+					if (dataCreated) {
+						buildingFactory.draw();
+					}
+					
+					/* There was a collision? */
+					COL = headsman.checkCollision();
+					
+					/* Big Jonny */
+					ctx.drawImage(
+						bigJonny,
+						bigJonnyX,
+						bigJonnyY
+					);
+				
 				}
-				if (COL) {
-					ctx.beginPath();					
-					ctx.fillStyle = collisionColor;
-					ctx.globalAlpha = 0.3;
-					ctx.rect(0, 0, WIDTH, HEIGHT);
-					ctx.closePath();
-					ctx.fill();
-					ctx.globalAlpha = 1;
-				}
+				
 			};
 			
 			function myMove(e){
+				/* Blocks Interactions */
+				if (WON || COL) return;
+			
 				if (dragok){
 					x = e.pageX;
 					y = e.pageY;
@@ -173,6 +190,9 @@
 			};
 			
 			function myDown(e){
+				/* Blocks Interactions */
+				if (WON || COL) return;
+			
 				clickX = e.pageX;
 				clickY = e.pageY;
 				dragok = true;
@@ -180,11 +200,17 @@
 			};
 
 			function myUp(){
+				/* Blocks Interactions */
+				if (WON || COL) return;
+			
 				dragok = false;
 				canvas.onmousemove = null;
 			};
 			
 			function moveMap() {
+				/* Blocks Interactions */
+				if (WON || COL) return;
+			
 				initial_position_x = initial_position_x + diffX;
 				initial_position_y = initial_position_y + diffY;
 			
@@ -193,7 +219,10 @@
 				buildingFactory.getMaster().position.y = initial_position_y - buildingFactory.getMaster().size.height/2;
 			};
 			
-			function startTouch(e){			
+			function startTouch(e){
+				/* Blocks Interactions */
+				if (WON || COL) return;
+			
 				touchX=e.touches[0].pageX;
 				touchY=e.touches[0].pageY;
 				dragok = true;
@@ -204,6 +233,10 @@
 			};
 			
 			function moveTouch(e){
+			
+				/* Blocks Interactions */
+				if (WON || COL) return;
+			
 				/* Prevent scrolling */
 				e.preventDefault();
 			
@@ -244,19 +277,7 @@
 			canvas.onmouseup = myUp;
 			canvas.addEventListener('touchstart',startTouch);
 			canvas.addEventListener('touchmove',moveTouch, false);
-			canvas.addEventListener('touchend',endTouch);			
-			
-			/* Resize the canvas to fill browser window dynamically 
-			window.addEventListener('resize', resizeCanvas, false);
-
-			function resizeCanvas() {
-					canvas.width = window.innerWidth;
-					canvas.height = window.innerHeight;
-					WIDTH = canvas.width;
-					HEIGHT = canvas.height;
-			}
-			resizeCanvas();
-			*/
+			canvas.addEventListener('touchend',endTouch);
 			
 		})();
 	</script>
