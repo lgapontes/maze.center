@@ -1,9 +1,4 @@
 /* Variables */
-var wallColor = '#322B21';
-var floorColor = '#FFFFFF';
-var clearColor = '#FFFFFF';
-var finishColor = '#EEEEEE';
-
 var radiusArcNumber = 20;
 var fontArcNumber = "bold 22px Courier New";
 
@@ -28,16 +23,6 @@ function extend(base, sub) {
     enumerable: false, 
     value: sub 
   });
-};
-
-jonny = {
-	width: 60,
-	height: 60
-};
-
-chest = {
-	width: 98,
-	height: 110
 };
 
 function Zone(_x,_y,_width,_height) {

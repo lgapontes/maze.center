@@ -7,10 +7,11 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css">		
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
 		<script type="text/javascript" src="js/restfull-building-0.0.1.js"></script>
+		<script type="text/javascript" src="js/headsman-0.0.1.js"></script>		
 		<script type="text/javascript" src="js/model-0.0.1.js"></script>
 	</head>
 <body>
-	<img id="jonny" src="img/jonny.png" style="display: none;">
+	<img id="bigJonny" src="img/bigJonny.png" style="display: none;">
 	<img id="chest" src="img/chest.png" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
@@ -20,17 +21,27 @@
 			active: true,
 			painted: false
 		};
-	
-		/* Variables */
-		var canvas;
-		var ctx;
+		
+		/* Get canvas and context */
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");			
+		
+		/* Set size of canvas */
+		canvas.width = window.innerWidth - 6;
+		canvas.height = window.innerHeight - 6;
+		var WIDTH = canvas.width;
+		var HEIGHT = canvas.height;
 		
 		/* Images */
-		var jonny, chest;
+		var bigJonny, chest;
 		window.onload = function() {			
-			jonny = document.getElementById("jonny");
+			bigJonny = document.getElementById("bigJonny");
 			chest = document.getElementById("chest");
 		}
+		
+		/* Big Jonny position */
+		var bigJonnyX = (WIDTH-bigJonny.width)/2;
+		var bigJonnyY = (HEIGHT-bigJonny.height)/2;
 
 		/* Default value */
 		var axis = undefined;
@@ -39,16 +50,7 @@
 		var types = undefined;
 	
 		(function() {
-			/* Get canvas and context */
-			canvas = document.getElementById("canvas");
-			ctx = canvas.getContext("2d");			
-			
-			/* Set size of canvas */
-			canvas.width = window.innerWidth - 6;
-			canvas.height = window.innerHeight - 6;
-			var WIDTH = canvas.width;
-			var HEIGHT = canvas.height;			
-		
+			/* Variables to check drag and if data was created */
 			var dragok = false;		
 			var dataCreated = false;
 			
@@ -60,15 +62,19 @@
 			var x;
 			var y;
 			
+			/* Click and touch controller */
 			var clickY;
 			var clickX;
 			var touchX;
 			var touchY;
 			
+			/* Diif to drag and drop */
 			var diffY = 0;
 			var diffX = 0;
 			
+			/* Objects to manage */
 			var buildingFactory = new BuildingFactory();
+			var headsman = new Headsman();
 			
 			function data(callback) {		
 				
@@ -117,11 +123,11 @@
 					buildingFactory.draw();
 				}
 				
-				/* Jonny */
+				/* Big Jonny */
 				ctx.drawImage(
-					jonny,
-					(WIDTH-jonny.width)/2,
-					(HEIGHT-jonny.height)/2
+					bigJonny,
+					bigJonnyX,
+					bigJonnyY
 				);
 			};
 			
@@ -134,6 +140,9 @@
 					clickX = e.pageX;
 					clickY = e.pageY;
 					moveMap();
+					
+					/* There was a collision? */
+					headsman.checkCollision();
 				}
 			};
 			
@@ -180,6 +189,9 @@
 					touchX=e.touches[0].pageX;
 					touchY=e.touches[0].pageY;
 					moveMap();
+					
+					/* There was a collision? */
+					headsman.checkCollision();
 				}
 			}
 			
@@ -193,6 +205,8 @@
 					touchY = 0;
 					moveMap();
 					dataCreated = true;
+					
+					headsman.updateCorners(bigJonnyX,bigJonnyY);
 				});
 				
 				return setInterval(draw, 10);
