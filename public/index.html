@@ -39,10 +39,17 @@
 		var types = undefined;
 	
 		(function() {
-			var WIDTH = window.innerWidth;
-			var HEIGHT = window.innerHeight;
-			var dragok = false;
+			/* Get canvas and context */
+			canvas = document.getElementById("canvas");
+			ctx = canvas.getContext("2d");			
 			
+			/* Set size of canvas */
+			canvas.width = window.innerWidth - 6;
+			canvas.height = window.innerHeight - 6;
+			var WIDTH = canvas.width;
+			var HEIGHT = canvas.height;			
+		
+			var dragok = false;		
 			var dataCreated = false;
 			
 			/* Initial position */
@@ -162,6 +169,9 @@
 			};
 			
 			function moveTouch(e){
+				/* Prevent scrolling */
+				e.preventDefault();
+			
 				if (dragok){
 					x=e.touches[0].pageX;
 					y=e.touches[0].pageY;
@@ -174,10 +184,6 @@
 			}
 			
 			function init() {
-				/* Get canvas and context */
-				canvas = document.getElementById("canvas");
-				ctx = canvas.getContext("2d");
-				
 				data(function(){
 					x = canvas.width/2 - buildingFactory.getMaster().size.width/2;
 					y = canvas.height/2 - buildingFactory.getMaster().size.height/2;			
@@ -197,10 +203,10 @@
 			canvas.onmousedown = myDown;
 			canvas.onmouseup = myUp;
 			canvas.addEventListener('touchstart',startTouch);
-			canvas.addEventListener('touchmove',moveTouch);
-			canvas.addEventListener('touchend',endTouch);
-
-			// resize the canvas to fill browser window dynamically
+			canvas.addEventListener('touchmove',moveTouch, false);
+			canvas.addEventListener('touchend',endTouch);			
+			
+			/* Resize the canvas to fill browser window dynamically 
 			window.addEventListener('resize', resizeCanvas, false);
 
 			function resizeCanvas() {
@@ -208,19 +214,8 @@
 					canvas.height = window.innerHeight;
 					WIDTH = canvas.width;
 					HEIGHT = canvas.height;
-
-					/**
-					 * Your drawings need to be inside this function otherwise they will be reset when 
-					 * you resize the browser window and the canvas goes will be cleared.
-					 */
-					//drawStuff();
 			}
 			resizeCanvas();
-
-			/*
-			function drawStuff() {
-					// do your drawing stuff here
-			}
 			*/
 			
 		})();
