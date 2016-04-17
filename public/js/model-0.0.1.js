@@ -2,7 +2,7 @@
 var wallColor = '#322B21';
 var floorColor = '#FFFFFF';
 var clearColor = '#FFFFFF';
-var playerColor = '#0000FF';
+var finishColor = '#EEEEEE';
 
 var radiusArcNumber = 20;
 var fontArcNumber = "bold 22px Courier New";
@@ -30,9 +30,14 @@ function extend(base, sub) {
   });
 };
 
-player = {
+jonny = {
 	width: 60,
 	height: 60
+};
+
+chest = {
+	width: 98,
+	height: 110
 };
 
 function Zone(_x,_y,_width,_height) {
@@ -206,6 +211,11 @@ Neighbor.prototype = {
 	},
 	drawDoor: function(_parent) {		
 		this.door.draw();
+		
+		/* Finished? */
+		if (this.next.type === types.tower && this.next.finish) {
+			this.next.drawFinish();
+		}
 	}
 };
 
@@ -408,7 +418,7 @@ function Tower(obj) {
 Tower.prototype = {
 	drawMe: function() {
 	
-		// Draw neighbors
+		/* Draw neighbors */
 		for(var i=0;i<this.neighbors.length;i++) {
 			this.neighbors[i].drawNeighbor(this);
 		}
@@ -426,7 +436,7 @@ Tower.prototype = {
 		ctx.closePath();
 		ctx.fill();
 		
-		// Floor
+		/* Floor */
 		ctx.beginPath();
 		ctx.arc(
 			this.position.x,
@@ -439,12 +449,7 @@ Tower.prototype = {
 		ctx.closePath();
 		ctx.fill();
 		
-		/* Finished? */ 
-		if (this.finish) {
-			
-		}
-		
-		// Draw doors
+		/* Draw doors */
 		for(var i=0;i<this.neighbors.length;i++) {
 			this.neighbors[i].drawDoor(this);
 		}
@@ -459,7 +464,29 @@ Tower.prototype = {
 		
 	},
 	
-	drawTowerNumber: function() {		
+	drawFinish: function() {
+		/* Floor finish */
+		ctx.beginPath();
+		ctx.arc(
+			this.position.x,
+			this.position.y,
+			this.radius - thickness*2,
+			0,
+			2*Math.PI
+		);
+		ctx.fillStyle = finishColor;
+		ctx.closePath();
+		ctx.fill();
+		
+		/* Chest */
+		ctx.drawImage(
+			chest,
+			this.position.x - chest.width/2,
+			this.position.y - chest.height/2
+		);
+	},
+	
+	drawTowerNumber: function() {
 		// Tower Arc Number
 		ctx.beginPath();
 		ctx.arc(
@@ -487,19 +514,17 @@ Tower.prototype = {
 	},
 	
 	setNorth: function(_neighbor) {		
-		if (_neighbor.next.type === types.tower) {
-			// AQUI!!!!!!!!
+		if (_neighbor.next.type === types.tower) {			
 			_neighbor.next.position.x = this.position.x;
-			_neighbor.next.position.y = this.position.y - _neighbor.next.size*2 + 6;
+			_neighbor.next.position.y = this.position.y - _neighbor.next.radius*2 + thickness*7;
 		} else {
 			_neighbor.next.position.x = this.position.x - _neighbor.next.size.width/2;
 			_neighbor.next.position.y = this.position.y - _neighbor.next.size.height - this.radius + thickness*4;
 		}
 	},
 	setEast: function(_neighbor) {
-		if (_neighbor.next.type === types.tower) {
-			// AQUI!!!!!!!!
-			_neighbor.next.position.x = this.position.x + this.size*2 - 6;
+		if (_neighbor.next.type === types.tower) {			
+			_neighbor.next.position.x = this.position.x + this.radius*2 - thickness*7;
 			_neighbor.next.position.y = this.position.y;
 		} else {			
 			_neighbor.next.position.x = this.position.x + this.radius - thickness*4;
@@ -507,19 +532,17 @@ Tower.prototype = {
 		}
 	},
 	setSouth: function(_neighbor) {
-		if (_neighbor.next.type === types.tower) {
-			// AQUI!!!!!!!!
+		if (_neighbor.next.type === types.tower) {			
 			_neighbor.next.position.x = this.position.x;
-			_neighbor.next.position.y = this.position.y + this.size*2 - 5;
+			_neighbor.next.position.y = this.position.y + this.radius*2 - thickness*7;
 		} else {
 			_neighbor.next.position.x = this.position.x - _neighbor.next.size.width/2;
 			_neighbor.next.position.y = this.position.y + this.radius - thickness*4;						
 		}
 	},
 	setWest: function(_neighbor) {
-		if (_neighbor.next.type === types.tower) {
-			// AQUI!!!!!!!!
-			_neighbor.next.position.x = this.position.x - _neighbor.next.size*2 + 5;
+		if (_neighbor.next.type === types.tower) {			
+			_neighbor.next.position.x = this.position.x - _neighbor.next.radius*2 + thickness*7;
 			_neighbor.next.position.y = this.position.y;
 		} else {			
 			_neighbor.next.position.x = this.position.x - _neighbor.next.size.width - this.radius + thickness*4;

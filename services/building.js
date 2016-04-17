@@ -67,17 +67,21 @@ exports.get = function(request, response) {
 		.create();
 		
 	buildingFactory.newTower(9)
+		.setFinish()
 		.create();
 		
 	buildingFactory.newTower(10)
 		.addNeighbor(15,axis.south)
+		.addNeighbor(20,axis.east)
 		.create();
 		
 	buildingFactory.newTower(11)
+		.addNeighbor(17,axis.west)
 		.create();
 		
 	buildingFactory.newRoom(12)
 		.addNeighbor(16,axis.east,alignments.center)
+		.addNeighbor(21,axis.north)
 		.create();
 		
 	buildingFactory.newRoom(13)
@@ -94,6 +98,26 @@ exports.get = function(request, response) {
 		
 	buildingFactory.newRoom(16)
 		.setSize(sizes.smallHorizontalCorridor)
+		.create();
+		
+	buildingFactory.newTower(17)
+		.addNeighbor(18,axis.north)
+		.addNeighbor(19,axis.south)		
+		.create();
+		
+	buildingFactory.newTower(18)
+		.setFinish()
+		.create();
+		
+	buildingFactory.newTower(19)
+		.create();
+		
+	buildingFactory.newTower(20)
+		.setFinish()
+		.create();
+		
+	buildingFactory.newTower(21)
+		.setFinish()
 		.create();
 		
 	var places = buildingFactory.creationCompleted();

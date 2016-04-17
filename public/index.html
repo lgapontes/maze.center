@@ -11,6 +11,7 @@
 	</head>
 <body>
 	<img id="jonny" src="img/jonny.png" style="display: none;">
+	<img id="chest" src="img/chest.png" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
 	<script type="text/javascript">
@@ -20,8 +21,16 @@
 			painted: false
 		};
 	
+		/* Variables */
 		var canvas;
 		var ctx;
+		
+		/* Images */
+		var jonny, chest;
+		window.onload = function() {			
+			jonny = document.getElementById("jonny");
+			chest = document.getElementById("chest");
+		}
 
 		/* Default value */
 		var axis = undefined;
@@ -104,21 +113,9 @@
 				/* Jonny */
 				ctx.drawImage(
 					jonny,
-					(WIDTH-player.width)/2,
-					(HEIGHT-player.height)/2
+					(WIDTH-jonny.width)/2,
+					(HEIGHT-jonny.height)/2
 				);
-				/*
-				ctx.beginPath();				
-				ctx.fillStyle = playerColor;						
-				ctx.rect(
-					(WIDTH-player.width)/2,
-					(HEIGHT-player.height)/2, 
-					player.width, 
-					player.height
-				);
-				ctx.closePath();								
-				ctx.fill();
-				*/
 			};
 			
 			function myMove(e){
