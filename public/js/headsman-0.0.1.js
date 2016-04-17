@@ -1,16 +1,24 @@
 /* Variables */
 var wallColor = '#322b21';
-var floorColor = '#FFFFFF';
-var clearColor = '#FFFFFF';
-var finishColor = '#EEEEEE';
+var floorColor = '#ffffff';
+var clearColor = '#ffffff';
+var finishColor = '#eeeeee';
 var numberColor = '#050505';
+var wonColor = '#9de0a9';
+var collisionColor = '#e0ae9d';
 
 /* General functions */
-function rgbToHex(r, g, b) {
-    if (r > 255 || g > 255 || b > 255)
-        throw "Invalid color component";
-    return ((r << 16) | (g << 8) | b).toString(16);
-};
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+/* Color to check collision */
+var checkCollisionColor = hexToRgb( wallColor );
 
 /* Big Jonny */
 var bigJonny = {
@@ -62,43 +70,17 @@ CircleZone.prototype = {
 	}
 };
 
-function Headsman() {
-	/*
-	    
-		Point 0      Point 1
-	      |             |
-	      V             V
-		  ***************
-		 *              *
-		*<- Point 2     *
-		*               *
-		*     BIG       *
-		*    JONNY      *
-		*               *<- Point 3
-		*              *
-		***************<- Point 5
-	   /|\
-		| Point 4
-		
-	*/
-	this.bigJohnnyCorners = [
-		new Point(  6,  0 ), // Point 0
-		new Point( 60,  0 ), // Point 1
-		new Point(  0,  6 ), // Point 2
-		new Point( 59, 54 ), // Point 3
-		new Point(  0, 61 ), // Point 4
-		new Point( 54, 59 )  // Point 5
-	],
-	
+function Headsman() {	
+	this.bigJonnyPoint = new Point(0,0);	
 	this.circleZone = new CircleZone(0,0,0);
 	this.rectZone = new RectZone(0,0,0,0);	
 };
 
 Headsman.prototype = {
 	updateCorners: function(_x,_y) {
-		for (var i=0;i<this.bigJohnnyCorners.length;i++) {
-			this.bigJohnnyCorners[i].update(_x,_y);
-		}
+		
+		/* Update point of Big Jonny */
+		this.bigJonnyPoint.update(_x,_y);		
 		
 		/* Area of Big Jonny */
 		this.rectZone = new RectZone(
@@ -108,28 +90,42 @@ Headsman.prototype = {
 			_y + bigJonny.height
 		);
 		
-		if (DEBUG) {
-			console.log(this.bigJohnnyCorners);
-		}
 	},
 	
 	checkCollision: function() {
-		for (var i=0;i<this.bigJohnnyCorners.length;i++) {			
-			var point = this.bigJohnnyCorners[i];
 		
-			var collision = false;
-			var p = ctx.getImageData(point.x, point.y, 1, 1).data; 
-			var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
-			
-			if (hex === wallColor) {
-				collision = true;
-			}
-			
-			if (DEBUG && collision) {				
-				console.log('Collision -> Point('+i+') x=' + point.x + ' y=' + point.y);
-				console.log('Color(' + p[0] + ',' + p[1] + ',' + p[2] + '): ' + hex);
-			}
-		}
+		var imageWidth = bigJonny.width;
+		var imageHeight = bigJonny.height;
+		
+		var data = ctx.getImageData(
+			this.bigJonnyPoint.x, 
+			this.bigJonnyPoint.y, 
+			imageWidth, 
+			imageHeight
+		).data;
+		
+		/* Iterate over all pixels based on x and y coordinates */
+        for(var y = 0; y < imageHeight; y++) {
+			  // loop through each column
+			  for(var x = 0; x < imageWidth; x++) {
+					var red = data[((imageWidth * y) + x) * 4];
+					var green = data[((imageWidth * y) + x) * 4 + 1];
+					var blue = data[((imageWidth * y) + x) * 4 + 2];
+					//var alpha = data[((imageWidth * y) + x) * 4 + 3];
+					
+					/* Check collision */
+					if (
+						checkCollisionColor.r === red &&
+						checkCollisionColor.g === green &&
+						checkCollisionColor.b === blue
+					) {
+						if (DEBUG) { console.log('Collision!'); }
+						return true;
+					}
+			  }
+        }
+		
+		return false;
 	},
 	
 	setCircleZone: function(_x,_y,_radius) {

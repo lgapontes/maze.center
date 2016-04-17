@@ -43,6 +43,10 @@
 		var bigJonnyX = (WIDTH-bigJonny.width)/2;
 		var bigJonnyY = (HEIGHT-bigJonny.height)/2;
 
+		/* Collision and Winner check */
+		var WON = false;
+		var COL = false;
+		
 		/* Default value */
 		var axis = undefined;
 		var alignments = undefined;
@@ -123,12 +127,34 @@
 					buildingFactory.draw();
 				}
 				
+				/* There was a collision? */
+				COL = headsman.checkCollision();
+				
 				/* Big Jonny */
 				ctx.drawImage(
 					bigJonny,
 					bigJonnyX,
 					bigJonnyY
 				);
+				
+				if (WON) {
+					ctx.beginPath();					
+					ctx.fillStyle = wonColor;
+					ctx.globalAlpha = 0.3;
+					ctx.rect(0, 0, WIDTH, HEIGHT);
+					ctx.closePath();
+					ctx.fill();
+					ctx.globalAlpha = 1;
+				}
+				if (COL) {
+					ctx.beginPath();					
+					ctx.fillStyle = collisionColor;
+					ctx.globalAlpha = 0.3;
+					ctx.rect(0, 0, WIDTH, HEIGHT);
+					ctx.closePath();
+					ctx.fill();
+					ctx.globalAlpha = 1;
+				}
 			};
 			
 			function myMove(e){
@@ -140,12 +166,9 @@
 					clickX = e.pageX;
 					clickY = e.pageY;
 					moveMap();
-					
-					/* There was a collision? */
-					headsman.checkCollision();
-					
+		
 					/* Check jonny won */
-					var won = headsman.johnnyWon();
+					WON = headsman.johnnyWon();
 				}
 			};
 			
@@ -193,11 +216,8 @@
 					touchY=e.touches[0].pageY;
 					moveMap();
 					
-					/* There was a collision? */
-					headsman.checkCollision();
-					
 					/* Check jonny won */
-					var won = headsman.johnnyWon();
+					WON = headsman.johnnyWon();
 				}
 			}
 			
