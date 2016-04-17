@@ -3,6 +3,7 @@ var wallColor = '#322b21';
 var floorColor = '#FFFFFF';
 var clearColor = '#FFFFFF';
 var finishColor = '#EEEEEE';
+var numberColor = '#050505';
 
 /* General functions */
 function rgbToHex(r, g, b) {
@@ -11,12 +12,13 @@ function rgbToHex(r, g, b) {
     return ((r << 16) | (g << 8) | b).toString(16);
 };
 
-/* Game objects */
+/* Big Jonny */
 var bigJonny = {
 	width: 60,
 	height: 60
 };
 
+/* Chest */
 var chest = {
 	width: 98,
 	height: 110
@@ -29,29 +31,62 @@ function Point(_x,_y) {
 
 Point.prototype = {
 	update: function(_x,_y) {
-		this.x = this.x + _x;
-		this.y = this.y + _y;
+		this.x = this.x + parseInt(_x);
+		this.y = this.y + parseInt(_y);
+	}
+};
+
+function WinnerZone(_x,_y,_width,_height) {
+	this.x = parseInt(_x);
+	this.y = parseInt(_y);
+	this.width = parseInt(_width);
+	this.height = parseInt(_height);
+};
+
+WinnerZone.prototype = {
+	johnnyWon: function(_minPoing, _maxPoint) {
+		if (
+			(_minPoing.x >= this.x) &&
+			(_minPoing.y >= this.y) &&
+			(_maxPoint.x <= this.x + this.width) &&
+			(_maxPoint.y <= this.y + this.height)
+		) {
+			return true;
+		}
+		return false;
 	}
 };
 
 function Headsman() {
 	/*
+	    
+		Point 0      Point 1
+	      |             |
+	      V             V
+		  ***************
+		 *              *
+		*<- Point 2     *
+		*               *
+		*     BIG       *
+		*    JONNY      *
+		*               *<- Point 3
+		*              *
+		***************<- Point 5
+	   /|\
+		| Point 4
+		
+	*/
 	this.bigJohnnyCorners = [
-		new Point(  7,  0 ),
-		new Point( 59,  0 ),
-		new Point(  0,  7 ),
-		new Point( 59, 52 ),
-		new Point(  0, 59 ),
-		new Point( 52, 59 )
-	]*/
-	this.bigJohnnyCorners = [
-		new Point(  6,  0 ),
-		new Point( 60,  0 ),
-		new Point(  0,  6 ),
-		new Point( 59, 54 ),
-		new Point(  0, 61 ),
-		new Point( 54, 59 )
-	]
+		new Point(  6,  0 ), // Point 0
+		new Point( 60,  0 ), // Point 1
+		new Point(  0,  6 ), // Point 2
+		new Point( 59, 54 ), // Point 3
+		new Point(  0, 61 ), // Point 4
+		new Point( 54, 59 )  // Point 5
+	],
+	this.minPoint = undefined,
+	this.maxPoint = undefined,
+	this.winnerZone = new WinnerZone(0,0,0,0);
 };
 
 Headsman.prototype = {
@@ -59,6 +94,14 @@ Headsman.prototype = {
 		for (var i=0;i<this.bigJohnnyCorners.length;i++) {
 			this.bigJohnnyCorners[i].update(_x,_y);
 		}
+		
+		/* Set points */
+		var min_x = this.bigJohnnyCorners[2].x;
+		var min_y = this.bigJohnnyCorners[0].y;
+		var max_x = this.bigJohnnyCorners[1].x;
+		var max_y = this.bigJohnnyCorners[4].y;
+		this.minPoint = new Point(min_x,min_y);
+		this.maxPoint = new Point(max_x,max_y);
 		
 		if (DEBUG) {
 			console.log(this.bigJohnnyCorners);
@@ -78,8 +121,33 @@ Headsman.prototype = {
 			}
 			
 			if (DEBUG && collision) {				
-				console.log('WOW -> Point('+i+') x=' + point.x + ' y=' + point.y + ' (' + p[0] + ',' + p[1] + ',' + p[2] + ') == ' + hex + ' ? ' + wallColor);
+				console.log('Collision -> Point('+i+') x=' + point.x + ' y=' + point.y);
+				console.log('Color(' + p[0] + ',' + p[1] + ',' + p[2] + '): ' + hex);
 			}
 		}
+	},
+	
+	setWinnerZone: function(_x,_y,_width,_height) {
+		this.winnerZone = new WinnerZone(
+			parseInt(_x),
+			parseInt(_y),
+			parseInt(_width),
+			parseInt(_height)			
+		);
+	},
+	
+	johnnyWon: function() {
+		var won = false;
+		
+		if (this.winnerZone.johnnyWon(this.minPoint,this.maxPoint)) {
+			won = true;			
+		}
+		
+		if (DEBUG && won) {	
+			console.log('Big Jonny won!');
+			console.log('Min(' + this.minPoint.x + ',' + this.minPoint.y +') Max(' + this.maxPoint.x + ',' + this.maxPoint.y + ')');
+		}
+		
+		return won;
 	}
 };

@@ -309,7 +309,7 @@ Room.prototype = {
 			0,
 			2*Math.PI
 		);
-		ctx.fillStyle = wallColor;
+		ctx.fillStyle = numberColor;
 		ctx.closePath();
 		ctx.fill();
 		
@@ -469,6 +469,14 @@ Tower.prototype = {
 			this.position.x - chest.width/2,
 			this.position.y - chest.height/2
 		);
+		
+		/* Add winner zone in headsman */
+		headsman.setWinnerZone(
+			this.position.x - chest.width/2,
+			this.position.y - chest.height/2,
+			chest.width,
+			chest.height
+		);
 	},
 	
 	drawTowerNumber: function() {
@@ -481,7 +489,7 @@ Tower.prototype = {
 			0,
 			2*Math.PI
 		);
-		ctx.fillStyle = wallColor;
+		ctx.fillStyle = numberColor;
 		ctx.closePath();
 		ctx.fill();
 		

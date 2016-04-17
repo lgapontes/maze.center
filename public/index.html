@@ -48,6 +48,10 @@
 		var alignments = undefined;
 		var thickness = undefined;
 		var types = undefined;
+		
+		/* Objects to manage */
+		var buildingFactory = new BuildingFactory();
+		var headsman = new Headsman();
 	
 		(function() {
 			/* Variables to check drag and if data was created */
@@ -71,10 +75,6 @@
 			/* Diif to drag and drop */
 			var diffY = 0;
 			var diffX = 0;
-			
-			/* Objects to manage */
-			var buildingFactory = new BuildingFactory();
-			var headsman = new Headsman();
 			
 			function data(callback) {		
 				
@@ -143,6 +143,9 @@
 					
 					/* There was a collision? */
 					headsman.checkCollision();
+					
+					/* Check jonny won */
+					var won = headsman.johnnyWon();
 				}
 			};
 			
@@ -192,6 +195,9 @@
 					
 					/* There was a collision? */
 					headsman.checkCollision();
+					
+					/* Check jonny won */
+					var won = headsman.johnnyWon();
 				}
 			}
 			

@@ -66,8 +66,7 @@ exports.get = function(request, response) {
 		.addNeighbor(14,axis.west)
 		.create();
 		
-	buildingFactory.newTower(9)
-		.setFinish()
+	buildingFactory.newTower(9)		
 		.create();
 		
 	buildingFactory.newTower(10)
@@ -105,15 +104,13 @@ exports.get = function(request, response) {
 		.addNeighbor(19,axis.south)		
 		.create();
 		
-	buildingFactory.newTower(18)
-		.setFinish()
+	buildingFactory.newTower(18)		
 		.create();
 		
 	buildingFactory.newTower(19)
 		.create();
 		
-	buildingFactory.newTower(20)
-		.setFinish()
+	buildingFactory.newTower(20)		
 		.create();
 		
 	buildingFactory.newTower(21)
