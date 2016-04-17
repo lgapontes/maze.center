@@ -36,24 +36,29 @@ Point.prototype = {
 	}
 };
 
-function WinnerZone(_x,_y,_width,_height) {
-	this.x = parseInt(_x);
-	this.y = parseInt(_y);
-	this.width = parseInt(_width);
-	this.height = parseInt(_height);
+function RectZone(_rectLeft,_rectRight,_rectTop,_rectBottom) {
+	this.rectLeft = _rectLeft;
+	this.rectRight = _rectRight;
+	this.rectTop = _rectTop;
+	this.rectBottom = _rectBottom;
 };
 
-WinnerZone.prototype = {
-	johnnyWon: function(_minPoing, _maxPoint) {
-		if (
-			(_minPoing.x >= this.x) &&
-			(_minPoing.y >= this.y) &&
-			(_maxPoint.x <= this.x + this.width) &&
-			(_maxPoint.y <= this.y + this.height)
-		) {
-			return true;
-		}
-		return false;
+function CircleZone(_x,_y,_radius) {
+	this.centerX = _x;
+	this.centerY = _y;
+	this.radius = _radius;
+};
+
+CircleZone.prototype = {
+	contains: function(_rectZone) {		
+		dx = this.max(this.centerX - _rectZone.rectLeft, _rectZone.rectRight - this.centerX); 
+		dy = this.max(this.centerY - _rectZone.rectTop, _rectZone.rectBottom - this.centerY);		
+		return this.radius*this.radius >= dx*dx + dy*dy
+	},
+	
+	max: function(_n1,_n2) {
+		if (_n1 >= _n2) return _n1;
+		return _n2;
 	}
 };
 
@@ -84,9 +89,9 @@ function Headsman() {
 		new Point(  0, 61 ), // Point 4
 		new Point( 54, 59 )  // Point 5
 	],
-	this.minPoint = undefined,
-	this.maxPoint = undefined,
-	this.winnerZone = new WinnerZone(0,0,0,0);
+	
+	this.circleZone = new CircleZone(0,0,0);
+	this.rectZone = new RectZone(0,0,0,0);	
 };
 
 Headsman.prototype = {
@@ -95,13 +100,13 @@ Headsman.prototype = {
 			this.bigJohnnyCorners[i].update(_x,_y);
 		}
 		
-		/* Set points */
-		var min_x = this.bigJohnnyCorners[2].x;
-		var min_y = this.bigJohnnyCorners[0].y;
-		var max_x = this.bigJohnnyCorners[1].x;
-		var max_y = this.bigJohnnyCorners[4].y;
-		this.minPoint = new Point(min_x,min_y);
-		this.maxPoint = new Point(max_x,max_y);
+		/* Area of Big Jonny */
+		this.rectZone = new RectZone(
+			_x,
+			_x + bigJonny.width,
+			_y,
+			_y + bigJonny.height
+		);
 		
 		if (DEBUG) {
 			console.log(this.bigJohnnyCorners);
@@ -127,25 +132,23 @@ Headsman.prototype = {
 		}
 	},
 	
-	setWinnerZone: function(_x,_y,_width,_height) {
-		this.winnerZone = new WinnerZone(
+	setCircleZone: function(_x,_y,_radius) {
+		this.circleZone = new CircleZone(
 			parseInt(_x),
 			parseInt(_y),
-			parseInt(_width),
-			parseInt(_height)			
-		);
+			parseInt(_radius)
+		);		
 	},
 	
 	johnnyWon: function() {
 		var won = false;
 		
-		if (this.winnerZone.johnnyWon(this.minPoint,this.maxPoint)) {
-			won = true;			
+		if (this.circleZone.contains(this.rectZone)) {
+			won = true;
 		}
 		
 		if (DEBUG && won) {	
 			console.log('Big Jonny won!');
-			console.log('Min(' + this.minPoint.x + ',' + this.minPoint.y +') Max(' + this.maxPoint.x + ',' + this.maxPoint.y + ')');
 		}
 		
 		return won;

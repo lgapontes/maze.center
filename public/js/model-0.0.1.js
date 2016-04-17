@@ -470,12 +470,11 @@ Tower.prototype = {
 			this.position.y - chest.height/2
 		);
 		
-		/* Add winner zone in headsman */
-		headsman.setWinnerZone(
-			this.position.x - chest.width/2,
-			this.position.y - chest.height/2,
-			chest.width,
-			chest.height
+		/* Set circle zone in headsman */
+		headsman.setCircleZone(
+			this.position.x,
+			this.position.y,
+			this.radius - thickness*2
 		);
 	},
 	
