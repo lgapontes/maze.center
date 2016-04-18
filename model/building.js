@@ -4,8 +4,19 @@ var mongoose 	= require("mongoose"),
 	
 var Schema = mongoose.Schema;
 
+/* Map */
+var MapSchema = new Schema({
+	level: Number,
+	externalCode: { type: String, index: true }
+}, { collection : 'mapCollection' });
+
 /* Place */
 var PlaceSchema = new Schema({
+	map: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Map',
+		index: true
+	},
 	number: Number,
 	position: {
 		x: Number,
@@ -14,7 +25,8 @@ var PlaceSchema = new Schema({
 	neighbors: [{
 		next: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Place'
+			ref: 'Place',
+			index: true
 		},
 		axis: Number,		
 		door: {			
@@ -52,11 +64,16 @@ var TowerSchema = PlaceSchema.extend({
 });
 
 /* Model */
+var Map = mongoose.model('Map', MapSchema, 'mapCollection');
 var Room = mongoose.model('Room', RoomSchema, 'placeCollection');
 var Tower = mongoose.model('Tower', TowerSchema, 'placeCollection');
 
 /* Clear all data */
 //mongoose.connection.collections['placeCollection'].drop();
+
+exports.getMap = function() {
+    return Map;
+};
 
 exports.getRoom = function() {
     return Room;

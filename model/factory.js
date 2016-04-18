@@ -1,22 +1,37 @@
 var Room 			= require('./building').getRoom(),
 	Tower 			= require('./building').getTower(),
+	Map 			= require('../model/building').getMap(),
 	alignments		= require('./enum').getAlignments(),
 	axis			= require('./enum').getAxis(),
 	sizes			= require('./enum').getSizes(),
 	thickness		= require('./enum').getThickness(),
 	doorThickness	= require('./enum').getDoorThickness(),
-	logger   		= require('../infrastructure/logger').get();
+	logger   		= require('../infrastructure/logger').get(),
+	moment  		= require('moment-timezone'),
+	properties 		= require('../infrastructure/properties').get(),
+	randomstring 	= require("randomstring");
 
-function BuildingFactory() {
+var timezone = properties.get('logger.timezone');
+
+function generateExternalCode() {
+	return 'M' + moment.tz(timezone).unix() + randomstring.generate(7);
+}
+	
+function BuildingFactory(_level) {
+	this.map = new Map({
+		level: _level,
+		externalCode: generateExternalCode()
+	});
 	this.places = [];
 	this.neighbors = [];
 	this.place = undefined;
 	this.done = false;
 };
 
-BuildingFactory.prototype = {
+BuildingFactory.prototype = {	
 	newRoom: function(_number) {
 		this.place = new Room({
+			map: this.map._id,
 			number: _number,
 			position: {
 				x: 0,
@@ -33,6 +48,7 @@ BuildingFactory.prototype = {
 	},
 	newTower: function(_number) {
 		this.place = new Tower({
+			map: this.map._id,
 			number: _number,
 			position: {
 				x: 0,
@@ -93,7 +109,7 @@ BuildingFactory.prototype = {
 			}
 		}
 	},	
-	creationCompleted: function() {
+	creationCompleted: function() {		
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];			
 			var place = this.getPlace(entry.neighbor.parent);
@@ -107,8 +123,12 @@ BuildingFactory.prototype = {
 		this.done = true;
 		return this.places;
 	},
+	getMap: function() {
+		return this.map;
+	},
 	save: function() {
 		if (this.done) {
+			this.map.save();
 			this.places.forEach(function(entry){
 				entry.save();
 			});

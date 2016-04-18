@@ -7,11 +7,50 @@ var logger  		= require('../infrastructure/logger').get(),
 	thickness		= require('../model/enum').getThickness(),
 	sizes			= require('../model/enum').getSizes(),
 	types			= require('../model/enum').getTypes(),
-	BuildingFactory	= require('../model/factory').getBuildingFactory();
+	BuildingFactory	= require('../model/factory').getBuildingFactory(),
+	ObjectId 		= require('mongoose').Types.ObjectId;
+
+exports.getSavedMap = function(request, response) {	
+	var externalCode = request.params.externalCode;
 	
-exports.get = function(request, response) {
-	var level = request.params.level;	
-	var buildingFactory = new BuildingFactory();
+	mongoose.connection.collections['mapCollection'].find({externalCode: externalCode}).toArray(function(error,maps){
+		if (error) {
+			logger.error(error);
+		} else {
+			if (maps.length !== 1) {
+				logger.error('Found more than one map with externalCode: ' + externalCode);
+			} else {
+				var map = maps[0];
+				var query = { map: new ObjectId(map._id) };
+			
+				mongoose.connection.collections['placeCollection'].find(query).toArray(function(error, places) {
+					if (error) {
+						logger.error(error);
+					} else {
+						var building = {
+							places: places,
+							map: map,
+							
+							types: types,		
+							axis: axis,
+							alignments: alignments,
+							thickness: thickness
+						};
+						
+						/* Return */
+						response.send(building);
+					}
+				}); 
+				
+			}
+		}
+	});	
+	
+};
+
+exports.getRamdomMap = function(request, response) {
+	var level = request.params.level;
+	var buildingFactory = new BuildingFactory(level);	
 	
 	/* Create places */
 	buildingFactory.newRoom(0)
@@ -116,12 +155,18 @@ exports.get = function(request, response) {
 	buildingFactory.newTower(21)
 		.setFinish()
 		.create();
-		
-	var places = buildingFactory.creationCompleted();
+	
+	var places = buildingFactory.creationCompleted();	
+	var map = buildingFactory.getMap();
+	
+	/* Save it */
+	buildingFactory.save();
 	
 	var building = {
-		types: types,
 		places: places,
+		map: map,
+		
+		types: types,		
 		axis: axis,
 		alignments: alignments,
 		thickness: thickness

@@ -23,7 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 var server = http.createServer(app);
 
 /* URLs */
-app.get('/restfull/building/:level', building.get);
+app.get('/restfull/building/new/:level', building.getRamdomMap);
+app.get('/restfull/building/get/:externalCode', building.getSavedMap);
 
 server.listen(PORT, HOST, function(error) {
 	if (error) {

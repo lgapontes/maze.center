@@ -22,6 +22,9 @@
 			painted: false
 		};
 		
+		/* Map */
+		var map = undefined;
+		
 		/* Get canvas and context */
 		var canvas = document.getElementById("canvas");
 		var ctx = canvas.getContext("2d");			
@@ -85,10 +88,15 @@
 				
 				/* Places */
 				var level = 1;
-				getBuilding(level,function(error,building){
+				var temp = "M1460940030RKbpj4g";
+				getBuilding(temp,function(error,building){
 					if (error) {
 						console.log(error);
 					} else {
+					
+						/* Map */
+						map = building.map;
+						console.log( map );
 					
 						/* Enuns */
 						axis = building.axis;
