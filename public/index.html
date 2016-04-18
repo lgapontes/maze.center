@@ -16,7 +16,7 @@
 	<img id="chest" src="img/chest.png" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
-	<script type="text/javascript">
+	<script type="text/javascript">		
 		
 		var DEBUG = {
 			active: true,
@@ -57,6 +57,9 @@
 		var alignments = undefined;
 		var thickness = undefined;
 		var types = undefined;
+		
+		/* Settings */
+		var settings = undefined;
 		
 		/* Objects to manage */
 		var buildingFactory = new BuildingFactory();
@@ -102,6 +105,9 @@
 						alignments = building.alignments;
 						thickness = building.thickness;
 						types = building.types;
+					
+						/* Settings */
+						settings = building.settings;
 					
 						/* Places */
 						building.places.forEach(function(entry){

@@ -1,18 +1,17 @@
 function getBuilding(callback) {
+		
+	var param = parseInt(getUrlParameter('level')) || 1;
+	var method = "PUT";
 	
-	var page = 'new';
-	var paramenter = 1;
-	if (getUrlParameter('page') === 'get') {
-		page = 'get';
-		paramenter = getUrlParameter('code');
-	} else {
-		page = 'new';
-		paramenter = getUrlParameter('level');
+	var code = getUrlParameter('code');
+	if (code) {
+		method = "GET";
+		param = code;
 	}
 	
 	jQuery.ajax({
-		url: "/restfull/building/" + page + "/" + paramenter,
-		type: "GET",
+		url: "/rest/map/" + param,
+		type: method,
 
 		contentType: 'application/json; charset=utf-8',
 		success: function(resultData) {

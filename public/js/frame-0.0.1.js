@@ -67,27 +67,19 @@ var modal = (function(){
 	return method;
 }());
 
+function getUrl() {
+	if (settings.port === '80') {
+		return 'http://' + settings.host + '/';
+	} else {
+		return 'http://' + settings.host + ':' + settings.port + '/';
+	}
+};
+
 var again = function() {
-	window.location.href = "http://192.168.1.4/?page=get&code=" + map.externalCode
+	window.location.href = getUrl() + '?code=' + map.externalCode
 };
 
 var next = function() {
 	var level = parseInt(map.level) + 1;
-	window.location.href = "http://192.168.1.4/?page=new&level=" + level;
+	window.location.href = getUrl() + '?level=' + level;
 };
-
-// Wait until the DOM has loaded before querying the document
-/*
-$(document).ready(function(){
-
-	$.get('ajax.html', function(data){
-		modal.open({content: data});
-	});
-
-	$('a#howdy').click(function(e){
-		modal.open({content: "Hows it going?"});
-		e.preventDefault();
-	});
-	
-});
-*/

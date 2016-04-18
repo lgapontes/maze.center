@@ -27,8 +27,9 @@ app.get('/', function(req, res) {
 var server = http.createServer(app);
 
 /* URLs */
-app.get('/restfull/building/new/:level', building.getRamdomMap);
-app.get('/restfull/building/get/:externalCode', building.getSavedMap);
+app.put('/rest/map/:level', building.getRamdomMap);
+app.get('/rest/map/:externalCode', building.getSavedMap);
+
 
 server.listen(PORT, HOST, function(error) {
 	if (error) {

@@ -8,10 +8,17 @@ var logger  		= require('../infrastructure/logger').get(),
 	sizes			= require('../model/enum').getSizes(),
 	types			= require('../model/enum').getTypes(),
 	BuildingFactory	= require('../model/factory').getBuildingFactory(),
+	properties 		= require('../infrastructure/properties').get(),
 	ObjectId 		= require('mongoose').Types.ObjectId;
 
-exports.getSavedMap = function(request, response) {	
+var settings = {
+	port: properties.get('server.port'),
+	host: properties.get('server.host')
+};
+	
+exports.getSavedMap = function(request, response, next) {
 	var externalCode = request.params.externalCode;
+	logger.info('getSavedMap method called with external code ' + externalCode);
 	
 	mongoose.connection.collections['mapCollection'].find({externalCode: externalCode}).toArray(function(error,maps){
 		if (error) {
@@ -34,7 +41,9 @@ exports.getSavedMap = function(request, response) {
 							types: types,		
 							axis: axis,
 							alignments: alignments,
-							thickness: thickness
+							thickness: thickness,
+							
+							settings: settings
 						};
 						
 						/* Return */
@@ -48,8 +57,10 @@ exports.getSavedMap = function(request, response) {
 	
 };
 
-exports.getRamdomMap = function(request, response) {
-	var level = request.params.level;
+exports.getRamdomMap = function(request, response, next) {	
+	var level = request.params.level;	
+	logger.info('getRamdomMap method called with level ' + level);
+	
 	var buildingFactory = new BuildingFactory(level);	
 	
 	/* Create places */
@@ -162,14 +173,16 @@ exports.getRamdomMap = function(request, response) {
 	/* Save it */
 	buildingFactory.save();
 	
-	var building = {
+	var building = {		
 		places: places,
 		map: map,
 		
 		types: types,		
 		axis: axis,
 		alignments: alignments,
-		thickness: thickness
+		thickness: thickness,
+		
+		settings: settings
 	};
 	
 	/* Return */
