@@ -6,9 +6,10 @@
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">		
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+		<script type="text/javascript" src="js/frame-0.0.1.js"></script>
 		<script type="text/javascript" src="js/restfull-building-0.0.1.js"></script>
 		<script type="text/javascript" src="js/headsman-0.0.1.js"></script>		
-		<script type="text/javascript" src="js/model-0.0.1.js"></script>
+		<script type="text/javascript" src="js/model-0.0.1.js"></script>		
 	</head>
 <body>
 	<img id="bigJonny" src="img/bigJonny.png" style="display: none;">
@@ -86,10 +87,8 @@
 			
 			function data(callback) {		
 				
-				/* Places */
-				var level = 1;
-				var temp = "M1460940030RKbpj4g";
-				getBuilding(temp,function(error,building){
+				/* Places */				
+				getBuilding(function(error,building){
 					if (error) {
 						console.log(error);
 					} else {
@@ -131,23 +130,23 @@
 					if (!heldLock) {
 						heldLock = true;
 						
-						if (WON) {
-							ctx.beginPath();					
-							ctx.fillStyle = wonColor;
-							ctx.globalAlpha = 0.3;
-							ctx.rect(0, 0, WIDTH, HEIGHT);
-							ctx.closePath();
-							ctx.fill();
-							ctx.globalAlpha = 1;
+						if (WON) {							
+							document.getElementById("overlay").style.background = wonColor;
+							modal.open({
+								content: 
+									"Congratulations! Big Johnny won! xD<br /><br />" +
+									"<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>" +
+									"<a href='#' class='myButton' style='float: right' onclick='javascript:next()'>Next level</a>"
+							});
 						}
 						if (COL) {
-							ctx.beginPath();					
-							ctx.fillStyle = collisionColor;
-							ctx.globalAlpha = 0.3;
-							ctx.rect(0, 0, WIDTH, HEIGHT);
-							ctx.closePath();
-							ctx.fill();
-							ctx.globalAlpha = 1;
+							document.getElementById("overlay").style.background = collisionColor;
+							modal.open({
+								content: 
+									"Big Jonny died!<br />" +
+									"Try again and do not hit the walls...<br /><br />" +
+									"<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>"
+							});
 						}
 					}
 					

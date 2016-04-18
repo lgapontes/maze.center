@@ -19,6 +19,10 @@ var app = express();
 /* Setup path of static files */
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', function(req, res) {
+    res.render('index.html');
+});
+
 /* Create http server */
 var server = http.createServer(app);
 

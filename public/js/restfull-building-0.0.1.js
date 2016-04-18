@@ -1,6 +1,17 @@
-function getNewBuilding(level,callback) {
+function getBuilding(callback) {
+	
+	var page = 'new';
+	var paramenter = 1;
+	if (getUrlParameter('page') === 'get') {
+		page = 'get';
+		paramenter = getUrlParameter('code');
+	} else {
+		page = 'new';
+		paramenter = getUrlParameter('level');
+	}
+	
 	jQuery.ajax({
-		url: "/restfull/building/new/" + level,
+		url: "/restfull/building/" + page + "/" + paramenter,
 		type: "GET",
 
 		contentType: 'application/json; charset=utf-8',
@@ -15,19 +26,17 @@ function getNewBuilding(level,callback) {
 	});
 };
 
-function getBuilding(externalCode,callback) {
-	jQuery.ajax({
-		url: "/restfull/building/get/" + externalCode,
-		type: "GET",
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
 
-		contentType: 'application/json; charset=utf-8',
-		success: function(resultData) {
-			callback(null,resultData);			
-		},
-		error : function(jqXHR, textStatus, errorThrown) {
-			callback(errorThrown);
-		},
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
 
-		timeout: 120000,
-	});
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
 };
