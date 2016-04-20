@@ -15,6 +15,20 @@ var sizes = {
 		height: 150		
 	},
 	
+	bigSquare: {
+		width: 300,
+		height: 300		
+	},
+	
+	bigVerticalCorridor: {
+		width: doorThickness + thickness*2,
+		height: 300		
+	},
+	bigHorizontalCorridor: {
+		width: 300,
+		height: doorThickness + thickness*2,
+	},
+	
 	smallVerticalCorridor: {
 		width: doorThickness + thickness*2,
 		height: 150		
@@ -27,6 +41,11 @@ var sizes = {
 	tinyVerticalCorridor: {
 		width: doorThickness + thickness*2,
 		height: (doorThickness * 2) + thickness*3
+	},
+	
+	tinyHorizontalCorridor: {
+		width: (doorThickness * 2) + thickness*3,
+		height: doorThickness + thickness*2		
 	}
 };
 

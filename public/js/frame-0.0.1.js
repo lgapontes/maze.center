@@ -79,6 +79,11 @@ var again = function() {
 	window.location.href = getUrl() + '?code=' + map.externalCode
 };
 
+var remake = function() {
+	var level = parseInt(map.level);
+	window.location.href = getUrl() + '?level=' + level;
+};
+
 var next = function() {
 	var level = parseInt(map.level) + 1;
 	window.location.href = getUrl() + '?level=' + level;

@@ -1,7 +1,7 @@
 /* Variables */
 var wallColor = '#322b21';
 var floorColor = '#ffffff';
-var clearColor = '#ffffff';
+var clearColor = wallColor;
 var finishColor = '#eeeeee';
 var numberColor = '#050505';
 var wonColor = '#9de0a9';
@@ -30,6 +30,12 @@ var bigJonny = {
 var chest = {
 	width: 98,
 	height: 110
+};
+
+/* Loader */
+var loader = {
+	width: 100,
+	height: 100
 };
 
 function Point(_x,_y) {

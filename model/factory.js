@@ -83,6 +83,27 @@ BuildingFactory.prototype = {
 		if (typeof _alignment !== "undefined") {
              temp_alignment = _alignment;
         }
+
+		/* Alignment restriction based on the axis */
+		var config = [
+			{ axis: axis.north, obj: [ alignments.center, alignments.left, alignments.right ] },
+			{ axis: axis.east,  obj: [ alignments.center, alignments.top, alignments.bottom ] },
+			{ axis: axis.south, obj: [ alignments.center, alignments.left, alignments.right ] },
+			{ axis: axis.west,  obj: [ alignments.center, alignments.top, alignments.bottom ] }
+		];
+		config.forEach(function(entry1){
+			if (entry1.axis === _axis) {
+				var found = false;
+				entry1.obj.forEach(function(entry2){
+					if (entry2 === temp_alignment) {
+						found = true;
+					}
+				});
+				if (!found) {
+					temp_alignment = alignments.center;
+				}
+			}
+		});
 	
 		this.neighbors.push({
 			neighbor: {

@@ -14,7 +14,18 @@ body {
 
 canvas { 
 	display:block;
-	border: 3px solid black;	
+	border: 3px solid black;
+}
+
+/* Styles to prevent selection */
+image, canvas {
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
 }
 
 #overlay {

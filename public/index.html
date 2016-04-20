@@ -3,6 +3,7 @@
 	<head>
 		<title>maze.center</title>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">		
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
@@ -14,21 +15,56 @@
 <body>
 	<img id="bigJonny" src="img/bigJonny.png" style="display: none;">
 	<img id="chest" src="img/chest.png" style="display: none;">
+	<img id="loader" src="img/loader.gif" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
 	<script type="text/javascript">		
 		
 		var DEBUG = {
-			active: true,
+			active: false,
 			painted: false
 		};
+		
+		/* Frames per second */
+		var FPS = 1000 / 25;
 		
 		/* Map */
 		var map = undefined;
 		
 		/* Get canvas and context */
 		var canvas = document.getElementById("canvas");
-		var ctx = canvas.getContext("2d");			
+		var ctx = canvas.getContext("2d");
+
+		/* Prevent session */
+		{
+			/* Do nothing in the event handler except canceling the event */
+			canvas.ondragstart = function(e) {
+				if (e && e.preventDefault) { e.preventDefault(); }
+				if (e && e.stopPropagation) { e.stopPropagation(); }
+				return false;
+			}
+
+			/* Do nothing in the event handler except canceling the event */
+			canvas.onselectstart = function(e) {
+				if (e && e.preventDefault) { e.preventDefault(); }
+				if (e && e.stopPropagation) { e.stopPropagation(); }
+				return false;
+			}
+
+			/* Canceling mobile window movement 
+			document.body.ontouchstart = function(e) {
+				if (e && e.preventDefault) { e.preventDefault(); }
+				if (e && e.stopPropagation) { e.stopPropagation(); }
+				return false;
+			}*/
+
+			/* Canceling mobile window movement */
+			document.body.ontouchmove = function(e) {
+				if (e && e.preventDefault) { e.preventDefault(); }
+				if (e && e.stopPropagation) { e.stopPropagation(); }
+				return false;
+			}
+		}
 		
 		/* Set size of canvas */
 		canvas.width = window.innerWidth - 6;
@@ -37,10 +73,11 @@
 		var HEIGHT = canvas.height;
 		
 		/* Images */
-		var bigJonny, chest;
+		var imgBigJonny, imgChest, imgLoader;
 		window.onload = function() {			
-			bigJonny = document.getElementById("bigJonny");
-			chest = document.getElementById("chest");
+			imgBigJonny = document.getElementById("bigJonny");
+			imgChest = document.getElementById("chest");
+			imgLoader = document.getElementById("loader");
 		}
 		
 		/* Big Jonny position */
@@ -140,7 +177,7 @@
 							document.getElementById("overlay").style.background = wonColor;
 							modal.open({
 								content: 
-									"Congratulations! Big Johnny won! xD<br /><br />" +
+									"Congratulations! Big Johnny won!<br /><br />" +
 									"<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>" +
 									"<a href='#' class='myButton' style='float: right' onclick='javascript:next()'>Next level</a>"
 							});
@@ -150,8 +187,9 @@
 							modal.open({
 								content: 
 									"Big Jonny died!<br />" +
-									"Try again and do not hit the walls...<br /><br />" +
-									"<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>"
+									"Try again and do not hit walls...<br /><br />" +
+									"<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>" +
+									"<a href='#' class='myButton' style='float: right' onclick='javascript:remake()'>Recreate?</a>"
 							});
 						}
 					}
@@ -167,18 +205,27 @@
 					
 					/* Draw */
 					if (dataCreated) {
+					
+						/* Draw walls */
 						buildingFactory.draw();
+						
+						/* There was a collision? */
+						COL = headsman.checkCollision();
+						
+						/* Big Jonny */
+						ctx.drawImage(
+							imgBigJonny,
+							bigJonnyX,
+							bigJonnyY
+						);
+					} else {
+						/* Loader */
+						ctx.drawImage(
+							imgLoader,
+							(WIDTH/2) - (loader.width/2),
+							(HEIGHT/2) - (loader.height/2)
+						);
 					}
-					
-					/* There was a collision? */
-					COL = headsman.checkCollision();
-					
-					/* Big Jonny */
-					ctx.drawImage(
-						bigJonny,
-						bigJonnyX,
-						bigJonnyY
-					);
 				
 				}
 				
@@ -281,7 +328,7 @@
 					headsman.updateCorners(bigJonnyX,bigJonnyY);
 				});
 				
-				return setInterval(draw, 10);
+				return setInterval(draw, FPS);
 			}
 			
 			/* Draw */
