@@ -6,6 +6,8 @@ var finishColor = '#eeeeee';
 var numberColor = '#050505';
 var wonColor = '#9de0a9';
 var collisionColor = '#e0ae9d';
+var fontVersionColor = '#999999';
+var boxVersionColor = '#000000';
 
 /* General functions */
 function hexToRgb(hex) {
@@ -22,20 +24,20 @@ var checkCollisionColor = hexToRgb( wallColor );
 
 /* Big Jonny */
 var bigJonny = {
-	width: 60,
-	height: 60
+	width: 130,
+	height: 130
 };
 
 /* Chest */
 var chest = {
-	width: 98,
-	height: 110
+	width: 270,
+	height: 260
 };
 
-/* Loader */
-var loader = {
-	width: 100,
-	height: 100
+/* Loading */
+var loading = {
+	width: 200,
+	height: 200
 };
 
 function Point(_x,_y) {

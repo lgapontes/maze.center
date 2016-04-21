@@ -1,6 +1,7 @@
 /* Variables */
 var radiusArcNumber = 20;
 var fontArcNumber = "bold 22px Courier New";
+var fontVersion = "bold 20px Courier New";
 
 /* Libraries */
 function extend(base, sub) {
@@ -77,14 +78,6 @@ Door.prototype = {
 			x = this.place.position.x + this.place.size.width - this.width - thickness;
 		} else if (this.alignment === alignments.left) {
 			x = this.place.position.x + thickness;
-		} /*else { // Center
-			x = this.place.position.x + this.place.size.width/2 - this.width/2;
-		}*/
-		
-		if (!DEBUG.painted) {
-			console.log(this.place);
-			console.log(this.alignment);
-			console.log(x);
 		}
 		
 		return x;
@@ -101,24 +94,12 @@ Door.prototype = {
 			y = this.place.position.y + thickness;
 		} else if (this.alignment === alignments.bottom) {
 			y = this.place.position.y + this.place.size.height - this.width - thickness;
-		} /*else { // Center
-			y = this.place.position.y + this.place.size.height/2 - this.width/2;
-		}*/
-		
-		if (!DEBUG.painted) {
-			console.log(this.place);
-			console.log(this.alignment);
-			console.log(y);
-		}
+		}		
 		
 		return y;
 	},
 	
-	drawNorth: function() {		
-		if (!DEBUG.painted) {
-			console.log('north');
-		}
-	
+	drawNorth: function() {	
 		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.calcAlignmentX(),
@@ -136,10 +117,6 @@ Door.prototype = {
 		}
 	},
 	drawEast: function() {
-		if (!DEBUG.painted) {
-			console.log('east');
-		}
-		
 		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.place.position.x + this.place.size.width - this.height/2 - 1,
@@ -157,10 +134,6 @@ Door.prototype = {
 		}
 	},
 	drawSouth: function() {
-		if (!DEBUG.painted) {
-			console.log('south');
-		}
-		
 		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.calcAlignmentX(),
@@ -177,11 +150,7 @@ Door.prototype = {
 			);						
 		}
 	},
-	drawWest: function() {
-		if (!DEBUG.painted) {
-			console.log('west');
-		}
-		
+	drawWest: function() {		
 		if (this.place.type === types.room) {
 			this.zone = new Zone(
 				this.place.position.x - this.height/2 + 1,

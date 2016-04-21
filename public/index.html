@@ -7,15 +7,15 @@
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">		
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
-		<script type="text/javascript" src="js/frame-0.0.1.js"></script>
-		<script type="text/javascript" src="js/restfull-building-0.0.1.js"></script>
-		<script type="text/javascript" src="js/headsman-0.0.1.js"></script>		
-		<script type="text/javascript" src="js/model-0.0.1.js"></script>		
+		<script type="text/javascript" src="js/frame.js"></script>
+		<script type="text/javascript" src="js/restfull-building.js"></script>
+		<script type="text/javascript" src="js/headsman.js"></script>		
+		<script type="text/javascript" src="js/model.js"></script>		
 	</head>
 <body>
-	<img id="bigJonny" src="img/bigJonny.png" style="display: none;">
+	<img id="bigJonny" src="img/bigjonny.png" style="display: none;">
 	<img id="chest" src="img/chest.png" style="display: none;">
-	<img id="loader" src="img/loader.gif" style="display: none;">
+	<img id="loading" src="img/loading.gif" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
 	<script type="text/javascript">		
@@ -73,11 +73,11 @@
 		var HEIGHT = canvas.height;
 		
 		/* Images */
-		var imgBigJonny, imgChest, imgLoader;
+		var imgBigJonny, imgChest, imgLoading;
 		window.onload = function() {			
 			imgBigJonny = document.getElementById("bigJonny");
 			imgChest = document.getElementById("chest");
-			imgLoader = document.getElementById("loader");
+			imgLoading = document.getElementById("loading");
 		}
 		
 		/* Big Jonny position */
@@ -135,7 +135,6 @@
 					
 						/* Map */
 						map = building.map;
-						console.log( map );
 					
 						/* Enuns */
 						axis = building.axis;
@@ -217,18 +216,45 @@
 							imgBigJonny,
 							bigJonnyX,
 							bigJonnyY
-						);
+						);												
+						
+						
+						/* Draw level */
+						drawLevel();
+						
 					} else {
-						/* Loader */
+						/* Loading */
 						ctx.drawImage(
-							imgLoader,
-							(WIDTH/2) - (loader.width/2),
-							(HEIGHT/2) - (loader.height/2)
+							imgLoading,
+							(WIDTH/2) - (loading.width/2),
+							(HEIGHT/2) - (loading.height/2)
 						);
 					}
 				
 				}
 				
+			};
+			
+			function drawLevel() {
+				/* Level */
+				ctx.beginPath();		
+				ctx.fillStyle = boxVersionColor;
+				ctx.rect(0, HEIGHT-25, 120, 25);
+				ctx.closePath();
+				ctx.fill();
+					
+				var level = parseInt(getUrlParameter('level')) || 1;
+					
+				ctx.beginPath();
+				ctx.font = fontVersion;
+				ctx.fillStyle = fontVersionColor;
+				ctx.textAlign = "center";
+				ctx.closePath();
+				ctx.fillText(
+					'Level ' + level,
+					60,
+					HEIGHT-5
+				);
 			};
 			
 			function myMove(e){
@@ -326,6 +352,9 @@
 					dataCreated = true;
 					
 					headsman.updateCorners(bigJonnyX,bigJonnyY);
+					
+					/* Print version */
+					console.log('Version ' + settings.version);
 				});
 				
 				return setInterval(draw, FPS);

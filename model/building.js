@@ -1,6 +1,7 @@
-var mongoose 	= require("mongoose"),
-	extend 		= require('mongoose-schema-extend'),
-	types		= require('./enum').getTypes();
+var mongoose 		= require("mongoose"),
+	extend 			= require('mongoose-schema-extend'),
+	types			= require('./enum').getTypes(),
+	doorThickness	= require('./enum').getDoorThickness();
 	
 var Schema = mongoose.Schema;
 
@@ -58,7 +59,7 @@ var TowerSchema = PlaceSchema.extend({
 	},
 	radius: {
 		type: Number,
-		default: 92
+		default: doorThickness
 	},
 	finish: Boolean
 });
