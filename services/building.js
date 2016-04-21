@@ -14,7 +14,8 @@ var logger  		= require('../infrastructure/logger').get(),
 
 var settings = {
 	port: properties.get('server.port'),
-	host: properties.get('server.host')
+	host: properties.get('server.host'),
+	domain: properties.get('server.domain')
 };
 	
 exports.getSavedMap = function(request, response, next) {
