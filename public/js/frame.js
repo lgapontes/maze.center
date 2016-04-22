@@ -67,7 +67,7 @@ var modal = (function(){
 	return method;
 }());
 
-function getUrl() {
+var getUrl = function() {
 	if (settings.port === '80') {
 		return 'http://' + settings.domain + '/';
 	} else {

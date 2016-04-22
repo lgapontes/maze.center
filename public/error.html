@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>maze.center</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">	
+		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+		<script type="text/javascript" src="js/header.js"></script>
+		<script type="text/javascript" src="js/restfull-building.js"></script>
+	</head>
+<body>
+	<div id="header"></div>
+	
+	<div class="error">
+		<img src="img/bigjonny_sad.png" />
+		<span id="msg">
+		</span>
+	</div>
+	
+	<script type="text/javascript">
+		document.getElementById("msg").innerHTML="Ops! An error occurred:<br />" + getUrlParameter('msg');
+	</script>
+</body>
+</html>

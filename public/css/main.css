@@ -9,12 +9,44 @@ html, body {
 }
 
 body { 
-	background-color: #F2EFC2;
+	background-color: #fff;
 }
 
 canvas { 
 	display:block;
 	border: 3px solid black;
+}
+
+img.logo {
+	margin: 10px;
+}
+
+div.header {
+	width: 100%;
+	background-color: #ddd;
+}
+
+div.error img{	
+	float: left;
+	margin-right: 30px;
+}
+
+div.error span{		
+	float: left;	
+}
+
+div.error {		
+	width: 80%;	
+	height: 130px;
+	
+	margin: auto;    	
+	padding: 20px;
+	margin-top: 40px;
+	background-color: #e0ae9d;
+	border-radius:14px;
+	
+	font-size: 30px;
+	font-family: Impact, Charcoal, sans-serif;	
 }
 
 /* Styles to prevent selection */
@@ -54,18 +86,6 @@ image, canvas {
 	background:#fff;
 	padding:20px;
 }
-
-/*
-#close {
-	position:absolute;
-	background:url(close.png) 0 0 no-repeat;
-	width:24px;
-	height:27px;
-	display:block;
-	text-indent:-9999px;
-	top:-7px;
-	right:-7px;
-}*/
 
 .myButton {
 	-moz-box-shadow:inset 0px 1px 3px 0px #91b8b3;

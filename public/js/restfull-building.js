@@ -14,8 +14,19 @@ function getBuilding(callback) {
 		type: method,
 
 		contentType: 'application/json; charset=utf-8',
-		success: function(resultData) {
-			callback(null,resultData);			
+		success: function(resultData) {			
+			if (resultData.error === undefined) {
+				callback(null,resultData);			
+			} else {				
+				console.log(resultData.error);
+				window.location.href = 
+					'http://' +
+					resultData.settings.domain + 
+					':' + 
+					resultData.settings.port + 
+					'/error.html?msg=' +
+					resultData.error;
+			}			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			callback(errorThrown);
