@@ -194,16 +194,16 @@
 					}
 					
 				} else {
-				
-					/* Clear */
-					ctx.beginPath();
-					ctx.fillStyle = clearColor;
-					ctx.rect(0, 0, WIDTH, HEIGHT);
-					ctx.closePath();
-					ctx.fill();
 					
 					/* Draw */
 					if (dataCreated) {
+					
+						/* Clear */
+						ctx.beginPath();
+						ctx.fillStyle = clearColor;
+						ctx.rect(0, 0, WIDTH, HEIGHT);
+						ctx.closePath();
+						ctx.fill();
 					
 						/* Draw walls */
 						buildingFactory.draw();
@@ -223,6 +223,13 @@
 						drawLevel();
 						
 					} else {
+						/* Clear */
+						ctx.beginPath();
+						ctx.fillStyle = floorColor;
+						ctx.rect(0, 0, WIDTH, HEIGHT);
+						ctx.closePath();
+						ctx.fill();
+					
 						/* Loading */
 						ctx.drawImage(
 							imgLoading,
