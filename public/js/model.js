@@ -1,7 +1,7 @@
 /* Variables */
 var radiusArcNumber = 20;
 var fontArcNumber = "bold 22px Courier New";
-var fontVersion = "bold 20px Courier New";
+var fontVersion = "bold 22px Courier New";
 
 /* Libraries */
 function extend(base, sub) {

@@ -239,12 +239,11 @@
 				/* Level */
 				ctx.beginPath();		
 				ctx.fillStyle = boxVersionColor;
-				ctx.rect(0, HEIGHT-25, 120, 25);
+				ctx.rect(0, HEIGHT-30, 160, 30);
 				ctx.closePath();
 				ctx.fill();
 					
-				var level = parseInt(getUrlParameter('level')) || 1;
-					
+				var level = map.level;					
 				ctx.beginPath();
 				ctx.font = fontVersion;
 				ctx.fillStyle = fontVersionColor;
@@ -252,8 +251,8 @@
 				ctx.closePath();
 				ctx.fillText(
 					'Level ' + level,
-					60,
-					HEIGHT-5
+					80,
+					HEIGHT-7
 				);
 			};
 			
