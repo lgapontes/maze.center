@@ -10,7 +10,8 @@
 		<script type="text/javascript" src="js/frame.js"></script>
 		<script type="text/javascript" src="js/restfull-building.js"></script>
 		<script type="text/javascript" src="js/headsman.js"></script>		
-		<script type="text/javascript" src="js/model.js"></script>		
+		<script type="text/javascript" src="js/model.js"></script>
+		<script type="text/javascript" src="js/counter-coins.js"></script>
 	</head>
 <body>
 	<img id="bigJonny" src="img/bigjonny.png" style="display: none;">
@@ -30,6 +31,7 @@
 		
 		/* Map */
 		var map = undefined;
+		var counterCoins = undefined;
 		
 		/* Get canvas and context */
 		var canvas = document.getElementById("canvas");
@@ -135,6 +137,7 @@
 					
 						/* Map */
 						map = building.map;
+						counterCoins = new CounterCoins(parseInt(map.level));						
 					
 						/* Enuns */
 						axis = building.axis;
@@ -172,7 +175,10 @@
 					if (!heldLock) {
 						heldLock = true;
 						
-						if (WON) {							
+						/* Stop count */
+						counterCoins.stop();
+						
+						if (WON) {
 							document.getElementById("overlay").style.background = wonColor;
 							
 							$.get('_won.html', function(data){
@@ -281,6 +287,9 @@
 				/* Blocks Interactions */
 				if (WON || COL) return;
 			
+				/* Count touchs */
+				counterCoins.touch();
+			
 				clickX = e.pageX;
 				clickY = e.pageY;
 				dragok = true;
@@ -310,6 +319,9 @@
 			function startTouch(e){
 				/* Blocks Interactions */
 				if (WON || COL) return;
+			
+				/* Count touchs */
+				counterCoins.touch();
 			
 				touchX=e.touches[0].pageX;
 				touchY=e.touches[0].pageY;

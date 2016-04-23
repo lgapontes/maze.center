@@ -1,6 +1,49 @@
 <img id="bigJonny" src="img/logo.png" class="modal" />
 <hr class="modal" />
-Congratulations! Big Johnny won!<br /><br />
+Congratulations! Big Johnny won!
+
+<script type="text/javascript">	
+	var result = counterCoins.get(true);	
+	
+	var images = '';
+	
+	for (var i=0; i<5; i++) {
+		if (i>=result.stars) {
+			images = images + '<img src="img/star_gray.png" />';
+		} else {			
+			images = images + '<img src="img/star_gold.png" />';
+		}
+	}
+	
+	document.getElementById("stars").innerHTML=images;
+	document.getElementById("coins").innerHTML=result.coins + ' coins';
+	var seconds = parseFloat( result.time / 1000 );
+	document.getElementById("time").innerHTML=seconds + ' seconds';
+	document.getElementById("touchs").innerHTML=result.touchs + ' touchs';
+</script>
+
+<span id="stars">
+</span>
+
+<div class="report">
+	<ul>
+		<li class="item">
+			<img src="img/coins.png" />
+			<span id="coins"></span>
+		</li><!--
+		--><li class="item">
+			<img src="img/time.png" />
+			<span id="time"></span>
+		</li><!--
+		--><li class="item">
+			<img src="img/touch.png" />
+			<span id="touchs"></span>
+		</li>
+	</ul>
+</div>
+
+<br />
+
 <span id="buttons">
 	<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>
 	<a href='#' class='myButton' style='float: right' onclick='javascript:next()'>Next level</a>

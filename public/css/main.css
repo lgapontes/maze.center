@@ -33,6 +33,50 @@ hr.modal {
 
 img.modal {}
 
+#stars {
+	margin:auto;
+	display:table;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#stars img {
+	width: 64px;
+	height: 64px;		
+    margin: 5px;
+}
+
+div.report {
+	font-weight: 150px;
+	font-size: 30px;
+	color: #4a778b;
+	font-family: Impact, Charcoal, sans-serif;	
+}
+
+div.report ul {
+	list-style-type: none;				
+	margin:0;
+	padding: 0;
+}
+
+div.report li {
+	padding: 5px;
+	background: #eef;	
+	height: 70px;				
+	border: 1px solid #ccd;
+}
+
+div.report li img {
+	float: left;
+}
+
+div.report span {
+	float: left;
+	display: block;
+	margin-left: 25px;
+	margin-top: 18px;
+}
+
 img.small_loading {
 	display: block;
     margin-left: auto;

@@ -1,7 +1,32 @@
 <img id="bigJonny" src="img/logo.png" class="modal" />
 <hr class="modal" />
-Big Jonny died!<br />
-Try again and do not hit walls...<br /><br />
+Big Jonny DIED!<br />
+Try again and do not hit walls...
+
+<script type="text/javascript">	
+	var result = counterCoins.get(false);	
+	var seconds = parseFloat( result.time / 1000 );
+	document.getElementById("time").innerHTML=seconds + ' seconds';
+	document.getElementById("touchs").innerHTML=result.touchs + ' touchs';
+</script>
+
+<br /><br />
+
+<div class="report">
+	<ul>
+		<li class="item">
+			<img src="img/time.png" />
+			<span id="time"></span>
+		</li><!--
+		--><li class="item">
+			<img src="img/touch.png" />
+			<span id="touchs"></span>
+		</li>
+	</ul>
+</div>
+
+<br />
+
 <span id="buttons">
 	<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>
 	<a href='#' class='myButton' style='float: right' onclick='javascript:remake()'>Recreate?</a>
