@@ -3,8 +3,7 @@ var modal = (function(){
 	method = {},
 	$overlay,
 	$modal,
-	$content;
-	//$close;
+	$content;	
 
 	// Center the modal in the viewport
 	method.center = function () {
@@ -45,24 +44,15 @@ var modal = (function(){
 	// Generate the HTML and add it to the document
 	$overlay = $('<div id="overlay"></div>');
 	$modal = $('<div id="modal"></div>');
-	$content = $('<div id="content"></div>');
-	//$close = $('<a id="close" href="#">close</a>');
+	$content = $('<div id="content"></div>');	
 
 	$modal.hide();
-	$overlay.hide();
-	//$modal.append($content, $close);
+	$overlay.hide();	
 	$modal.append($content);
 
 	$(document).ready(function(){
 		$('body').append($overlay, $modal);						
 	});
-
-	/*
-	$close.click(function(e){
-		e.preventDefault();
-		method.close();
-	});
-	*/
 
 	return method;
 }());
@@ -75,16 +65,19 @@ var getUrl = function() {
 	}
 };
 
-var again = function() {
+var again = function() {	
+	document.getElementById("buttons").innerHTML="<img src='img/small_loading.gif' class='small_loading' />";
 	window.location.href = getUrl() + '?code=' + map.externalCode
 };
 
 var remake = function() {
+	document.getElementById("buttons").innerHTML="<img src='img/small_loading.gif' class='small_loading' />";
 	var level = parseInt(map.level);
 	window.location.href = getUrl() + '?level=' + level;
 };
 
 var next = function() {
+	document.getElementById("buttons").innerHTML="<img src='img/small_loading.gif' class='small_loading' />";
 	var level = parseInt(map.level) + 1;
 	window.location.href = getUrl() + '?level=' + level;
 };

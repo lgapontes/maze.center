@@ -18,7 +18,7 @@
 	<img id="loading" src="img/loading.gif" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
-	<script type="text/javascript">		
+	<script type="text/javascript">	
 		
 		var DEBUG = {
 			active: false,
@@ -174,21 +174,17 @@
 						
 						if (WON) {							
 							document.getElementById("overlay").style.background = wonColor;
-							modal.open({
-								content: 
-									"Congratulations! Big Johnny won!<br /><br />" +
-									"<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>" +
-									"<a href='#' class='myButton' style='float: right' onclick='javascript:next()'>Next level</a>"
+							
+							$.get('_won.html', function(data){
+								modal.open({content: data});
 							});
+							
 						}
 						if (COL) {
 							document.getElementById("overlay").style.background = collisionColor;
-							modal.open({
-								content: 
-									"Big Jonny died!<br />" +
-									"Try again and do not hit walls...<br /><br />" +
-									"<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>" +
-									"<a href='#' class='myButton' style='float: right' onclick='javascript:remake()'>Recreate?</a>"
+							
+							$.get('_collision.html', function(data){
+								modal.open({content: data});
 							});
 						}
 					}
