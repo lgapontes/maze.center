@@ -28,7 +28,13 @@ hr.modal {
 
 #buttons {
 	display: block;
-	height: 50px;
+	height: 60px;
+}
+
+div.modal {
+	text-align: center;
+	padding: 0px;
+	margin: 0px;
 }
 
 img.modal {}
@@ -83,13 +89,19 @@ img.small_loading {
     margin-right: auto;
 }
 
-img.logo {
+div.header img.logo {
 	margin: 10px;
+	border: 0px;
+}
+
+div.header  a {
+	margin:auto;
 }
 
 div.header {
 	width: 100%;
 	background-color: #ddd;
+	text-align: center;
 }
 
 div.error img{	
@@ -173,7 +185,7 @@ image, canvas {
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
-	font-size:25px;
+	font-size:40px;
 	font-weight:bold;
 	padding:11px 23px;
 	text-decoration:none;
