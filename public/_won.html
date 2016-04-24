@@ -1,19 +1,13 @@
-<img id="bigJonny" src="img/logo.png" class="modal" />
+<div style="width: 700px; height: 70px; background-image: url(img/image.png); background-repeat: no-repeat; background-position: 0px -200px;"></div>
 <hr class="modal" />
 Congratulations! Big Johnny won!
 
 <script type="text/javascript">	
 	var result = counterCoins.get(true);	
 	
-	var images = '';
-	
-	for (var i=0; i<5; i++) {
-		if (i>=result.stars) {
-			images = images + '<img src="img/star_gray.png" />';
-		} else {			
-			images = images + '<img src="img/star_gold.png" />';
-		}
-	}
+	/* Draw stars */
+	var positionImage = -420 * result.stars;	
+	var images = '<div style="width: 420px; height: 130px; background-image: url(img/image.png); background-repeat: no-repeat; background-position: ' + positionImage + 'px -270px;"></div>';
 	
 	document.getElementById("stars").innerHTML=images;
 	document.getElementById("coins").innerHTML=result.coins + ' coins';
@@ -41,8 +35,6 @@ Congratulations! Big Johnny won!
 		</li>
 	</ul>
 </div>
-
-<br />
 
 <span id="buttons">
 	<a href='#' class='myButton' onclick='javascript:again()'>Again?</a>

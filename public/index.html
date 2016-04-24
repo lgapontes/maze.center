@@ -8,15 +8,17 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css">		
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
 		<script type="text/javascript" src="js/frame.js"></script>
-		<script type="text/javascript" src="js/restfull-building.js"></script>
+		<script type="text/javascript" src="js/restfull.js"></script>
 		<script type="text/javascript" src="js/headsman.js"></script>		
 		<script type="text/javascript" src="js/model.js"></script>
+		<script type="text/javascript" src="js/images.js"></script>
 		<script type="text/javascript" src="js/counter-coins.js"></script>
 	</head>
 <body>
 	<img id="bigJonny" src="img/bigjonny.png" style="display: none;">
-	<img id="chest" src="img/chest.png" style="display: none;">
-	<img id="loading" src="img/loading.gif" style="display: none;">
+	<img id="chest" src="img/chest.png" style="display: none;">	
+	
+	<img id="image" src="img/image.png" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
 	<script type="text/javascript">	
@@ -75,12 +77,16 @@
 		var HEIGHT = canvas.height;
 		
 		/* Images */
-		var imgBigJonny, imgChest, imgLoading;
+		var image, loadingImage;
+		
+		var imgBigJonny, imgChest;
 		window.onload = function() {			
 			imgBigJonny = document.getElementById("bigJonny");
 			imgChest = document.getElementById("chest");
-			imgLoading = document.getElementById("loading");
-		}
+			
+			image = document.getElementById("image");
+			loadingImage = new Sprite(image,0,0,200,200,24,1);			
+		}		
 		
 		/* Big Jonny position */
 		var bigJonnyX = (WIDTH-bigJonny.width)/2;
@@ -233,11 +239,10 @@
 						ctx.fill();
 					
 						/* Loading */
-						ctx.drawImage(
-							imgLoading,
-							(WIDTH/2) - (loading.width/2),
-							(HEIGHT/2) - (loading.height/2)
-						);
+						loadingImage.draw(
+							(WIDTH/2) - ((loadingImage.width+1)/2),
+							(HEIGHT/2) - ((loadingImage.height+1)/2)
+						);						
 					}
 				
 				}
@@ -355,7 +360,7 @@
 			}
 			
 			function init() {
-				data(function(){
+				data(function(){				
 					x = canvas.width/2 - buildingFactory.getMaster().size.width/2;
 					y = canvas.height/2 - buildingFactory.getMaster().size.height/2;			
 					clickX = 0;
@@ -368,7 +373,7 @@
 					headsman.updateCorners(bigJonnyX,bigJonnyY);
 					
 					/* Print version */
-					console.log('Version ' + settings.version);
+					console.log('Version ' + settings.version);					
 				});
 				
 				return setInterval(draw, FPS);

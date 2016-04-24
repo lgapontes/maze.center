@@ -8,7 +8,7 @@ var Header = {
     init: function (config) {
         var cfg = this.config = $.extend({}, this.config, config);
         
-        $(cfg.el).html('<div class="header"><a href="http://maze.center"><img id="bigJonny" src="img/logo.png" class="logo" /></a></div>');
+        $(cfg.el).html('<div class="header"><a href="http://maze.center" style="display: block; width: 700px; height: 70px; background-image: url(img/image.png); background-repeat: no-repeat; background-position: 0px -200px;"></a></div>');
     }
 };
 

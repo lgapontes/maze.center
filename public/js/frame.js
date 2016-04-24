@@ -66,18 +66,18 @@ var getUrl = function() {
 };
 
 var again = function() {	
-	document.getElementById("buttons").innerHTML="<img src='img/small_loading.gif' class='small_loading' />";
+	document.getElementById("buttons").innerHTML="<font class='loading'>Loading...</font>";
 	window.location.href = getUrl() + '?code=' + map.externalCode
 };
 
 var remake = function() {
-	document.getElementById("buttons").innerHTML="<img src='img/small_loading.gif' class='small_loading' />";
+	document.getElementById("buttons").innerHTML="<font class='loading'>Loading...</font>";
 	var level = parseInt(map.level);
 	window.location.href = getUrl() + '?level=' + level;
 };
 
 var next = function() {
-	document.getElementById("buttons").innerHTML="<img src='img/small_loading.gif' class='small_loading' />";
+	document.getElementById("buttons").innerHTML="<font class='loading'>Loading...</font>";
 	var level = parseInt(map.level) + 1;
 	window.location.href = getUrl() + '?level=' + level;
 };

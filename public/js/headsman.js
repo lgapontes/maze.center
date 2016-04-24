@@ -34,12 +34,6 @@ var chest = {
 	height: 260
 };
 
-/* Loading */
-var loading = {
-	width: 200,
-	height: 200
-};
-
 function Point(_x,_y) {
 	this.x = _x,
 	this.y = _y
