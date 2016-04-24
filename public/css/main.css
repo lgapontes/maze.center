@@ -39,12 +39,6 @@ hr.modal {
 	margin-bottom: 10px;
 }
 
-#stars img {
-	width: 64px;
-	height: 64px;		
-    margin: 5px;
-}
-
 div.report {
 	font-weight: 150px;
 	font-size: 30px;
@@ -63,10 +57,6 @@ div.report li {
 	background: #eef;	
 	height: 70px;				
 	border: 1px solid #ccd;
-}
-
-div.report li img {
-	float: left;
 }
 
 div.report span {

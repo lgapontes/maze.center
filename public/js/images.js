@@ -8,7 +8,7 @@ function Tile(_img, _start_x, _start_y, _width, _height) {
 };
 
 Tile.prototype = {
-	draw: function(_x,_y) {
+	draw: function(_x,_y) {		
 		ctx.drawImage(
 			this.img,
 			this.start_x,
@@ -32,8 +32,8 @@ function Sprite(_img, _start_x, _start_y, _width, _height, _qtde, _delay) {
 	this.countDelay = 0;	
 };
 
-Tile.prototype = {
-	draw: function(_x,_y) {
+Sprite.prototype = {
+	draw: function(_x,_y) {		
 		if (this.countDelay < this.delay) {
 			this.countDelay = this.countDelay + 1;
 			this.drawTile(_x,_y);

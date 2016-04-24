@@ -474,10 +474,9 @@ Tower.prototype = {
 		ctx.fill();
 		
 		/* Chest */
-		ctx.drawImage(
-			imgChest,
-			this.position.x - chest.width/2,
-			this.position.y - chest.height/2
+		chestImage.draw(
+			this.position.x - chestImage.width/2,
+			this.position.y - chestImage.height/2
 		);
 		
 		/* Set circle zone in headsman */

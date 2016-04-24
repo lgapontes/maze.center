@@ -16,8 +16,6 @@
 	</head>
 <body>
 	<img id="bigJonny" src="img/bigjonny.png" style="display: none;">
-	<img id="chest" src="img/chest.png" style="display: none;">	
-	
 	<img id="image" src="img/image.png" style="display: none;">
 	<canvas id="canvas"></canvas>
 	
@@ -76,16 +74,21 @@
 		var WIDTH = canvas.width;
 		var HEIGHT = canvas.height;
 		
-		/* Images */
-		var image, loadingImage;
+		/* Big Jonny */
+		var bigJonny = {
+			width: 130,
+			height: 130
+		};
 		
-		var imgBigJonny, imgChest;
+		/* Images */
+		var image, loadingImage, bigJonnyImage, chestImage;
+		
+		/* Loading imagens */
 		window.onload = function() {			
-			imgBigJonny = document.getElementById("bigJonny");
-			imgChest = document.getElementById("chest");
-			
+			bigJonnyImage = document.getElementById("bigJonny");
 			image = document.getElementById("image");
-			loadingImage = new Sprite(image,0,0,200,200,24,1);			
+			loadingImage = new Sprite(image,0,0,200,200,24,1);
+			chestImage = new Tile(image,0,400,270,260);
 		}		
 		
 		/* Big Jonny position */
@@ -221,7 +224,7 @@
 						
 						/* Big Jonny */
 						ctx.drawImage(
-							imgBigJonny,
+							bigJonnyImage,
 							bigJonnyX,
 							bigJonnyY
 						);												

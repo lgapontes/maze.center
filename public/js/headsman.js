@@ -22,18 +22,6 @@ function hexToRgb(hex) {
 /* Color to check collision */
 var checkCollisionColor = hexToRgb( wallColor );
 
-/* Big Jonny */
-var bigJonny = {
-	width: 130,
-	height: 130
-};
-
-/* Chest */
-var chest = {
-	width: 270,
-	height: 260
-};
-
 function Point(_x,_y) {
 	this.x = _x,
 	this.y = _y
