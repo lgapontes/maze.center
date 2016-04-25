@@ -24,11 +24,29 @@ exports.check = function(req, callback) {
 		}
 	} else
 	
-	/* Chrome and Chrome for Android */
+	/* Chrome, Chrome for Android or Edge */
 	if ( useragent.is(req.headers['user-agent']).chrome ) {
-		if (!agent.satisfies('>=' + browsers.chrome)) {
-			logger.warn('Incompatible browser used: Chrome -> ' + agent.toAgent() );
-			callback(false);
+		
+		/* Edge - user-agent of Edge returns Chrome string */
+		var browser = agent.toAgent().toLowerCase();
+		var substring = "edge";
+	
+		if (browser.indexOf(substring) > -1) {
+			
+			/* Edge */
+			if (!agent.satisfies('>=' + browsers.edge)) {
+				logger.warn('Incompatible browser used: Edge -> ' + agent.toAgent() );
+				callback(false);
+			}
+			
+		} else {
+			
+			/* Chrome */
+			if (!agent.satisfies('>=' + browsers.chrome)) {
+				logger.warn('Incompatible browser used: Chrome -> ' + agent.toAgent() );
+				callback(false);
+			}
+			
 		}
 	} else
 	
@@ -75,31 +93,7 @@ exports.check = function(req, callback) {
 			logger.warn('Incompatible browser used: Android Browser -> ' + agent.toAgent() );
 			callback(false);
 		}
-	} else
-	
-	/* Edge */
-	{
-	
-		var os = agent.os.toString().toLowerCase();
-		var os_string1 = ("WinNT").toLowerCase();
-		var os_string2 = ("Windows").toLowerCase();
-	
-		if ( (os.indexOf(os_string1) > -1) || (os.indexOf(os_string2) > -1) ) {		
-			var browser = agent.toAgent().toLowerCase();
-			var substring = "edge";
-		
-			if (browser.indexOf(substring) > -1) {
-				
-				console.log('teste EDGE OK ' + agent.toAgent());
-				
-				if (!agent.satisfies('>=' + browsers.edge)) {
-					logger.warn('Incompatible browser used: Edge -> ' + agent.toAgent() );
-					callback(false);
-				}
-			}
-		}
-	
-	}	
+	}
 	
 	callback(true);
 };

@@ -1,7 +1,5 @@
 function getBuilding(callback) {
 		
-	//var Protocol = window.protocol.get();
-		
 	var param = parseInt(getUrlParameter('level')) || 1;
 	var method = "PUT";
 	
