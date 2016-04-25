@@ -11,13 +11,15 @@ var logger  		= require('../infrastructure/logger').get(),
 	properties 		= require('../infrastructure/properties').get(),
 	ObjectId 		= require('mongoose').Types.ObjectId,
 	random			= require('./random'),
-	trycatch 		= require('trycatch');
+	trycatch 		= require('trycatch'),
+	compatibility 	= require('../infrastructure/compatibility'),
+	Protocol		= require('../public/shared/protocol').get();
 
 trycatch.configure({
   colors: {
     // 'none' or falsy values will omit 
     'node': 'none',
-    'node_modules': false,
+    'node_modules': true,
     'default': 'red'
   }
 });
@@ -27,14 +29,17 @@ var settings = {
 	host: properties.get('server.host'),
 	domain: properties.get('server.domain'),
 	version: properties.get('maze.version'),
+	
+	// TODO: get by properties
+	types: types,		
+	axis: axis,
+	alignments: alignments,
+	thickness: thickness
 };
 	
-function catchError(msg, error, response) {
-	logger.error(error);
-	response.send({
-		error: msg,
-		settings: settings
-	});
+function catchError(_protocol,_error,_response) {
+	logger.error(_error);	
+	_response.send(_protocol);
 };
 	
 exports.getSavedMap = function(request, response, next) {
@@ -44,38 +49,45 @@ exports.getSavedMap = function(request, response, next) {
 		var externalCode = request.params.externalCode;
 		
 		mongoose.connection.collections['mapCollection'].find({externalCode: externalCode}).toArray(function(error,maps){
-			if (error) {			
-				catchError(error, error, response);
+			if (error) {
+				var protocol = new Protocol(settings);
+				protocol.setMessage(0);
+				catchError(protocol, error, response);
 			} else {
 				if (maps.length !== 1) {
+					var protocol = new Protocol(settings);
+					protocol.setMessage(1);
 					var error = 'Map not found: ' + externalCode;
-					catchError(error, error, response);				
+					catchError(protocol, error, response);
 				} else {
 					var map = maps[0];
 					var query = { map: new ObjectId(map._id) };
 				
 					mongoose.connection.collections['placeCollection'].find(query).toArray(function(error, places) {
 						if (error) {
-							catchError(error, error, response);
-						} else {
-							var building = {
-								error: undefined,
-								
-								places: places,
-								map: map,
-								
-								types: types,		
-								axis: axis,
-								alignments: alignments,
-								thickness: thickness,
-								
-								settings: settings
-							};
+							var protocol = new Protocol(settings);
+							protocol.setMessage(0);
+							catchError(protocol, error, response);
+						} else {							
 					
 							/* print(places); */
+							
+							var protocol = new Protocol(settings);
+					
+							protocol.setObject({
+								places: places,
+								map: map
+							});
+							
+							/* Check compatibility of browsers */
+							compatibility.check(request,function(_compatible){
+								if (!_compatible) {
+									protocol.setMessage(4);
+								}				
+							});
 					
 							/* Return */
-							response.send(building);
+							response.send(protocol);
 						}
 					}); 
 					
@@ -83,13 +95,14 @@ exports.getSavedMap = function(request, response, next) {
 			}
 		});
 		
-	}, function(err) {		
-		catchError('Error getting the map.', err, response);
+	}, function(err) {
+		protocol.setMessage(2);
+		catchError(protocol, err, response);
 	});	
 	
 };
 
-exports.getRamdomMap = function(request, response, next) {
+exports.getRamdomMap = function(request, response, next) {	
 	
 	trycatch(function() {
 		
@@ -144,27 +157,30 @@ exports.getRamdomMap = function(request, response, next) {
 		var map = buildingFactory.getMap();
 		
 		/* Save it */
-		buildingFactory.save();
+		buildingFactory.save();		
 		
-		var building = {
-			error: undefined,
-			
+		var protocol = new Protocol(settings);
+		
+		protocol.setObject({
 			places: places,
-			map: map,
-			
-			types: types,		
-			axis: axis,
-			alignments: alignments,
-			thickness: thickness,
-			
-			settings: settings
-		};
+			map: map
+		});
+		
+		/* Check compatibility of browsers */
+		compatibility.check(request,function(_compatible){
+			if (!_compatible) {
+				protocol.setMessage(4);
+			}
+				
+		});
 		
 		/* Return */
-		response.send(building);
+		response.send(protocol);
 		
 	}, function(err) {
-		catchError('Error creating map.', err, response);
+		var protocol = new Protocol(settings);
+		protocol.setMessage(2);
+		catchError(protocol, err, response);
 	});
 	
 };
@@ -282,27 +298,29 @@ exports.getMap = function(request, response, next) {
 		
 		/* Create places and map */
 		var places = buildingFactory.creationCompleted();
-		var map = buildingFactory.getMap();
+		var map = buildingFactory.getMap();		
 		
-		var building = {	
-			error: undefined,
+		var protocol = new Protocol(settings);
 		
+		protocol.setObject({
 			places: places,
-			map: map,
-			
-			types: types,		
-			axis: axis,
-			alignments: alignments,
-			thickness: thickness,
-			
-			settings: settings
-		};
+			map: map
+		});
+		
+		/* Check compatibility of browsers */
+		compatibility.check(request,function(_compatible){
+			if (!_compatible) {
+				protocol.setMessage(4);
+			}				
+		});
 		
 		/* Return */
-		response.send(building);
+		response.send(protocol);
 		
 	}, function(err) {
-		catchError('Error creating test map.', err, response);
+		var protocol = new Protocol(settings);
+		protocol.setMessage(3);
+		catchError(protocol, err, response);
 	});
 
 };

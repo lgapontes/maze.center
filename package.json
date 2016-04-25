@@ -20,6 +20,8 @@
 		"properties-reader": "^0.0.15",
 		"mongoose-schema-extend": "0.2.0",
 		"randomstring": "^1.1.4",
-		"trycatch": "^1.5.21"
+		"trycatch": "^1.5.21",
+		"useragent": "^2.1.9",
+		"semver": "^5.1.0"
     }
 }

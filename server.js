@@ -1,9 +1,9 @@
-var logger   	= require('./infrastructure/logger').get(),	
-	building 	= require('./services/building'),
-	properties 	= require('./infrastructure/properties').get(),
-	http 		= require('http'),
-	path 		= require('path'),
-	express 	= require('express');
+var logger   		= require('./infrastructure/logger').get(),
+	building 		= require('./services/building'),
+	properties 		= require('./infrastructure/properties').get(),
+	http 			= require('http'),
+	path 			= require('path'),
+	express 		= require('express');
 
 /* Catch uncaught exception */
 process.on('uncaughtException', (err) => {	
@@ -19,17 +19,12 @@ var app = express();
 /* Setup path of static files */
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function(req, res) {
-    res.render('index.html');
-});
-
 /* Create http server */
 var server = http.createServer(app);
 
 /* URLs */
 app.put('/rest/map/:level', building.getRamdomMap);
 app.get('/rest/map/:externalCode', building.getSavedMap);
-
 
 server.listen(PORT, HOST, function(error) {
 	if (error) {

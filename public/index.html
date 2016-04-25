@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="js/model.js"></script>
 		<script type="text/javascript" src="js/images.js"></script>
 		<script type="text/javascript" src="js/counter-coins.js"></script>
+		<script type="text/javascript" src="shared/protocol.js"></script>
 	</head>
 <body>
 	<img id="bigJonny" src="img/bigjonny.png" style="display: none;">
@@ -139,26 +140,26 @@
 			function data(callback) {		
 				
 				/* Places */				
-				getBuilding(function(error,building){
+				getBuilding(function(error,protocol){
 					if (error) {
 						console.log(error);
 					} else {
 					
 						/* Map */
-						map = building.map;
+						map = protocol.object.map;
 						counterCoins = new CounterCoins(parseInt(map.level));						
 					
 						/* Enuns */
-						axis = building.axis;
-						alignments = building.alignments;
-						thickness = building.thickness;
-						types = building.types;
+						axis = protocol.settings.axis;
+						alignments = protocol.settings.alignments;
+						thickness = protocol.settings.thickness;
+						types = protocol.settings.types;
 					
 						/* Settings */
-						settings = building.settings;
+						settings = protocol.settings;
 					
 						/* Places */
-						building.places.forEach(function(entry){
+						protocol.object.places.forEach(function(entry){
 							if (entry.type === types.room) {
 								buildingFactory.add(new Room(entry));
 							} else {

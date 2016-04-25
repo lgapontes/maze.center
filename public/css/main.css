@@ -188,3 +188,42 @@ image, canvas {
 	position:relative;
 	top:1px;
 }
+
+section.browsers h1 {
+	margin: 10px;								
+	color: #4a778b;
+	font: 40px Impact, Charcoal, sans-serif;
+}
+
+section.browsers div {
+	margin: 0px;
+}
+
+section.browsers ul {
+	list-style-type: none;				
+	margin:0;
+	padding: 0;
+}
+
+section.browsers h3 {
+	font: 20px/1.5 Impact, Charcoal, sans-serif;
+}
+
+section.browsers li p {
+	font: 200 12px/1.5 Georgia, Times New Roman, serif;
+}
+
+section.browsers li {
+	background: #eef;
+	padding: 10px;
+	overflow: auto;
+	width: 392px;
+	height: 168px;
+	float:left;
+	border: 1px solid #ccd;
+}
+
+section.browsers li:hover {
+	background: #ddf;
+	cursor: pointer;
+}

@@ -1,5 +1,7 @@
 function getBuilding(callback) {
 		
+	//var Protocol = window.protocol.get();
+		
 	var param = parseInt(getUrlParameter('level')) || 1;
 	var method = "PUT";
 	
@@ -14,18 +16,17 @@ function getBuilding(callback) {
 		type: method,
 
 		contentType: 'application/json; charset=utf-8',
-		success: function(resultData) {			
-			if (resultData.error === undefined) {
-				callback(null,resultData);			
+		success: function(protocol) {
+			
+			if (protocol.message === undefined) {
+				callback(null,protocol);			
 			} else {				
-				console.log(resultData.error);
-				window.location.href = 
-					'http://' +
-					resultData.settings.domain + 
-					':' + 
-					resultData.settings.port + 
-					'/error.html?msg=' +
-					resultData.error;
+				var url = 'http://' +
+					protocol.settings.domain + ":" + 
+					protocol.settings.port + "/" + 
+					protocol.message.page + "?error=" +
+					protocol.message.index;				
+				window.location.href = url;				
 			}			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
