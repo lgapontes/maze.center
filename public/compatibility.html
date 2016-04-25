@@ -7,7 +7,8 @@
 		<link rel="stylesheet" type="text/css" href="css/reset.css">
 		<link rel="stylesheet" type="text/css" href="css/main.css">	
 		<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
-		<script type="text/javascript" src="js/header.js"></script>		
+		<script type="text/javascript" src="js/header.js"></script>
+		<script type="text/javascript" src="shared/browsers.js"></script>
 	</head>
 <body>
 	<div id="header"></div>
@@ -28,61 +29,61 @@
 			<ul>
 				<li>					
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: 0px 0px;"></div>
-					<h3>Internet Explorer 11</h3>
+					<h3>Internet Explorer <script type="text/javascript">document.write(window.browsers.get().ie);</script></h3>
 					<p>Supported. For screen readers, Internet Explorer support the accessible canvas element sub-DOM.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -128px 0px;"></div>
-					<h3>Edge 13</h3>
+					<h3>Edge <script type="text/javascript">document.write(window.browsers.get().edge);</script></h3>
 					<p>Supported. Version number used for Edge is based on the number used in the user agent string, not the Edge "About" page.</p>
 				</li>
 		
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -256px 0px;"></div>
-					<h3>Firefox 45</h3>
+					<h3>Firefox <script type="text/javascript">document.write(window.browsers.get().firefox);</script></h3>
 					<p>Supported. For screen readers, Firefox support the accessible canvas element sub-DOM. Firefox also support the drawfocus ring.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -384px 0px;"></div>
-					<h3>Chrome 50</h3>
+					<h3>Chrome <script type="text/javascript">document.write(window.browsers.get().chrome);</script></h3>
 					<p>Supported. For screen readers, Chrome support the accessible canvas element sub-DOM. Firefox & Chrome also support the drawfocus ring.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -512px 0px;"></div>
-					<h3>Safari 9.1</h3>
+					<h3>Safari <script type="text/javascript">document.write(window.browsers.get().safari);</script></h3>
 					<p>Supported.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -640px 0px;"></div>
-					<h3>Opera 36</h3>
+					<h3>Opera <script type="text/javascript">document.write(window.browsers.get().opera);</script></h3>
 					<p>Supported.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -512px 0px;"></div>
-					<h3>iOS Safari 9.2</h3>
+					<h3>iOS Safari <script type="text/javascript">document.write(window.browsers.get().mobile_safari);</script></h3>
 					<p>Supported. The Safari browser for iOS is tied to the operating system, so the numbers used are based on the OS version.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -640px 0px;"></div>
-					<h3>Opera Mini 8</h3>
+					<h3>Opera Mini <script type="text/javascript">document.write(window.browsers.get().opera_mini);</script></h3>
 					<p>Partial support. Opera Mini supports the canvas element, but is unable to play animations or run other more complex applications.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -768px 0px;"></div>
-					<h3>Android Browser 47</h3>
+					<h3>Android Browser <script type="text/javascript">document.write(window.browsers.get().android);</script></h3>
 					<p>Supported. Support listed is for the Android core; Many hardware (Samsung, HTC, etc.) use altered version of their default browser which may include more support.</p>
 				</li>
 				
 				<li>
 					<div style="float: left; margin: 0 15px 0 0; width: 128px; height: 128px; background-image: url(img/browsers.png); background-repeat: no-repeat; background-position: -384px 0px;"></div>
-					<h3>Chrome for Android 49</h3>
+					<h3>Chrome for Android <script type="text/javascript">document.write(window.browsers.get().chrome);</script></h3>
 					<p>Supported. For screen readers, Chrome support the accessible canvas element sub-DOM. Chrome also support the drawfocus ring.</p>
 				</li>
 			</ul>
