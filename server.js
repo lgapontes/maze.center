@@ -23,7 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 var server = http.createServer(app);
 
 /* URLs */
-app.put('/rest/map/:level', building.getRamdomMap);
+//app.put('/rest/map/:level', building.getRamdomMap);
+app.put('/rest/map/:level', building.getMap);
 app.get('/rest/map/:externalCode', building.getSavedMap);
 
 server.listen(PORT, HOST, function(error) {

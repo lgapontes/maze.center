@@ -1,8 +1,11 @@
 var properties = require('../infrastructure/properties').get();
 
+/* Block */
+var block = parseInt(properties.get('graphics.block'));
+
 /* Defines */
 var thickness = parseInt(properties.get('graphics.thickness'));
-var doorThickness = parseInt(properties.get('graphics.doorThickness')) + thickness;
+var doorThickness = block;
 var version = properties.get('maze.version');
 
 /* Types */
@@ -13,42 +16,9 @@ var types = {
 
 /* Sizes */
 var sizes = {
-	smallSquare: {
-		width: doorThickness * 2,
-		height: doorThickness * 2		
-	},
-	
-	bigSquare: {
-		width: doorThickness * 4,
-		height: doorThickness * 4
-	},
-	
-	bigVerticalCorridor: {
-		width: doorThickness + thickness*2,
-		height: doorThickness * 4
-	},
-	bigHorizontalCorridor: {
-		width: doorThickness * 4,
-		height: doorThickness + thickness*2,
-	},
-	
-	smallVerticalCorridor: {
-		width: doorThickness + thickness*2,
-		height: doorThickness * 2
-	},
-	smallHorizontalCorridor: {
-		width: doorThickness * 2,
-		height: doorThickness + thickness*2,
-	},
-	
-	tinyVerticalCorridor: {
-		width: doorThickness + thickness*2,
-		height: (doorThickness * 2) + thickness*3
-	},
-	
-	tinyHorizontalCorridor: {
-		width: (doorThickness * 2) + thickness*3,
-		height: doorThickness + thickness*2		
+	square: {
+		width: block,
+		height: block
 	}
 };
 

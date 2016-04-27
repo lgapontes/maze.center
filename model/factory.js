@@ -1,6 +1,6 @@
 var Room 			= require('./building').getRoom(),
 	Tower 			= require('./building').getTower(),
-	Map 			= require('../model/building').getMap(),
+	Map 			= require('./building').getMap(),
 	alignments		= require('./enum').getAlignments(),
 	axis			= require('./enum').getAxis(),
 	sizes			= require('./enum').getSizes(),
@@ -9,7 +9,8 @@ var Room 			= require('./building').getRoom(),
 	logger   		= require('../infrastructure/logger').get(),
 	moment  		= require('moment-timezone'),
 	properties 		= require('../infrastructure/properties').get(),
-	randomstring 	= require("randomstring");
+	randomstring 	= require("randomstring"),
+	Simulator		= require("./simulator").getSimulator();
 
 var timezone = properties.get('logger.timezone');
 
@@ -26,6 +27,8 @@ function BuildingFactory(_level) {
 	this.neighbors = [];
 	this.place = undefined;
 	this.done = false;
+	
+	this.simulator = new Simulator();
 };
 
 BuildingFactory.prototype = {	
@@ -39,8 +42,8 @@ BuildingFactory.prototype = {
 			},
 			neighbors: [],
 			size: {
-				width: sizes.smallSquare.width,
-				height: sizes.smallSquare.height	
+				width: sizes.square.width,
+				height: sizes.square.height	
 			},
 			alignment: alignments.center
 		});
@@ -62,7 +65,7 @@ BuildingFactory.prototype = {
 	setSize: function(_size) {
 		if (this.place instanceof Room) {
 			this.place.size = _size;
-		}		
+		}
 		return this;
 	},
 	setFinish: function() {
@@ -120,8 +123,27 @@ BuildingFactory.prototype = {
 		return this;
 	},
 	create: function() {
-		this.places.push(this.place);
+		
+		/* Get  neighbor */
+		var neighbor = undefined;
+		for(var i=0;i<this.neighbors.length;i++) {
+			var entry = this.neighbors[i];
+			if (entry.neighbor.parent === this.place.number) {
+				neighbor = entry;
+				break;
+			}
+		}
+		
+		/* Simulator */
+		var result = this.simulator.add(this.place,neighbor);
+		
+		if (result.canAdd) {
+			this.places.push(this.place);
+		}
+		
 		this.place = undefined;
+		
+		return result;
 	},
 	getPlace: function(_number) {
 		for(var i=0;i<this.places.length;i++) {
@@ -129,7 +151,7 @@ BuildingFactory.prototype = {
 				return this.places[i];
 			}
 		}
-	},	
+	},
 	creationCompleted: function() {		
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];			
