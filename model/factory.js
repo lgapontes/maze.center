@@ -114,7 +114,7 @@ BuildingFactory.prototype = {
 				next: _nextNumber
 			},
 			axis: _axis,
-			door: {			
+			door: {
 				width: doorThickness,
 				height: thickness * 2,
 				alignment: temp_alignment
@@ -122,29 +122,25 @@ BuildingFactory.prototype = {
 		});
 		return this;
 	},
-	create: function() {
-		
+	
+	getNeighbor: function(_number) {
 		/* Get  neighbor */
 		var neighbor = undefined;
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];
-			if (entry.neighbor.parent === this.place.number) {
+			if (entry.neighbor.parent === _number) {
 				neighbor = entry;
 				break;
 			}
 		}
-		
-		/* Simulator */
-		var result = this.simulator.add(this.place,neighbor);
-		
-		if (result.canAdd) {
-			this.places.push(this.place);
-		}
-		
-		this.place = undefined;
-		
-		return result;
+		return neighbor;
 	},
+	
+	create: function() {
+		this.places.push(this.place);		
+		this.place = undefined;
+	},
+	
 	getPlace: function(_number) {
 		for(var i=0;i<this.places.length;i++) {
 			if (this.places[i].number === _number) {
@@ -152,6 +148,7 @@ BuildingFactory.prototype = {
 			}
 		}
 	},
+	
 	creationCompleted: function() {		
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];			
@@ -166,9 +163,11 @@ BuildingFactory.prototype = {
 		this.done = true;
 		return this.places;
 	},
+	
 	getMap: function() {
 		return this.map;
 	},
+	
 	save: function() {
 		if (this.done) {
 			this.map.save();

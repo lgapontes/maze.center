@@ -1,8 +1,7 @@
 var properties 	= require('../infrastructure/properties').get(),
 	axis		= require('./enum').getAxis(),
 	alignments	= require('./enum').getAlignments(),
-	types		= require('./enum').getTypes(),
-	block 		= parseInt(properties.get('graphics.block'));
+	types		= require('./enum').getTypes();
 
 var staticFirstBlockPosition = {
 	x: 1000,
@@ -50,7 +49,7 @@ Block.prototype = {
 		return false;
 	},
 	isParentBlock: function(_neighbor) {
-		if (_neighbor.neighbor.parent === this.placeNumber) {
+		if (_neighbor && _neighbor.neighbor.parent === this.placeNumber) {
 			return true;
 		}
 		return false;
@@ -58,7 +57,9 @@ Block.prototype = {
 };
 	
 function BlockSet(_place,_neighbor,_parentBlock) {
-	this.blocks = this.getBlocks(_place,_neighbor,_parentBlock);
+	this.blocks = [];
+	
+	this.setBlocks(_place,_neighbor,_parentBlock);
 };
 
 BlockSet.prototype = {
@@ -83,19 +84,97 @@ BlockSet.prototype = {
 	},
 	
 	/* private */
-	getBlocks: function(_place,_neighbor,_parentBlock) {
+	getMinX: function() {
+		var minX = 10000;
+		this.blocks.forEach(function(block){
+			if (block.x < minX) {
+				minX = block.y;
+			}
+		});
+		return minX;
+	},
+	
+	/* private */
+	getMinY: function() {
+		var minY = 10000;
+		this.blocks.forEach(function(block){
+			if (block.y < minY) {
+				minY = block.y;
+			}
+		});
+		return minY;
+	},
+	
+	/* private */
+	getMaxX: function() {
+		var maxX = 0;
+		this.blocks.forEach(function(block){
+			if (block.x > maxX) {
+				maxX = block.x;
+			}
+		});
+		return maxX;
+	},
+	
+	/* private */
+	getMaxY: function() {
+		var maxY = 0;
+		this.blocks.forEach(function(block){
+			if (block.y > maxY) {
+				maxY = block.y;
+			}
+		});
+		return maxY;
+	},
+	
+	/* private */
+	getMedX: function() {
+		var minX = this.getMinX();
+		var maxX = this.getMaxX();
 		
-		var blocks = this.getBlocksBySize(_place,_neighbor,_parentBlock);
+		return parseInt( (minX + maxX) / 2 );
+	},
+	
+	/* private */
+	getMedY: function() {
+		var minY = this.getMinY();
+		var maxY = this.getMaxY();
+		
+		return parseInt( (minY + maxY) / 2 );
+	},
+	
+	getBlockByPosition: function(_x,_y) {		
+		for (var i=0; i<this.blocks.length; i++) {
+			if (
+				(this.blocks[i].x === _x) &&
+				(this.blocks[i].y === _y)
+			) {
+				return this.blocks[i];
+			}
+		}
+	},
+	
+	/* private */
+	setBlocks: function(_place,_neighbor,_parentBlock) {
+		
+		this.blocks = this.getBlocksBySize(_place,_neighbor,_parentBlock);
 		
 		/*
 		 *	To be linkable, the statements below must be true:
+		 *	- Neighbor is undefined
+		 *	OR
 		 *	- The alignment of this place do not be 'center';
 		 *	- The door between parent and this place must have alignment 'center';
-		 *	- The linkable axis must be different from the axis of the door between parent and this place
+		 *	- The linkable axis must be different from the axis of the door between parent and this place.
 		 *
-		*/
-		blocks.forEach(function(block){
-			if (
+		*/		
+		this.blocks.forEach(function(block){
+			if (_neighbor === undefined) {
+				block.linkable.north = true;
+				block.linkable.east = true;
+				block.linkable.south = true;
+				block.linkable.west = true;
+			} else if (
 					(_place.alignment !== alignments.center) &&
 					(_neighbor.door.alignment === alignments.center)
 				) {
@@ -115,11 +194,86 @@ BlockSet.prototype = {
 						block.linkable.north = true;
 						block.linkable.east = true;
 						block.linkable.south = true;
-					}					
+					}
 			}
 		});
 		
-		return blocks;
+		/* Add next link in block */
+		if (_neighbor) {
+			var x;
+			var y;
+			
+			if (_neighbor.axis === axis.north) {
+				if (_neighbor.door.alignment === alignments.left) {
+					x = this.getMinX();
+					y = this.getMinY();
+				} else if (_neighbor.door.alignment === alignments.right) {
+					x = this.getMaxX();
+					y = this.getMinY();
+				} else {
+					/* center */					
+					x = this.getMedX();
+					y = this.getMinY();
+				}
+				
+				/* Set link */
+				var linkBlock = this.getBlockByPosition(x,y);
+				linkBlock.links.push(new Link(linkBlock,axis.north));
+				
+			} else if (_neighbor.axis === axis.east) {
+				if (_neighbor.door.alignment === alignments.top) {
+					x = this.getMaxX();
+					y = this.getMinY();
+				} else if (_neighbor.door.alignment === alignments.bottom) {
+					x = this.getMaxX();
+					y = this.getMaxY();
+				} else {
+					/* center */
+					x = this.getMaxX();
+					y = this.getMedY();
+				}
+				
+				/* Set link */
+				var linkBlock = this.getBlockByPosition(x,y);
+				linkBlock.links.push(new Link(linkBlock,axis.east));
+				
+			} else if (_neighbor.axis === axis.south) {
+				if (_neighbor.door.alignment === alignments.left) {
+					x = this.getMinX();
+					y = this.getMaxY();
+				} else if (_neighbor.door.alignment === alignments.right) {
+					x = this.getMaxX();
+					y = this.getMaxY();
+				} else {
+					/* center */
+					x = this.getMedX();
+					y = this.getMaxY();
+				}
+				
+				/* Set link */
+				var linkBlock = this.getBlockByPosition(x,y);
+				linkBlock.links.push(new Link(linkBlock,axis.south));
+				
+			} else if (_neighbor.axis === axis.west) {
+				if (_neighbor.door.alignment === alignments.top) {
+					x = this.getMinX();
+					y = this.getMinY();
+				} else if (_neighbor.door.alignment === alignments.bottom) {
+					x = this.getMinX();
+					y = this.getMaxY();
+				} else {
+					/* center */
+					x = this.getMinX();
+					y = this.getMedY();
+				}
+				
+				/* Set link */
+				var linkBlock = this.getBlockByPosition(x,y);
+				linkBlock.links.push(new Link(linkBlock,axis.west));
+				
+			}
+			
+		}
 		
 	},
 	
@@ -128,6 +282,7 @@ BlockSet.prototype = {
 		
 		var numberOfWidthBlocks = 0;
 		var numberOfHeightBlocks = 0;
+		var block = properties.get('graphics.block');
 		
 		if (_place.type === types.room) {
 			/* Room */
@@ -301,8 +456,9 @@ function Simulator() {
 Simulator.prototype = {
 	
 	add: function(_place, _neighbor) {		
-		var parentBlock = this.getParentBlock(_neighbor);
-		var blockSet = new BlockSet(_place,_neighbor,parentBlock);		
+		var parentBlock = this.getParentBlock(_neighbor);		
+		var blockSet = new BlockSet(_place,_neighbor,parentBlock);
+		
 		/* Checks collisions */
 		if ( ! this.checkCollision(blockSet) ) {			
 			this.blockSets.push(blockSet);
