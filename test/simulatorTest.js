@@ -48,18 +48,17 @@ describe("Simulator Test", function(){
 			.addNeighbor(1,axis.north,alignments.center)
 			.create();
 			
-		var place0 = buildingFactory.getPlace(0);
-		var neighbor0 = buildingFactory.getNeighbor(0);
+		var place0 = buildingFactory.getPlace(0);		
 			
 		buildingFactory.newRoom(1)			
 			.setAlignment(alignments.right)			
 			.create();
 			
 		var place1 = buildingFactory.getPlace(1);
-		var neighbor1 = buildingFactory.getNeighbor(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
 		
 		/* Simulator */
-		var actual0 = simulator.add(place0,neighbor0);
+		var actual0 = simulator.add(place0,undefined);
 		var actual1 = simulator.add(place1,neighbor1);
 		
 		printBlockSet(actual0.blockSet);

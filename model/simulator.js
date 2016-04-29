@@ -84,20 +84,20 @@ BlockSet.prototype = {
 	},
 	
 	/* private */
-	getMinX: function() {
+	getMinX: function(_blocks) {
 		var minX = 10000;
-		this.blocks.forEach(function(block){
+		_blocks.forEach(function(block){			
 			if (block.x < minX) {
-				minX = block.y;
+				minX = block.x;
 			}
 		});
 		return minX;
 	},
 	
 	/* private */
-	getMinY: function() {
+	getMinY: function(_blocks) {
 		var minY = 10000;
-		this.blocks.forEach(function(block){
+		_blocks.forEach(function(block){
 			if (block.y < minY) {
 				minY = block.y;
 			}
@@ -106,9 +106,9 @@ BlockSet.prototype = {
 	},
 	
 	/* private */
-	getMaxX: function() {
+	getMaxX: function(_blocks) {
 		var maxX = 0;
-		this.blocks.forEach(function(block){
+		_blocks.forEach(function(block){
 			if (block.x > maxX) {
 				maxX = block.x;
 			}
@@ -117,9 +117,9 @@ BlockSet.prototype = {
 	},
 	
 	/* private */
-	getMaxY: function() {
+	getMaxY: function(_blocks) {
 		var maxY = 0;
-		this.blocks.forEach(function(block){
+		_blocks.forEach(function(block){
 			if (block.y > maxY) {
 				maxY = block.y;
 			}
@@ -128,46 +128,50 @@ BlockSet.prototype = {
 	},
 	
 	/* private */
-	getMedX: function() {
-		var minX = this.getMinX();
-		var maxX = this.getMaxX();
+	getMedX: function(_blocks) {
+		var minX = this.getMinX(_blocks);
+		var maxX = this.getMaxX(_blocks);		
 		
 		return parseInt( (minX + maxX) / 2 );
 	},
 	
 	/* private */
-	getMedY: function() {
-		var minY = this.getMinY();
-		var maxY = this.getMaxY();
+	getMedY: function(_blocks) {
+		var minY = this.getMinY(_blocks);
+		var maxY = this.getMaxY(_blocks);
 		
 		return parseInt( (minY + maxY) / 2 );
 	},
 	
-	getBlockByPosition: function(_x,_y) {		
-		for (var i=0; i<this.blocks.length; i++) {
+	getBlockByPosition: function(_blocks,_x,_y) {		
+		
+		for (var i=0; i<_blocks.length; i++) {
 			if (
-				(this.blocks[i].x === _x) &&
-				(this.blocks[i].y === _y)
+				(_blocks[i].x === _x) &&
+				(_blocks[i].y === _y)
 			) {
-				return this.blocks[i];
+				return _blocks[i];
 			}
 		}
 	},
 	
 	/* private */
+	/*
+	 * Defines the blocks according to the size of the place.
+	 */
 	setBlocks: function(_place,_neighbor,_parentBlock) {
 		
 		this.blocks = this.getBlocksBySize(_place,_neighbor,_parentBlock);
 		
 		/*
 		 *	To be linkable, the statements below must be true:
-		 *	- Neighbor is undefined
+		 *		- Neighbor is undefined
 		 *	OR
-		 *	- The alignment of this place do not be 'center';
-		 *	- The door between parent and this place must have alignment 'center';
-		 *	- The linkable axis must be different from the axis of the door between parent and this place.
+		 *		- The alignment of this place do not be 'center';
+		 *		- The door between parent and this place must have alignment 'center';
+		 *		- The linkable axis must be different from the axis of the door between parent and this place.
 		 *
-		*/		
+		 */		
 		this.blocks.forEach(function(block){
 			if (_neighbor === undefined) {
 				block.linkable.north = true;
@@ -179,105 +183,31 @@ BlockSet.prototype = {
 					(_neighbor.door.alignment === alignments.center)
 				) {
 					if (_neighbor.axis === axis.north) {
-						block.linkable.east = true;
-						block.linkable.south = true;
+						block.linkable.north = true;
+						block.linkable.east = true;						
 						block.linkable.west = true;
 					} else if (_neighbor.axis === axis.east) {
 						block.linkable.north = true;
-						block.linkable.south = true;
-						block.linkable.west = true;
-					} else if (_neighbor.axis === axis.south) {
-						block.linkable.north = true;
 						block.linkable.east = true;
+						block.linkable.south = true;						
+					} else if (_neighbor.axis === axis.south) {						
+						block.linkable.east = true;
+						block.linkable.south = true;
 						block.linkable.west = true;
 					} else if (_neighbor.axis === axis.west) {
-						block.linkable.north = true;
-						block.linkable.east = true;
+						block.linkable.north = true;						
 						block.linkable.south = true;
+						block.linkable.west = true;
 					}
 			}
 		});
 		
-		/* Add next link in block */
-		if (_neighbor) {
-			var x;
-			var y;
-			
-			if (_neighbor.axis === axis.north) {
-				if (_neighbor.door.alignment === alignments.left) {
-					x = this.getMinX();
-					y = this.getMinY();
-				} else if (_neighbor.door.alignment === alignments.right) {
-					x = this.getMaxX();
-					y = this.getMinY();
-				} else {
-					/* center */					
-					x = this.getMedX();
-					y = this.getMinY();
-				}
-				
-				/* Set link */
-				var linkBlock = this.getBlockByPosition(x,y);
-				linkBlock.links.push(new Link(linkBlock,axis.north));
-				
-			} else if (_neighbor.axis === axis.east) {
-				if (_neighbor.door.alignment === alignments.top) {
-					x = this.getMaxX();
-					y = this.getMinY();
-				} else if (_neighbor.door.alignment === alignments.bottom) {
-					x = this.getMaxX();
-					y = this.getMaxY();
-				} else {
-					/* center */
-					x = this.getMaxX();
-					y = this.getMedY();
-				}
-				
-				/* Set link */
-				var linkBlock = this.getBlockByPosition(x,y);
-				linkBlock.links.push(new Link(linkBlock,axis.east));
-				
-			} else if (_neighbor.axis === axis.south) {
-				if (_neighbor.door.alignment === alignments.left) {
-					x = this.getMinX();
-					y = this.getMaxY();
-				} else if (_neighbor.door.alignment === alignments.right) {
-					x = this.getMaxX();
-					y = this.getMaxY();
-				} else {
-					/* center */
-					x = this.getMedX();
-					y = this.getMaxY();
-				}
-				
-				/* Set link */
-				var linkBlock = this.getBlockByPosition(x,y);
-				linkBlock.links.push(new Link(linkBlock,axis.south));
-				
-			} else if (_neighbor.axis === axis.west) {
-				if (_neighbor.door.alignment === alignments.top) {
-					x = this.getMinX();
-					y = this.getMinY();
-				} else if (_neighbor.door.alignment === alignments.bottom) {
-					x = this.getMinX();
-					y = this.getMaxY();
-				} else {
-					/* center */
-					x = this.getMinX();
-					y = this.getMedY();
-				}
-				
-				/* Set link */
-				var linkBlock = this.getBlockByPosition(x,y);
-				linkBlock.links.push(new Link(linkBlock,axis.west));
-				
-			}
-			
-		}
-		
 	},
 	
 	/* private */
+	/*
+	 * Defines the blocks according to the size of the place.
+	 */
 	getBlocksBySize: function(_place,_neighbor,_parentBlock) {
 		
 		var numberOfWidthBlocks = 0;
@@ -294,9 +224,14 @@ BlockSet.prototype = {
 		
 		var blocks = [];
 		
-		/* Data to new blocks */
-		var parentLink = this.getParentLink(_parentBlock,_neighbor);
+		/*
+		 * Get the next block from the link.
+		 */
 		var nextPosition = this.calculateNextBlockPosition(_parentBlock,parentLink);
+		
+		/*
+		 * Get the position of the first block.
+		 */
 		var firstBlockPosition = this.calculateFirstBlockPosition(
 			_place,
 			_neighbor,
@@ -328,11 +263,114 @@ BlockSet.prototype = {
 			}
 		}
 		
+		/* Get link and add in this block */
+		var parentLink = undefined;
+		var parentLinkIndex = -1;
+		if (_neighbor) {
+			parentLink = new Link(_parentBlock,_neighbor.axis);
+			parentLinkIndex = _parentBlock.links.length;
+			_parentBlock.links.push(parentLink);
+		}
+		
+		/* Add next link in block */
+		if (_neighbor) {
+			var x;
+			var y;
+			
+			if (_neighbor.axis === axis.north) {
+				if (_neighbor.door.alignment === alignments.left) {					
+					x = this.getMinX(blocks);
+					y = this.getMinY(blocks);
+				} else if (_neighbor.door.alignment === alignments.right) {					
+					x = this.getMaxX(blocks);
+					y = this.getMinY(blocks);
+				} else {					
+					/* center */				
+					x = this.getMedX(blocks);
+					y = this.getMinY(blocks);
+				}
+				
+				/* Get link by position */
+				var linkBlock = this.getBlockByPosition(blocks,x,y);
+				/* Set next block in link */
+				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
+				/* Set the same link in next block */
+				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
+				
+			} else if (_neighbor.axis === axis.east) {
+				if (_neighbor.door.alignment === alignments.top) {
+					x = this.getMaxX(blocks);
+					y = this.getMinY(blocks);
+				} else if (_neighbor.door.alignment === alignments.bottom) {
+					x = this.getMaxX(blocks);
+					y = this.getMaxY(blocks);
+				} else {
+					/* center */
+					x = this.getMaxX(blocks);
+					y = this.getMedY(blocks);
+				}
+				
+				/* Get link by position */
+				var linkBlock = this.getBlockByPosition(blocks,x,y);
+				/* Set next block in link */
+				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
+				/* Set the same link in next block */
+				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
+				
+			} else if (_neighbor.axis === axis.south) {
+				if (_neighbor.door.alignment === alignments.left) {
+					x = this.getMinX(blocks);
+					y = this.getMaxY(blocks);
+				} else if (_neighbor.door.alignment === alignments.right) {
+					x = this.getMaxX(blocks);
+					y = this.getMaxY(blocks);
+				} else {
+					/* center */
+					x = this.getMedX(blocks);
+					y = this.getMaxY(blocks);
+				}
+				
+				/* Get link by position */
+				var linkBlock = this.getBlockByPosition(blocks,x,y);
+				/* Set next block in link */
+				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
+				/* Set the same link in next block */
+				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
+				
+			} else if (_neighbor.axis === axis.west) {
+				if (_neighbor.door.alignment === alignments.top) {
+					x = this.getMinX(blocks);
+					y = this.getMinY(blocks);
+				} else if (_neighbor.door.alignment === alignments.bottom) {
+					x = this.getMinX(blocks);
+					y = this.getMaxY(blocks);
+				} else {
+					/* center */
+					x = this.getMinX(blocks);
+					y = this.getMedY(blocks);
+				}
+				
+				/* Get link by position */
+				var linkBlock = this.getBlockByPosition(blocks,x,y);
+				/* Set next block in link */
+				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
+				/* Set the same link in next block */
+				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
+				
+			}
+			
+		}
+		
 		return blocks;
 	},
 	
-	/* private */
+	/* private 
 	getParentLink: function(_parentBlock,_neighbor) {
+		console.log('>>_parentBlock');
+		console.log(_parentBlock);
+		console.log('>>_neighbor');
+		console.log(_neighbor);
+		
 		var link = undefined;
 		
 		if (_parentBlock) {
@@ -345,16 +383,17 @@ BlockSet.prototype = {
 		
 		return link;
 	},
+	*/
 	
 	/* private */
 	calculateNextBlockPosition: function(_parentBlock, _parentLink) {		
 		var x = staticFirstBlockPosition.x;
 		var y = staticFirstBlockPosition.y
 		
-		if (_parentBlock) {
+		if (_parentBlock && _parentLink) {
 			/* Link next location */
 			var parent_x = _parentBlock.x;
-			var parent_Y = _parentBlock.y;
+			var parent_y = _parentBlock.y;
 			if (_parentLink.axis === axis.north) {
 				x = parent_x;
 				y = parent_y - 1;
@@ -455,6 +494,11 @@ function Simulator() {
 
 Simulator.prototype = {
 	
+	/*
+	 * Create a new set of blocks in simulator.
+	 * _place: Place to create the Blockset;
+	 * _neighbor: Neighbor between parent and the this place.
+	 */
 	add: function(_place, _neighbor) {		
 		var parentBlock = this.getParentBlock(_neighbor);		
 		var blockSet = new BlockSet(_place,_neighbor,parentBlock);
@@ -479,6 +523,9 @@ Simulator.prototype = {
 	},
 	
 	/* private */
+	/*
+	 * Returns the parent block associated with neighbor.		
+	 */
 	getParentBlock: function(_neighbor) {
 		for (var i=0; i<this.blockSets.length; i++) {
 			var index = this.blockSets[i].getIndexParentBlock(_neighbor);

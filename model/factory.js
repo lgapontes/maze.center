@@ -123,12 +123,15 @@ BuildingFactory.prototype = {
 		return this;
 	},
 	
-	getNeighbor: function(_number) {
+	/*
+	 * Get the neighbor from the parent's number.
+	 */
+	getNeighbor: function(_parentNumber) {
 		/* Get  neighbor */
 		var neighbor = undefined;
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];
-			if (entry.neighbor.parent === _number) {
+			if (entry.neighbor.parent === _parentNumber) {
 				neighbor = entry;
 				break;
 			}
