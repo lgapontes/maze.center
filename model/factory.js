@@ -5,7 +5,7 @@ var Room 			= require('./building').getRoom(),
 	axis			= require('./enum').getAxis(),
 	sizes			= require('./enum').getSizes(),
 	thickness		= require('./enum').getThickness(),
-	doorThickness	= require('./enum').getDoorThickness(),
+	block			= require('./enum').getBlock(),
 	logger   		= require('../infrastructure/logger').get(),
 	moment  		= require('moment-timezone'),
 	properties 		= require('../infrastructure/properties').get(),
@@ -115,7 +115,7 @@ BuildingFactory.prototype = {
 			},
 			axis: _axis,
 			door: {
-				width: doorThickness,
+				width: block - (thickness * 2),
 				height: thickness * 2,
 				alignment: temp_alignment
 			}

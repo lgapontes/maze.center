@@ -195,11 +195,15 @@ exports.getMap = function(request, response, next) {
 	
 		/* Places */
 		buildingFactory.newRoom(0)
+			.setSize(sizes.squareW2)
 			.addNeighbor(1,axis.north,alignments.right)
+			.addNeighbor(2,axis.south,alignments.left)
 			.create();
 			
-		buildingFactory.newRoom(1)			
-			.setAlignment(alignments.right)			
+		buildingFactory.newTower(1)			
+			.create();
+			
+		buildingFactory.newRoom(2)			
 			.create();
 		/* Places - END */
 		

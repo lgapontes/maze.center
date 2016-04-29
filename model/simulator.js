@@ -83,69 +83,9 @@ BlockSet.prototype = {
 		return -1;
 	},
 	
-	/* private */
-	getMinX: function(_blocks) {
-		var minX = 10000;
-		_blocks.forEach(function(block){			
-			if (block.x < minX) {
-				minX = block.x;
-			}
-		});
-		return minX;
-	},
-	
-	/* private */
-	getMinY: function(_blocks) {
-		var minY = 10000;
-		_blocks.forEach(function(block){
-			if (block.y < minY) {
-				minY = block.y;
-			}
-		});
-		return minY;
-	},
-	
-	/* private */
-	getMaxX: function(_blocks) {
-		var maxX = 0;
-		_blocks.forEach(function(block){
-			if (block.x > maxX) {
-				maxX = block.x;
-			}
-		});
-		return maxX;
-	},
-	
-	/* private */
-	getMaxY: function(_blocks) {
-		var maxY = 0;
-		_blocks.forEach(function(block){
-			if (block.y > maxY) {
-				maxY = block.y;
-			}
-		});
-		return maxY;
-	},
-	
-	/* private */
-	getMedX: function(_blocks) {
-		var minX = this.getMinX(_blocks);
-		var maxX = this.getMaxX(_blocks);		
-		
-		return parseInt( (minX + maxX) / 2 );
-	},
-	
-	/* private */
-	getMedY: function(_blocks) {
-		var minY = this.getMinY(_blocks);
-		var maxY = this.getMaxY(_blocks);
-		
-		return parseInt( (minY + maxY) / 2 );
-	},
-	
 	getBlockByPosition: function(_blocks,_x,_y) {		
 		
-		for (var i=0; i<_blocks.length; i++) {
+		for (var i=0; i<_blocks.length; i++) {			
 			if (
 				(_blocks[i].x === _x) &&
 				(_blocks[i].y === _y)
@@ -220,9 +160,26 @@ BlockSet.prototype = {
 			numberOfHeightBlocks  = parseInt( _place.size.height / block );
 		} else {
 			/* Tower */
+			numberOfWidthBlocks = 2;
+			numberOfHeightBlocks  = 2;
+			
+			if ( (_neighbor.axis === axis.north) || (_neighbor.axis === axis.south) ) {
+				numberOfWidthBlocks = numberOfWidthBlocks + 1;
+			} else if ( (_neighbor.axis === axis.east) || (_neighbor.axis === axis.west) ) {
+				numberOfHeightBlocks = numberOfHeightBlocks + 1;
+			}						
 		}
 		
 		var blocks = [];
+		
+		/* Get link and add in this block */
+		var parentLink = undefined;
+		var parentLinkIndex = -1;
+		if (_neighbor) {
+			parentLink = new Link(_parentBlock,_neighbor.axis);
+			parentLinkIndex = _parentBlock.links.length;
+			_parentBlock.links.push(parentLink);
+		}
 		
 		/*
 		 * Get the next block from the link.
@@ -262,128 +219,18 @@ BlockSet.prototype = {
 				blocks.push(block);
 			}
 		}
-		
-		/* Get link and add in this block */
-		var parentLink = undefined;
-		var parentLinkIndex = -1;
-		if (_neighbor) {
-			parentLink = new Link(_parentBlock,_neighbor.axis);
-			parentLinkIndex = _parentBlock.links.length;
-			_parentBlock.links.push(parentLink);
-		}
-		
-		/* Add next link in block */
-		if (_neighbor) {
-			var x;
-			var y;
-			
-			if (_neighbor.axis === axis.north) {
-				if (_neighbor.door.alignment === alignments.left) {					
-					x = this.getMinX(blocks);
-					y = this.getMinY(blocks);
-				} else if (_neighbor.door.alignment === alignments.right) {					
-					x = this.getMaxX(blocks);
-					y = this.getMinY(blocks);
-				} else {					
-					/* center */				
-					x = this.getMedX(blocks);
-					y = this.getMinY(blocks);
-				}
-				
-				/* Get link by position */
-				var linkBlock = this.getBlockByPosition(blocks,x,y);
-				/* Set next block in link */
-				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
-				/* Set the same link in next block */
-				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
-				
-			} else if (_neighbor.axis === axis.east) {
-				if (_neighbor.door.alignment === alignments.top) {
-					x = this.getMaxX(blocks);
-					y = this.getMinY(blocks);
-				} else if (_neighbor.door.alignment === alignments.bottom) {
-					x = this.getMaxX(blocks);
-					y = this.getMaxY(blocks);
-				} else {
-					/* center */
-					x = this.getMaxX(blocks);
-					y = this.getMedY(blocks);
-				}
-				
-				/* Get link by position */
-				var linkBlock = this.getBlockByPosition(blocks,x,y);
-				/* Set next block in link */
-				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
-				/* Set the same link in next block */
-				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
-				
-			} else if (_neighbor.axis === axis.south) {
-				if (_neighbor.door.alignment === alignments.left) {
-					x = this.getMinX(blocks);
-					y = this.getMaxY(blocks);
-				} else if (_neighbor.door.alignment === alignments.right) {
-					x = this.getMaxX(blocks);
-					y = this.getMaxY(blocks);
-				} else {
-					/* center */
-					x = this.getMedX(blocks);
-					y = this.getMaxY(blocks);
-				}
-				
-				/* Get link by position */
-				var linkBlock = this.getBlockByPosition(blocks,x,y);
-				/* Set next block in link */
-				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
-				/* Set the same link in next block */
-				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
-				
-			} else if (_neighbor.axis === axis.west) {
-				if (_neighbor.door.alignment === alignments.top) {
-					x = this.getMinX(blocks);
-					y = this.getMinY(blocks);
-				} else if (_neighbor.door.alignment === alignments.bottom) {
-					x = this.getMinX(blocks);
-					y = this.getMaxY(blocks);
-				} else {
-					/* center */
-					x = this.getMinX(blocks);
-					y = this.getMedY(blocks);
-				}
-				
-				/* Get link by position */
-				var linkBlock = this.getBlockByPosition(blocks,x,y);
-				/* Set next block in link */
-				_parentBlock.links[ parentLinkIndex ].next = linkBlock;
-				/* Set the same link in next block */
-				linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
-				
-			}
-			
-		}
+						
+		if (_parentBlock) {			
+			/* Get link by position */
+			var linkBlock = this.getBlockByPosition(blocks,nextPosition.x,nextPosition.y);
+			/* Set next block in link */
+			_parentBlock.links[ parentLinkIndex ].next = linkBlock;
+			/* Set the same link in next block */
+			linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
+		}		
 		
 		return blocks;
 	},
-	
-	/* private 
-	getParentLink: function(_parentBlock,_neighbor) {
-		console.log('>>_parentBlock');
-		console.log(_parentBlock);
-		console.log('>>_neighbor');
-		console.log(_neighbor);
-		
-		var link = undefined;
-		
-		if (_parentBlock) {
-			for(var i=0; i<_parentBlock.links.length; i++) {
-				if (_parentBlock.links[i].axis === _neighbor.axis) {
-					link = new Link(_parentBlock, _parentBlock.links[i].axis);
-				}
-			}
-		}
-		
-		return link;
-	},
-	*/
 	
 	/* private */
 	calculateNextBlockPosition: function(_parentBlock, _parentLink) {		
@@ -417,7 +264,6 @@ BlockSet.prototype = {
 	
 	/* private */
 	calculateFirstBlockPosition: function(_place,_neighbor,_nextPosition,_numberOfWidthBlocks,_numberOfHeightBlocks) {
-		
 		var x;
 		var y;
 		
@@ -426,14 +272,14 @@ BlockSet.prototype = {
 			if (_neighbor.axis === axis.north) {
 				if (_place.alignments === alignments.left) {
 					x = _nextPosition.x - _numberOfWidthBlocks;
-					y = _nextPosition.y - _numberOfHeightBlocks;
+					y = _nextPosition.y - _numberOfHeightBlocks + 1;
 				} else if (_place.alignments === alignments.right) {
 					x = _nextPosition.x;
-					y = _nextPosition.y - _numberOfHeightBlocks;
+					y = _nextPosition.y - _numberOfHeightBlocks + 1;
 				} else {
 					x = _nextPosition.x - parseInt( _numberOfWidthBlocks / 2 );
-					y = _nextPosition.y - _numberOfHeightBlocks;
-				}
+					y = _nextPosition.y - _numberOfHeightBlocks + 1;
+				}				
 			} else if (_neighbor.axis === axis.east) {
 				if (_place.alignments === alignments.top) {
 					x = _nextPosition.x;
@@ -456,16 +302,16 @@ BlockSet.prototype = {
 				} else {
 					x = _nextPosition.x - parseInt( _numberOfWidthBlocks / 2 );
 					y = _nextPosition.y;
-				}
+				}				
 			} else if (_neighbor.axis === axis.west) {
 				if (_place.alignments === alignments.top) {
-					x = _nextPosition.x - _numberOfWidthBlocks;
+					x = _nextPosition.x - _numberOfWidthBlocks + 1;
 					y = _nextPosition.y - _numberOfHeightBlocks;
 				} else if (_place.alignments === alignments.bottom) {
-					x = _nextPosition.x - _numberOfWidthBlocks;
+					x = _nextPosition.x - _numberOfWidthBlocks + 1;
 					y = _nextPosition.y;
 				} else {
-					x = _nextPosition.x - _numberOfWidthBlocks;
+					x = _nextPosition.x - _numberOfWidthBlocks + 1;
 					y = _nextPosition.y - parseInt( _numberOfHeightBlocks / 2 );
 				}
 			}
@@ -473,7 +319,7 @@ BlockSet.prototype = {
 		} else {
 			x = _nextPosition.x;
 			y = _nextPosition.y;
-		}		
+		}
 		
 		return {
 			x: x,

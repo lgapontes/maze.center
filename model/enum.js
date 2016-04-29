@@ -5,7 +5,6 @@ var block = parseInt(properties.get('graphics.block'));
 
 /* Defines */
 var thickness = parseInt(properties.get('graphics.thickness'));
-var doorThickness = block;
 var version = properties.get('maze.version');
 
 /* Types */
@@ -18,6 +17,10 @@ var types = {
 var sizes = {
 	square: {
 		width: block,
+		height: block
+	},
+	squareW2: {
+		width: block * 2,
 		height: block
 	}
 };
@@ -58,10 +61,10 @@ exports.getThickness = function() {
     return thickness;
 };
 
-exports.getDoorThickness = function() {
-    return doorThickness;
-};
-
 exports.getVersion = function() {
     return version;
+};
+
+exports.getBlock = function() {
+    return block;
 };

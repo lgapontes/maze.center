@@ -180,7 +180,7 @@ Door.prototype = {
 		}
 	},
 	
-	draw: function() {		
+	draw: function() {
 		ctx.beginPath();
 		ctx.fillStyle = floorColor;
 		this.zone.rect();
