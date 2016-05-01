@@ -118,6 +118,8 @@ exports.getRamdomMap = function(request, response, next) {
 			.addNeighbor(1,previousAxis,random.randomAxis(previousAxis))
 			.create();
 			
+		// Atencao, o alignment do vizinho e do place deve ser o mesmo...	
+		
 		/* Create places by level */
 		for (var i=0;i<level;i++) {
 			var type = random.randomTypes();
@@ -191,19 +193,15 @@ exports.getMap = function(request, response, next) {
 	trycatch(function() {
 		
 		/* Create factory */
-		var buildingFactory = new BuildingFactory(1);	
-	
-		/* Places */
-		buildingFactory.newRoom(0)
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
 			.setSize(sizes.squareW2)
-			.addNeighbor(1,axis.north,alignments.right)
-			.addNeighbor(2,axis.south,alignments.left)
+			.addNeighbor(1,axis.north,alignments.lest)
 			.create();
 			
-		buildingFactory.newTower(1)			
-			.create();
-			
-		buildingFactory.newRoom(2)			
+		buildingFactory.newRoom(1)			
+			.setAlignment(alignments.left)
 			.create();
 		/* Places - END */
 		

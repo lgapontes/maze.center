@@ -2,7 +2,7 @@ var properties 	= require('../infrastructure/properties').get(),
 	axis		= require('./enum').getAxis(),
 	alignments	= require('./enum').getAlignments(),
 	types		= require('./enum').getTypes();
-
+	
 var staticFirstBlockPosition = {
 	x: 1000,
 	y: 1000
@@ -38,7 +38,7 @@ function Block(_number,_x,_y) {
 		south: false,
 		west: false
 	};
-	this.links = [];
+	this.links = [];	
 };
 
 Block.prototype = {
@@ -56,10 +56,16 @@ Block.prototype = {
 	}
 };
 	
-function BlockSet(_place,_neighbor,_parentBlock) {
-	this.blocks = [];
+function BlockSet(_place,_neighbor,_parentBlock, _DEBUG) {
+	this.DEBUG = false;
+	if (_DEBUG) {
+		this.DEBUG = _DEBUG;
+	}
 	
-	this.setBlocks(_place,_neighbor,_parentBlock);
+	this.blocks = [];
+	this.placeNumber = undefined;
+	
+	this.setBlocks(_place,_neighbor,_parentBlock);	
 };
 
 BlockSet.prototype = {
@@ -74,12 +80,133 @@ BlockSet.prototype = {
 		return false;
 	},
 	
-	getIndexParentBlock: function(_neighbor) {
-		for (var i=0; i<this.blocks.length; i++) {
-			if ( this.blocks[i].isParentBlock(_neighbor) ) {
-				return i;
+	getMinX: function() {
+		var minX = 10000;
+		this.blocks.forEach(function(block){			
+			if (block.x < minX) {
+				minX = block.x;
 			}
+		});
+		return minX;
+	},
+		
+	getMinY: function() {
+		var minY = 10000;
+		this.blocks.forEach(function(block){
+			if (block.y < minY) {
+				minY = block.y;
+			}
+		});
+		return minY;
+	},
+	
+	getMaxX: function() {
+		var maxX = 0;
+		this.blocks.forEach(function(block){
+			if (block.x > maxX) {
+				maxX = block.x;
+			}
+		});
+		return maxX;
+	},
+	
+	getMaxY: function() {
+		var maxY = 0;
+		this.blocks.forEach(function(block){
+			if (block.y > maxY) {
+				maxY = block.y;
+			}
+		});
+		return maxY;
+	},
+	
+	getMedX: function() {
+		var minX = this.getMinX();
+		var maxX = this.getMaxX();		
+		
+		return parseInt( (minX + maxX) / 2 );
+	},
+	
+	getMedY: function() {
+		var minY = this.getMinY();
+		var maxY = this.getMaxY();
+		
+		return parseInt( (minY + maxY) / 2 );
+	},
+	
+	getIndexParentBlock: function(_neighbor) {
+		
+		if (_neighbor && _neighbor.neighbor.parent === this.placeNumber) {
+		
+			var x;
+			var y;
+			
+			if (_neighbor.axis === axis.north) {
+				if (_neighbor.door.alignment === alignments.left) {					
+					x = this.getMinX();
+					y = this.getMinY();
+				} else if (_neighbor.door.alignment === alignments.right) {					
+					x = this.getMaxX();
+					y = this.getMinY();
+				} else {					
+					/* center */				
+					x = this.getMedX();
+					y = this.getMinY();
+				}
+				
+			} else if (_neighbor.axis === axis.east) {
+				if (_neighbor.door.alignment === alignments.top) {
+					x = this.getMaxX();
+					y = this.getMinY();
+				} else if (_neighbor.door.alignment === alignments.bottom) {
+					x = this.getMaxX();
+					y = this.getMaxY();
+				} else {
+					/* center */
+					x = this.getMaxX();
+					y = this.getMedY();
+				}
+				
+			} else if (_neighbor.axis === axis.south) {
+				if (_neighbor.door.alignment === alignments.left) {
+					x = this.getMinX();
+					y = this.getMaxY();
+				} else if (_neighbor.door.alignment === alignments.right) {
+					x = this.getMaxX();
+					y = this.getMaxY();
+				} else {
+					/* center */
+					x = this.getMedX();
+					y = this.getMaxY();
+				}
+				
+			} else if (_neighbor.axis === axis.west) {
+				if (_neighbor.door.alignment === alignments.top) {
+					x = this.getMinX();
+					y = this.getMinY();
+				} else if (_neighbor.door.alignment === alignments.bottom) {
+					x = this.getMinX();
+					y = this.getMaxY();
+				} else {
+					/* center */
+					x = this.getMinX();
+					y = this.getMedY();
+				}
+				
+			}
+			
+			/* Search index */
+			for (var i=0; i<this.blocks.length; i++) {			
+				if (
+					(this.blocks[i].x === x) &&
+					(this.blocks[i].y === y)
+				) {
+					return i
+				}
+			}
+			
 		}
+		
 		return -1;
 	},
 	
@@ -109,7 +236,7 @@ BlockSet.prototype = {
 		 *	OR
 		 *		- The alignment of this place do not be 'center';
 		 *		- The door between parent and this place must have alignment 'center';
-		 *		- The linkable axis must be different from the axis of the door between parent and this place.
+		 *		- The linkable axis must be different from the axis of the door between parent and this place.		 
 		 *
 		 */		
 		this.blocks.forEach(function(block){
@@ -142,6 +269,13 @@ BlockSet.prototype = {
 			}
 		});
 		
+		this.placeNumber = this.blocks[0].placeNumber;
+		
+		if (this.DEBUG) {
+			console.log();			
+			console.log('blocks:');
+			console.log(this.blocks);
+		}
 	},
 	
 	/* private */
@@ -156,8 +290,15 @@ BlockSet.prototype = {
 		
 		if (_place.type === types.room) {
 			/* Room */
+			
 			numberOfWidthBlocks = parseInt( _place.size.width / block );
-			numberOfHeightBlocks  = parseInt( _place.size.height / block );
+			numberOfHeightBlocks = parseInt( _place.size.height / block );
+			
+			/* According to the alignment, you must add blocks. */
+			var adjustments = this.addBlocksByAlignment(_parentBlock, _neighbor, numberOfWidthBlocks, numberOfHeightBlocks);
+			numberOfWidthBlocks = adjustments.numberOfWidthBlocks;
+			numberOfHeightBlocks = adjustments.numberOfHeightBlocks;
+			
 		} else {
 			/* Tower */
 			numberOfWidthBlocks = 2;
@@ -205,8 +346,8 @@ BlockSet.prototype = {
 				if (_parentBlock === undefined) {
 					block = new Block(
 						_place.number,
-						staticFirstBlockPosition.x,
-						staticFirstBlockPosition.y
+						staticFirstBlockPosition.x + w,
+						staticFirstBlockPosition.y + h
 					);
 				} else {
 					block = new Block(
@@ -219,17 +360,85 @@ BlockSet.prototype = {
 				blocks.push(block);
 			}
 		}
-						
+		
 		if (_parentBlock) {			
 			/* Get link by position */
 			var linkBlock = this.getBlockByPosition(blocks,nextPosition.x,nextPosition.y);
+			
 			/* Set next block in link */
 			_parentBlock.links[ parentLinkIndex ].next = linkBlock;
+			
 			/* Set the same link in next block */
 			linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
 		}		
 		
+		if (this.DEBUG) {
+			console.log();
+			console.log('BlockSet.getBlocksBySize');
+			console.log('numberOfWidthBlocks: ' + numberOfWidthBlocks);
+			console.log('numberOfHeightBlocks: ' + numberOfHeightBlocks);			
+			console.log('_parentBlock:');
+			console.log(_parentBlock);
+			console.log('parentLink:');
+			console.log(parentLink);
+			console.log('nextPosition:');
+			console.log(nextPosition);
+			console.log('firstBlockPosition:');
+			console.log(firstBlockPosition);			
+		}
+		
 		return blocks;
+	},
+	
+	/* private */
+	/*
+	 * Depending on the alignment of port or place, you may need to add blocks in the count.	 
+	 */
+	addBlocksByAlignment: function(_parentBlock, _neighbor, _numberOfWidthBlocks, _numberOfHeightBlocks) {
+		var numberOfWidthBlocks = _numberOfWidthBlocks;
+		var numberOfHeightBlocks = _numberOfHeightBlocks;
+		
+		if (this.DEBUG && _parentBlock) {
+			console.log();
+			console.log('BlockSet.addBlocksByAlignment');
+			console.log('_parentBlock.numberOfBlocks.numberOfWidthBlocks: ' + _parentBlock.numberOfBlocks.numberOfWidthBlocks);
+			console.log('(_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2): ' + (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2));
+			console.log();
+			console.log('_numberOfWidthBlocks: ' + _numberOfWidthBlocks);
+			console.log('(_numberOfWidthBlocks % 2): ' + (_numberOfWidthBlocks % 2));			
+			console.log();
+			console.log('_parentBlock.numberOfBlocks.numberOfHeightBlocks: ' + _parentBlock.numberOfBlocks.numberOfHeightBlocks);
+			console.log('(_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2): ' + (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2));			
+			console.log();
+			console.log('_numberOfHeightBlocks: ' + _numberOfHeightBlocks);
+			console.log('(_numberOfHeightBlocks % 2): ' + (_numberOfHeightBlocks % 2));			
+		}
+		
+		if (_neighbor) {			
+			if (_neighbor.door.alignment === alignments.center) {
+				if ( ( (_neighbor.axis === axis.north) || _neighbor.axis === axis.south ) ) {				
+					if ( (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2) !== (_numberOfWidthBlocks % 2) ) {					
+						numberOfWidthBlocks = numberOfWidthBlocks + 1;					
+					}				
+				} else if ( ( (_neighbor.axis === axis.east) || _neighbor.axis === axis.west ) ) {				
+					if ( (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2) !== (_numberOfHeightBlocks % 2) ) {
+						numberOfHeightBlocks = numberOfHeightBlocks + 1;
+					}				
+				}						
+			}			
+		}
+		
+		if (this.DEBUG) {
+			console.log();
+			console.log('BlockSet.addBlocksByAlignment - part 2');			
+			console.log('numberOfWidthBlocks: ' + numberOfWidthBlocks);			
+			console.log('numberOfHeightBlocks: ' + numberOfHeightBlocks);
+		}
+		
+		return {
+			numberOfWidthBlocks: numberOfWidthBlocks,
+			numberOfHeightBlocks: numberOfHeightBlocks
+		};
 	},
 	
 	/* private */
@@ -244,15 +453,43 @@ BlockSet.prototype = {
 			if (_parentLink.axis === axis.north) {
 				x = parent_x;
 				y = parent_y - 1;
+				
+				/*
+				if ( (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2) === 0 ) {
+					x = x + 1;
+				}
+				*/
+				
 			} else if (_parentLink.axis === axis.east) {
 				x = parent_x + 1;
 				y = parent_y;
+				
+				/*
+				if ( (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2) === 0 ) {
+					y = y + 1;
+				}
+				*/
+				
 			} else if (_parentLink.axis === axis.south) {
 				x = parent_x;
 				y = parent_y + 1;
+				
+				/*
+				if ( (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2) === 0 ) {
+					x = x + 1;
+				}
+				*/
+				
 			} else if (_parentLink.axis === axis.west) {
 				x = parent_x - 1;
 				y = parent_y
+				
+				/*
+				if ( (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2) === 0 ) {
+					y = y + 1;
+				}
+				*/
+				
 			}
 		}
 		
@@ -270,49 +507,69 @@ BlockSet.prototype = {
 		if (_neighbor) {
 			
 			if (_neighbor.axis === axis.north) {
-				if (_place.alignments === alignments.left) {
-					x = _nextPosition.x - _numberOfWidthBlocks;
-					y = _nextPosition.y - _numberOfHeightBlocks + 1;
-				} else if (_place.alignments === alignments.right) {
+				if (_place.alignment === alignments.left) {
+					x = _nextPosition.x - _numberOfWidthBlocks + 1;
+					y = _nextPosition.y - _numberOfHeightBlocks + 1;					
+				} else if (_place.alignment === alignments.right) {
 					x = _nextPosition.x;
 					y = _nextPosition.y - _numberOfHeightBlocks + 1;
 				} else {
 					x = _nextPosition.x - parseInt( _numberOfWidthBlocks / 2 );
 					y = _nextPosition.y - _numberOfHeightBlocks + 1;
+					
+					if ( (_numberOfWidthBlocks % 2) === 0 ) {
+						x = x + 1;
+					}
+					
 				}				
 			} else if (_neighbor.axis === axis.east) {
-				if (_place.alignments === alignments.top) {
+				if (_place.alignment === alignments.top) {
 					x = _nextPosition.x;
-					y = _nextPosition.y - _numberOfHeightBlocks;
-				} else if (_place.alignments === alignments.bottom) {
+					y = _nextPosition.y - _numberOfHeightBlocks + 1;
+				} else if (_place.alignment === alignments.bottom) {
 					x = _nextPosition.x;
 					y = _nextPosition.y;
 				} else {
 					x = _nextPosition.x;
 					y = _nextPosition.y - parseInt( _numberOfHeightBlocks / 2 );
+					
+					if ( (_numberOfHeightBlocks % 2) === 0 ) {
+						y = y + 1;
+					}
+					
 				}
 				
 			} else if (_neighbor.axis === axis.south) {
-				if (_place.alignments === alignments.left) {
-					x = _nextPosition.x - _numberOfWidthBlocks;
+				if (_place.alignment === alignments.left) {
+					x = _nextPosition.x - _numberOfWidthBlocks + 1;
 					y = _nextPosition.y;
-				} else if (_place.alignments === alignments.right) {
+				} else if (_place.alignment === alignments.right) {
 					x = _nextPosition.x;
 					y = _nextPosition.y;
 				} else {
 					x = _nextPosition.x - parseInt( _numberOfWidthBlocks / 2 );
 					y = _nextPosition.y;
+					
+					if ( (_numberOfWidthBlocks % 2) === 0 ) {
+						x = x + 1;
+					}
+					
 				}				
 			} else if (_neighbor.axis === axis.west) {
-				if (_place.alignments === alignments.top) {
+				if (_place.alignment === alignments.top) {
 					x = _nextPosition.x - _numberOfWidthBlocks + 1;
-					y = _nextPosition.y - _numberOfHeightBlocks;
-				} else if (_place.alignments === alignments.bottom) {
+					y = _nextPosition.y - _numberOfHeightBlocks + 1;
+				} else if (_place.alignment === alignments.bottom) {
 					x = _nextPosition.x - _numberOfWidthBlocks + 1;
 					y = _nextPosition.y;
 				} else {
 					x = _nextPosition.x - _numberOfWidthBlocks + 1;
 					y = _nextPosition.y - parseInt( _numberOfHeightBlocks / 2 );
+					
+					if ( (_numberOfHeightBlocks % 2) === 0 ) {
+						y = y + 1;
+					}
+					
 				}
 			}
 			
@@ -335,7 +592,7 @@ function Result(_canAdd,_blockSet) {
 };
 
 function Simulator() {
-	this.blockSets = [];
+	this.blockSets = [];	
 };
 
 Simulator.prototype = {
@@ -345,9 +602,27 @@ Simulator.prototype = {
 	 * _place: Place to create the Blockset;
 	 * _neighbor: Neighbor between parent and the this place.
 	 */
-	add: function(_place, _neighbor) {		
-		var parentBlock = this.getParentBlock(_neighbor);		
-		var blockSet = new BlockSet(_place,_neighbor,parentBlock);
+	add: function(_place, _neighbor, _DEBUG) {
+		
+		var DEBUG = false;
+		if (_DEBUG) {
+			DEBUG = _DEBUG;
+		}
+		
+		var parentBlock = this.getParentBlock(_neighbor,DEBUG);
+		
+		if (DEBUG) {
+			console.log();
+			console.log('Simulator.add');			
+			console.log('_place:');
+			console.log(_place);
+			console.log('_neighbor:');
+			console.log(_neighbor);			
+			console.log('parentBlock:');
+			console.log(parentBlock);
+		}
+		
+		var blockSet = new BlockSet(_place,_neighbor,parentBlock, DEBUG);
 		
 		/* Checks collisions */
 		if ( ! this.checkCollision(blockSet) ) {			
@@ -356,6 +631,66 @@ Simulator.prototype = {
 		}
 		
 		return new Result(false,undefined);
+	},
+	
+	/*
+	 * Get block by position
+	 */
+	getBlockByPosition: function(_x, _y) {
+		for(var i=0; i<this.blockSets.length; i++) {
+			var blockSet = this.blockSets[i];
+			
+			for (var j=0; j<blockSet.blocks.length; j++) {
+				var block = blockSet.blocks[j];
+				
+				if ( (block.x === _x) && (block.y === _y) ) {
+					return block;
+				}
+			}
+			
+		}
+		return undefined;
+	},
+	
+	/* private */
+	/*
+	 * Get number of width and height blocks by parent block
+	 */
+	setNumberOfBlocks: function(_parentBlock,DEBUG) {
+		var numberOfWidthBlocks = 0;
+		var numberOfHeightBlocks = 0;
+		
+		if (_parentBlock) {
+			this.blockSets.forEach(function(blockSet){
+				if (blockSet.placeNumber === _parentBlock.placeNumber) {
+	
+					var minX = blockSet.getMinX();
+					var minY = blockSet.getMinY();
+					var maxX = blockSet.getMaxX();
+					var maxY = blockSet.getMaxY();
+					
+					var numberOfWidthBlocks = maxX - minX + 1;
+					var numberOfHeightBlocks = maxY - minY + 1;
+					
+					_parentBlock.numberOfBlocks = {
+						numberOfWidthBlocks: numberOfWidthBlocks,
+						numberOfHeightBlocks: numberOfHeightBlocks
+					};
+					
+					if (DEBUG) {
+						console.log();						
+						console.log('Simulator.setNumberOfBlocks');
+						console.log('minX: ' + minX);
+						console.log('minY: ' + minY);
+						console.log('maxX: ' + maxX);
+						console.log('maxY: ' + maxY);
+						console.log('numberOfWidthBlocks: ' + numberOfWidthBlocks);
+						console.log('numberOfHeightBlocks: ' + numberOfHeightBlocks);
+					}
+					
+				}
+			});
+		}
 	},
 	
 	/* private */
@@ -372,15 +707,48 @@ Simulator.prototype = {
 	/*
 	 * Returns the parent block associated with neighbor.		
 	 */
-	getParentBlock: function(_neighbor) {
+	getParentBlock: function(_neighbor,DEBUG) {
 		for (var i=0; i<this.blockSets.length; i++) {
 			var index = this.blockSets[i].getIndexParentBlock(_neighbor);
-			if (index > -1) {
-				return this.blockSets[i].blocks[index];
+			if (index > -1) {				
+				var parentBlock = this.blockSets[i].blocks[index];
+				this.setNumberOfBlocks(parentBlock,DEBUG);
+				return parentBlock;
 			}
 		}
 		return undefined;
+	},
+
+	/* Print matrix of blocks - to DEBUG */
+	printMatrix: function() {
+	
+		console.log('Simulator.printMatrix');
+		
+		var min = 990;
+		var max = 1010;	
+			
+		for (var y=min; y<= max; y++) {
+			var line = '';
+			for (var x=min; x<= max; x++) {			
+				
+				var block = this.getBlockByPosition(x,y);
+				
+				if (block) {
+					if ( block.placeNumber < 10 ) {
+						line = line + '0' + block.placeNumber + ' ';
+					} else {
+						line = line + block.placeNumber + ' ';
+					}
+				} else {
+					line = line + '__ ';
+				}
+						
+			}
+			console.log( line );
+			line = '';
+		}	
 	}
+	
 };
 
 exports.getSimulator = function() {
