@@ -288,13 +288,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -306,13 +300,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1000,
-				y: 999,
-				linkable: {
-					north: false,
-					east: false,
-					south: false,
-					west: false
-				},
+				y: 999,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -353,13 +341,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -371,13 +353,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1000,
-				y: 999,
-				linkable: { 
-					north: false, 
-					east: false, 
-					south: false, 
-					west: false
-				},
+				y: 999,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -417,13 +393,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -435,13 +405,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1000,
-				y: 999,
-				linkable: { 
-					north: true, 
-					east: true, 
-					south: false, 
-					west: true
-				},
+				y: 999,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -481,13 +445,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -499,13 +457,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1000,
-				y: 1001,
-				linkable: {
-					north: false,
-					east: false,
-					south: false,
-					west: false
-				},
+				y: 1001,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -545,13 +497,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -563,13 +509,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1000,
-				y: 1001,
-				linkable: { 
-					north: false, 
-					east: false, 
-					south: false, 
-					west: false
-				},
+				y: 1001,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -609,13 +549,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -627,13 +561,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1000,
-				y: 1001,
-				linkable: { 
-					north: false, 
-					east: false, 
-					south: false, 
-					west: false
-				},
+				y: 1001,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -673,13 +601,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -691,13 +613,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1001,
-				y: 1000,
-				linkable: {
-					north: false,
-					east: false,
-					south: false,
-					west: false
-				},
+				y: 1000,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -737,13 +653,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -755,13 +665,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 1001,
-				y: 1000,
-				linkable: { 
-					north: false, 
-					east: false, 
-					south: false, 
-					west: false
-				},
+				y: 1000,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -801,13 +705,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -819,13 +717,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 999,
-				y: 1000,
-				linkable: {
-					north: false,
-					east: false,
-					south: false,
-					west: false
-				},
+				y: 1000,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -865,13 +757,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{ 
 				parent: 0, 
 				next: 1,
@@ -883,13 +769,7 @@ describe("Place Simulations", function(){
 			{
 				placeNumber: 1,
 				x: 999,
-				y: 1000,
-				linkable: { 
-					north: false, 
-					east: false, 
-					south: false, 
-					west: false
-				},
+				y: 1000,				
 				links: [{
 					parent: 0,
 					next: 1,
@@ -929,24 +809,12 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
@@ -972,13 +840,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -987,26 +849,14 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1000,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1046,24 +896,12 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1074,13 +912,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1001,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1120,13 +952,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1135,26 +961,14 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1000,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1163,13 +977,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: []
 		}];
 		
@@ -1205,13 +1013,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1220,26 +1022,14 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1000,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1279,24 +1069,12 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1307,13 +1085,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1001,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1353,13 +1125,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1368,26 +1134,14 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1000,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1396,13 +1150,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: []
 		}];
 		
@@ -1438,24 +1186,12 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1466,13 +1202,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1002,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1512,24 +1242,12 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1540,13 +1258,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1002,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1586,24 +1298,12 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1614,13 +1314,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1002,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1660,13 +1354,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1675,26 +1363,14 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1734,13 +1410,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1749,26 +1419,14 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1808,13 +1466,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1823,26 +1475,14 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1882,13 +1522,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1899,24 +1533,12 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 1000,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1956,13 +1578,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -1973,13 +1589,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1000,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -1988,13 +1598,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: []
 		}];
 		
@@ -2030,13 +1634,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2047,24 +1645,12 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 1000,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,		
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2073,13 +1659,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: []
 		}];
 		
@@ -2115,13 +1695,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2132,24 +1706,12 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 1000,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2189,13 +1751,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2206,13 +1762,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1000,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2221,13 +1771,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: []
 		}];
 		
@@ -2263,13 +1807,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2280,24 +1818,12 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 1000,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2306,13 +1832,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 1001,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1001,			
 			links: []
 		}];
 		
@@ -2348,13 +1868,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2365,13 +1879,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2380,13 +1888,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1002,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: []
 		}];
 		
@@ -2422,13 +1924,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2439,13 +1935,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2454,13 +1944,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1002,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: []
 		}];
 		
@@ -2496,13 +1980,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2513,13 +1991,7 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2528,13 +2000,7 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1002,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: []
 		}];
 		
@@ -2570,13 +2036,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2587,24 +2047,12 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 998,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 999,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2644,13 +2092,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2661,24 +2103,12 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 998,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 999,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2718,13 +2148,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2735,24 +2159,12 @@ describe("Place Simulations", function(){
 		var expected1 = [{
 			placeNumber: 1,
 			x: 998,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 999,
-			y: 1000,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 1000,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2792,13 +2204,7 @@ describe("Place Simulations", function(){
 		var expected0 = [{
 			placeNumber: 0,
 			x: 1000,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: [{
 					parent: 0,
 					next: 1,
@@ -2807,59 +2213,29 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 0,
 			x: 1001,
-			y: 1000,
-			linkable: {
-				north: true, 
-				east: true, 
-				south: true, 
-				west: true
-			},
+			y: 1000,			
 			links: []
 		}];
 		
 		var expected1 = [{
 			placeNumber: 1,
 			x: 999,
-			y: 998,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 998,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 999,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 1000,
-			y: 998,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 998,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 1000,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: [{
 				parent: 0,
 				next: 1,
@@ -2868,24 +2244,12 @@ describe("Place Simulations", function(){
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 998,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 998,			
 			links: []
 		},{
 			placeNumber: 1,
 			x: 1001,
-			y: 999,
-			linkable: {
-				north: false, 
-				east: false, 
-				south: false, 
-				west: false
-			},
+			y: 999,			
 			links: []
 		}];
 		
@@ -2894,6 +2258,176 @@ describe("Place Simulations", function(){
 		buildingFactory.newRoom(0)			
 			.setSize(sizes.squareW2)
 			.addNeighbor(1,axis.north,alignments.left)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);		
+			
+		buildingFactory.newTower(1)			
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);		
+		
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 Tower North Right",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 998,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 998,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 998,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)			
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);		
+			
+		buildingFactory.newTower(1)			
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+		
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 Tower North center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 998,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 998,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 998,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 998,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)			
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.center)
 			.create();
 			
 		var place0 = buildingFactory.getPlace(0);		
@@ -2928,39 +2462,30 @@ function equals(_actual,_expected) {
 		
 		if (expected.placeNumber === actual.placeNumber) {
 		
-			if ( (expected.x === actual.x) && (expected.y === actual.y) ) {				
-				
-				if (
-					expected.linkable.north === actual.linkable.north &&
-					expected.linkable.east  === actual.linkable.east  &&
-					expected.linkable.south === actual.linkable.south &&
-					expected.linkable.west  === actual.linkable.west
-				) {
+			if ( (expected.x === actual.x) && (expected.y === actual.y) ) {
 					
-					if (expected.links.lenght === actual.links.lenght) {
-						
-						if (expected.links.length > 0) {
-							for (var j=0; j<expected.links.length; j++) {						
-								if (
-									expected.links[j].parent === actual.links[j].parent.placeNumber &&
-									expected.links[j].next === actual.links[j].next.placeNumber &&
-									expected.links[j].axis === actual.links[j].axis
-								) {									
-									countOk = countOk + 1;
-								} else {
-									return false;
-								}
+				if (expected.links.lenght === actual.links.lenght) {
+					
+					if (expected.links.length > 0) {
+						for (var j=0; j<expected.links.length; j++) {						
+							if (
+								expected.links[j].parent === actual.links[j].parent.placeNumber &&
+								expected.links[j].next === actual.links[j].next.placeNumber &&
+								expected.links[j].axis === actual.links[j].axis
+							) {									
+								countOk = countOk + 1;
+							} else {
+								return false;
 							}
-						} else {
-							countOk = countOk + 1;
 						}
-						
-					} else {						
-						return false;
+					} else {
+						countOk = countOk + 1;
 					}
-				} else {					
+					
+				} else {						
 					return false;
 				}
+				
 			} else {				
 				return false;
 			}

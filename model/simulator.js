@@ -13,31 +13,12 @@ function Link(_parent, _axis) {
 	this.next = undefined;
 	this.axis = _axis;
 };
-	
-/*
- *               
- *                   linkable.north
- *			        _______|______
- *			       |              |
- *			       |              |
- *	linkable.west -|    Block     |- linkable.east
- *			       |              |
- *			       |______________|
- *                         |
- *                   linkable.south
- *
- */
 
 function Block(_number,_x,_y) {
 	this.placeNumber = _number;
 	this.x = _x;
 	this.y = _y;
-	this.linkable = {
-		north: false,
-		east: false,
-		south: false,
-		west: false
-	};
+	
 	this.links = [];	
 };
 
@@ -230,45 +211,6 @@ BlockSet.prototype = {
 		
 		this.blocks = this.getBlocksBySize(_place,_neighbor,_parentBlock);
 		
-		/*
-		 *	To be linkable, the statements below must be true:
-		 *		- Neighbor is undefined
-		 *	OR
-		 *		- The alignment of this place do not be 'center';
-		 *		- The door between parent and this place must have alignment 'center';
-		 *		- The linkable axis must be different from the axis of the door between parent and this place.		 
-		 *
-		 */		
-		this.blocks.forEach(function(block){
-			if (_neighbor === undefined) {
-				block.linkable.north = true;
-				block.linkable.east = true;
-				block.linkable.south = true;
-				block.linkable.west = true;
-			} else if (
-					(_place.alignment !== alignments.center) &&
-					(_neighbor.door.alignment === alignments.center)
-				) {
-					if (_neighbor.axis === axis.north) {
-						block.linkable.north = true;
-						block.linkable.east = true;						
-						block.linkable.west = true;
-					} else if (_neighbor.axis === axis.east) {
-						block.linkable.north = true;
-						block.linkable.east = true;
-						block.linkable.south = true;						
-					} else if (_neighbor.axis === axis.south) {						
-						block.linkable.east = true;
-						block.linkable.south = true;
-						block.linkable.west = true;
-					} else if (_neighbor.axis === axis.west) {
-						block.linkable.north = true;						
-						block.linkable.south = true;
-						block.linkable.west = true;
-					}
-			}
-		});
-		
 		this.placeNumber = this.blocks[0].placeNumber;
 		
 		if (this.DEBUG) {
@@ -306,9 +248,18 @@ BlockSet.prototype = {
 			
 			if ( (_neighbor.axis === axis.north) || (_neighbor.axis === axis.south) ) {
 				numberOfWidthBlocks = numberOfWidthBlocks + 1;
+				
+				if ( (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2) === 0 ) {
+					numberOfWidthBlocks = numberOfWidthBlocks + 1;
+				}
+				
 			} else if ( (_neighbor.axis === axis.east) || (_neighbor.axis === axis.west) ) {
 				numberOfHeightBlocks = numberOfHeightBlocks + 1;
-			}						
+				
+				if ( (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2) === 0 ) {
+					numberOfHeightBlocks = numberOfHeightBlocks + 1;
+				}
+			}
 		}
 		
 		var blocks = [];
