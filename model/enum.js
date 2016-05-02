@@ -22,6 +22,10 @@ var sizes = {
 	squareW2: {
 		width: block * 2,
 		height: block
+	},
+	squareH2: {
+		width: block,
+		height: block * 2
 	}
 };
 
