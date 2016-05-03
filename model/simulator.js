@@ -44,6 +44,7 @@ function BlockSet(_place,_neighbor,_parentBlock, _DEBUG) {
 	}
 	
 	this.blocks = [];
+	this.parentBlock = undefined;
 	this.placeNumber = undefined;
 	
 	this.setBlocks(_place,_neighbor,_parentBlock);	
@@ -52,8 +53,8 @@ function BlockSet(_place,_neighbor,_parentBlock, _DEBUG) {
 BlockSet.prototype = {
 	checkCollision: function(_blockSet) {
 		for (var i=0; i<this.blocks.length; i++) {
-			for (var j=0; j<_blockSet.length; j++) {
-				if ( this.blocks[i].checkCollision( _blockSet[j] ) ) {
+			for (var j=0; j<_blockSet.blocks.length; j++) {
+				if ( this.blocks[i].checkCollision( _blockSet.blocks[j] ) ) {
 					return true;
 				}
 			}
@@ -270,6 +271,8 @@ BlockSet.prototype = {
 		if (_neighbor) {
 			parentLink = new Link(_parentBlock,_neighbor.axis);
 			parentLinkIndex = _parentBlock.links.length;
+			
+			/* Add link in parent block */
 			_parentBlock.links.push(parentLink);
 		}
 		
@@ -321,15 +324,18 @@ BlockSet.prototype = {
 			
 			/* Set the same link in next block */
 			linkBlock.links.push(_parentBlock.links[ parentLinkIndex ]);
-		}		
+			
+			/* Set parentBlock */
+			this.parentBlock = _parentBlock;
+		}
 		
 		if (this.DEBUG) {
 			console.log();
 			console.log('BlockSet.getBlocksBySize');
 			console.log('numberOfWidthBlocks: ' + numberOfWidthBlocks);
 			console.log('numberOfHeightBlocks: ' + numberOfHeightBlocks);			
-			console.log('_parentBlock:');
-			console.log(_parentBlock);
+			console.log('this.parentBlock:');
+			console.log(this.parentBlock);
 			console.log('parentLink:');
 			console.log(parentLink);
 			console.log('nextPosition:');
@@ -616,12 +622,65 @@ Simulator.prototype = {
 		var blockSet = new BlockSet(_place,_neighbor,parentBlock, DEBUG);
 		
 		/* Checks collisions */
-		if ( ! this.checkCollision(blockSet) ) {			
+		if ( ! this.checkCollision(blockSet) ) {
+			
+			/* There was no collision */
 			this.blockSets.push(blockSet);
 			return new Result(true,blockSet);
-		}
+			
+		} else {
+			/* If there was bump, you should clean the parentBlock */
+			this.blockSets.forEach(function(entryBlockSet){
+				if (entryBlockSet.parentBlock) {
+					var parentPlaceNumber = entryBlockSet.parentBlock.placeNumber;
+					
+					if (parentPlaceNumber === _neighbor.neighbor.parent) {
+						entryBlockSet.blocks.forEach(function(block){
+							
+							if (
+								block.placeNumber === parentPlaceNumber &&
+								block.x === parentBlock.x &&
+								block.y === parentBlock.y
+							) {
+								
+								/* Search the link added */
+								var indexLink = -1;
+								for (var i=0; i<block.links.length; i++) {
+									
+									if (
+										block.links[i].parent === parentPlaceNumber &&
+										block.links[i].next === _place.number &&
+										block.links[i].axis === _neighbor.axis
+									) {
+										indexLink = i;
+									}					
+									
+								}
+								
+								/* Delete the link */
+								block.links[ indexLink ] = undefined;
+								
+								if (DEBUG) {
+									console.log();
+									console.log('Simulator.add - part 2 - Collision!');			
+									console.log('entryBlockSet:');
+									console.log(entryBlockSet);
+									console.log('block:');
+									console.log(block);			
+									console.log('block.links[i]:');
+									console.log(block.links[i]);
+								}
+							}
+							
+						});
+					}	
+					
+				}				
+			});
 		
-		return new Result(false,undefined);
+			/* Returns result false */
+			return new Result(false,undefined);
+		}
 	},
 	
 	/*

@@ -6417,6 +6417,173 @@ describe("Place Simulations", function(){
 		assert.ok( equals( actual3.blockSet, expected3) );
 	});
 	
+	it("Place Simulation Test Collision 1",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected = false;
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.north,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)
+			.setSize(sizes.squareW3)
+			.setAlignment(alignments.right)
+			.addNeighbor(2,axis.south,alignments.right)
+			.create();
+		
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0,1);
+		
+		buildingFactory.newRoom(2)	
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.right)
+			.addNeighbor(3,axis.west,alignments.bottom)
+			.create();
+			
+		var place2 = buildingFactory.getPlace(2);
+		var neighbor2 = buildingFactory.getNeighbor(1,2);
+		
+		buildingFactory.newRoom(3)
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.bottom)
+			.create();
+			
+		var place3 = buildingFactory.getPlace(3);
+		var neighbor3 = buildingFactory.getNeighbor(2,3);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+		var actual2 = simulator.add(place2,neighbor2);
+		var actual3 = simulator.add(place3,neighbor3);
+		
+		assert.strictEqual(actual3.canAdd, expected);
+	});
+	
+	it("Place Simulation Test Collision 2",function(){
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 999,			
+			links: [{
+				parent: 1,
+				next: 2,
+				axis: 2
+			}]
+		}];
+		
+		var expected2 = [{
+			placeNumber: 2,
+			x: 1002,
+			y: 1000,			
+			links: [{
+				parent: 1,
+				next: 2,
+				axis: 2
+			}]
+		},{
+			placeNumber: 2,
+			x: 1002,
+			y: 1001,			
+			links: [ /* This link was deleted */ ]
+		}];
+		
+		var expected3BlockSet = undefined;
+		var expected3CanAdd = false;
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected = false;
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.north,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)
+			.setSize(sizes.squareW3)
+			.setAlignment(alignments.right)
+			.addNeighbor(2,axis.south,alignments.right)
+			.create();
+		
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0,1);
+		
+		buildingFactory.newRoom(2)	
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.right)
+			.addNeighbor(3,axis.west,alignments.bottom)
+			.create();
+			
+		var place2 = buildingFactory.getPlace(2);
+		var neighbor2 = buildingFactory.getNeighbor(1,2);
+		
+		buildingFactory.newRoom(3)
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.bottom)
+			.create();
+			
+		var place3 = buildingFactory.getPlace(3);
+		var neighbor3 = buildingFactory.getNeighbor(2,3);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+		var actual2 = simulator.add(place2,neighbor2);
+		var actual3 = simulator.add(place3,neighbor3);		
+		
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+		assert.ok( equals( actual2.blockSet, expected2) );		
+		assert.strictEqual(actual3.blockSet, expected3BlockSet);
+		assert.strictEqual(actual3.canAdd, expected3CanAdd);		
+		
+	});
+	
 });
 
 
