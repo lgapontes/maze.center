@@ -3919,13 +3919,1825 @@ describe("Place Simulations", function(){
 		var actual0 = simulator.add(place0,undefined);
 		var actual1 = simulator.add(place1,neighbor1);
 	
-		simulator.printMatrix();
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 North Left",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.left)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.left)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
 	
 		assert.ok( equals( actual0.blockSet, expected0) );
 		assert.ok( equals( actual1.blockSet, expected1) );
 	});
 	
-	// Proximo passo, testar squareW2 squareW2 North Left
+	it("Place Simulation SquareW2 SquareW2 North Right",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.right)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Top",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.top)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.top)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Bottom",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1002,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.bottom)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.bottom)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 North Center Left",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.left)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 North Center Right",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.right)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 North Left Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.left)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 North Right Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 North Left Right",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.left)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.right)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 North Right Left",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 0
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 0
+			}]
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.north,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.left)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 South Center Left",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 2
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 2
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.south,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.left)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 South Center Right",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 2
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 2
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.south,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.right)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 South Left Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 2
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1000,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 2
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.south,alignments.left)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 South Right Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 2
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 1001,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 2
+			}]
+		},{
+			placeNumber: 1,
+			x: 1002,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.south,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 South Left Right",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 2
+				}]
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 2
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.south,alignments.left)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.right)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareW2 SquareW2 South Right Left",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1001,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 2
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1000,
+			y: 1001,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 2
+			}]
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareW2)
+			.addNeighbor(1,axis.south,alignments.right)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareW2)
+			.setAlignment(alignments.left)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Center Top",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.top)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Center Bottom",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1002,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.bottom)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Top Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.top)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Bottom Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1002,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.bottom)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Top Bottom",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.top)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.bottom)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 East Bottom Top",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 1
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 1001,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 1001,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 1
+			}]
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.east,alignments.bottom)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.top)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 West Center Top",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 3
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 3
+			}]
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.west,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.top)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 West Center Bottom",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 3
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 3
+			}]
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1002,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.west,alignments.center)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.bottom)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 West Top Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 3
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 999,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 3
+			}]
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.west,alignments.top)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 West Bottom Center",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 3
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 3
+			}]
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1002,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.west,alignments.bottom)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.center)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 West Top Bottom",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 3
+				}]
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: []
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 1000,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 3
+			}]
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: []
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.west,alignments.top)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.bottom)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
+	
+	it("Place Simulation SquareH2 SquareH2 West Bottom Top",function(){
+		
+		/* Create simulator */
+		var simulator = new Simulator();
+		
+		var expected0 = [{
+			placeNumber: 0,
+			x: 1000,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 0,
+			x: 1000,
+			y: 1001,			
+			links: [{
+					parent: 0,
+					next: 1,
+					axis: 3
+				}]
+		}];
+		
+		var expected1 = [{
+			placeNumber: 1,
+			x: 999,
+			y: 1000,			
+			links: []
+		},{
+			placeNumber: 1,
+			x: 999,
+			y: 1001,			
+			links: [{
+				parent: 0,
+				next: 1,
+				axis: 3
+			}]
+		}];
+		
+		var buildingFactory = new BuildingFactory(1);
+		
+		buildingFactory.newRoom(0)	
+			.setSize(sizes.squareH2)
+			.addNeighbor(1,axis.west,alignments.bottom)
+			.create();
+			
+		var place0 = buildingFactory.getPlace(0);
+			
+		buildingFactory.newRoom(1)			
+			.setSize(sizes.squareH2)
+			.setAlignment(alignments.top)
+			.create();
+			
+		var place1 = buildingFactory.getPlace(1);
+		var neighbor1 = buildingFactory.getNeighbor(0);
+		
+		/* Simulator */
+		var actual0 = simulator.add(place0,undefined);
+		var actual1 = simulator.add(place1,neighbor1);
+	
+		assert.ok( equals( actual0.blockSet, expected0) );
+		assert.ok( equals( actual1.blockSet, expected1) );
+	});
 	
 });
 

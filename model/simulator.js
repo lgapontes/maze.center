@@ -237,7 +237,7 @@ BlockSet.prototype = {
 			numberOfHeightBlocks = parseInt( _place.size.height / block );
 			
 			/* According to the alignment, you must add blocks. */
-			var adjustments = this.addBlocksByAlignment(_parentBlock, _neighbor, numberOfWidthBlocks, numberOfHeightBlocks);
+			var adjustments = this.addBlocksByAlignment(_place, _parentBlock, _neighbor, numberOfWidthBlocks, numberOfHeightBlocks);
 			numberOfWidthBlocks = adjustments.numberOfWidthBlocks;
 			numberOfHeightBlocks = adjustments.numberOfHeightBlocks;
 			
@@ -345,7 +345,7 @@ BlockSet.prototype = {
 	/*
 	 * Depending on the alignment of port or place, you may need to add blocks in the count.	 
 	 */
-	addBlocksByAlignment: function(_parentBlock, _neighbor, _numberOfWidthBlocks, _numberOfHeightBlocks) {
+	addBlocksByAlignment: function(_place, _parentBlock, _neighbor, _numberOfWidthBlocks, _numberOfHeightBlocks) {
 		var numberOfWidthBlocks = _numberOfWidthBlocks;
 		var numberOfHeightBlocks = _numberOfHeightBlocks;
 		
@@ -365,18 +365,67 @@ BlockSet.prototype = {
 			console.log('(_numberOfHeightBlocks % 2): ' + (_numberOfHeightBlocks % 2));			
 		}
 		
-		if (_neighbor) {			
+		var changed = false;
+		
+		if (_neighbor) {
 			if (_neighbor.door.alignment === alignments.center) {
+				
+				/*
+				 * Rule that checks if the places have a number of odd or even blocks
+				 */
 				if ( ( (_neighbor.axis === axis.north) || _neighbor.axis === axis.south ) ) {				
 					if ( (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2) !== (_numberOfWidthBlocks % 2) ) {					
-						numberOfWidthBlocks = numberOfWidthBlocks + 1;					
+						numberOfWidthBlocks = numberOfWidthBlocks + 1;
+						changed = true;
 					}				
 				} else if ( ( (_neighbor.axis === axis.east) || _neighbor.axis === axis.west ) ) {				
 					if ( (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2) !== (_numberOfHeightBlocks % 2) ) {
 						numberOfHeightBlocks = numberOfHeightBlocks + 1;
+						changed = true;
 					}				
-				}						
-			}			
+				}
+				
+				/*
+				 * Rule that checks the alignment of the place needs size adjustment
+				 */
+				if ( !changed ) {
+					if ( (_place.alignment === alignments.left) || (_place.alignment === alignments.right) ) {
+						if (_numberOfWidthBlocks > 1) {
+							numberOfWidthBlocks = numberOfWidthBlocks + 1; 
+						}
+					} else if ( (_place.alignment === alignments.top) || (_place.alignment === alignments.bottom) ) {
+						if (_numberOfHeightBlocks > 1) {
+							numberOfHeightBlocks = numberOfHeightBlocks + 1;
+						}						
+					}
+				}
+			} else if ( (_neighbor.door.alignment === alignments.left) || (_neighbor.door.alignment === alignments.right) ) {
+				
+				/*
+				 * Rule that checks the alignment of the place needs size adjustment
+				 */
+				if ( !changed ) {
+					if (_place.alignment === alignments.center) {
+						if (_numberOfWidthBlocks > 1) {
+							numberOfWidthBlocks = numberOfWidthBlocks + 1; 
+						}
+					}
+				}
+				
+			} else if ( (_neighbor.door.alignment === alignments.top) || (_neighbor.door.alignment === alignments.bottom) ) {
+				
+				/*
+				 * Rule that checks the alignment of the place needs size adjustment
+				 */
+				if ( !changed ) {
+					if (_place.alignment === alignments.center) {
+						if (_numberOfHeightBlocks > 1) {
+							numberOfHeightBlocks = numberOfHeightBlocks + 1;
+						}
+					}
+				}
+				
+			}
 		}
 		
 		if (this.DEBUG) {
@@ -403,44 +452,16 @@ BlockSet.prototype = {
 			var parent_y = _parentBlock.y;
 			if (_parentLink.axis === axis.north) {
 				x = parent_x;
-				y = parent_y - 1;
-				
-				/*
-				if ( (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2) === 0 ) {
-					x = x + 1;
-				}
-				*/
-				
+				y = parent_y - 1;				
 			} else if (_parentLink.axis === axis.east) {
 				x = parent_x + 1;
-				y = parent_y;
-				
-				/*
-				if ( (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2) === 0 ) {
-					y = y + 1;
-				}
-				*/
-				
+				y = parent_y;				
 			} else if (_parentLink.axis === axis.south) {
 				x = parent_x;
-				y = parent_y + 1;
-				
-				/*
-				if ( (_parentBlock.numberOfBlocks.numberOfWidthBlocks % 2) === 0 ) {
-					x = x + 1;
-				}
-				*/
-				
+				y = parent_y + 1;				
 			} else if (_parentLink.axis === axis.west) {
 				x = parent_x - 1;
-				y = parent_y
-				
-				/*
-				if ( (_parentBlock.numberOfBlocks.numberOfHeightBlocks % 2) === 0 ) {
-					y = y + 1;
-				}
-				*/
-				
+				y = parent_y;				
 			}
 		}
 		
@@ -454,6 +475,7 @@ BlockSet.prototype = {
 	calculateFirstBlockPosition: function(_place,_neighbor,_nextPosition,_numberOfWidthBlocks,_numberOfHeightBlocks) {
 		var x;
 		var y;
+		var changed = false;
 		
 		if (_neighbor) {
 			
@@ -470,6 +492,7 @@ BlockSet.prototype = {
 					
 					if ( (_numberOfWidthBlocks % 2) === 0 ) {
 						x = x + 1;
+						changed = true;
 					}
 					
 				}				
@@ -486,6 +509,7 @@ BlockSet.prototype = {
 					
 					if ( (_numberOfHeightBlocks % 2) === 0 ) {
 						y = y + 1;
+						changed = true;
 					}
 					
 				}
@@ -503,6 +527,7 @@ BlockSet.prototype = {
 					
 					if ( (_numberOfWidthBlocks % 2) === 0 ) {
 						x = x + 1;
+						changed = true;
 					}
 					
 				}				
@@ -519,8 +544,23 @@ BlockSet.prototype = {
 					
 					if ( (_numberOfHeightBlocks % 2) === 0 ) {
 						y = y + 1;
+						changed = true;
 					}
 					
+				}
+			}
+			
+			if ( !changed ) {
+				if (_neighbor.door.alignment === alignments.center) {	
+					if ( (_place.alignment === alignments.left) ) {
+						if (_numberOfWidthBlocks > 1) {
+							x = x + 1; 
+						}
+					} else if ( (_place.alignment === alignments.top) ) {
+						if (_numberOfHeightBlocks > 1) {
+							y = y + 1;
+						}						
+					}
 				}
 			}
 			
