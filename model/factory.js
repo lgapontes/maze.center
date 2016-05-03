@@ -126,15 +126,27 @@ BuildingFactory.prototype = {
 	/*
 	 * Get the neighbor from the parent's number.
 	 */
-	getNeighbor: function(_parentNumber) {
+	getNeighbor: function(_parentNumber,_nextNumber) {
+		
+		var nextNumber = parseInt(_nextNumber) || -1;
+		
 		/* Get  neighbor */
 		var neighbor = undefined;
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];
-			if (entry.neighbor.parent === _parentNumber) {
-				neighbor = entry;
-				break;
-			}
+			
+			if (nextNumber > -1) {
+				if ( (entry.neighbor.parent === _parentNumber) && (entry.neighbor.next === nextNumber) ) {
+					neighbor = entry;
+					break;
+				}
+			} else {
+				if (entry.neighbor.parent === _parentNumber) {
+					neighbor = entry;
+					break;
+				}
+			}			
+			
 		}
 		return neighbor;
 	},
