@@ -1,6 +1,4 @@
 var logger  		= require('../infrastructure/logger').get(),	
-	Room 			= require('../model/building').getRoom(),
-	Tower 			= require('../model/building').getTower(),
 	alignments		= require('../model/enum').getAlignments(),
 	axis			= require('../model/enum').getAxis(),	
 	sizes			= require('../model/enum').getSizes(),

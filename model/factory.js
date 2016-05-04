@@ -164,6 +164,46 @@ BuildingFactory.prototype = {
 		}
 	},
 	
+	dropPlace: function(_number) {
+		
+		var indexPlace = -1;
+		var indexesNeighbor = [];
+		
+		/* Search index of place */
+		for(var i=0;i<this.places.length;i++) {
+			if (this.places[i].number === _number) {
+				indexPlace = i;
+			}
+		}		
+		
+		/* Search indexes of neighbors */
+		for (var i=0; i<this.neighbors.length; i++) {
+			
+			/* Neighbor from one place to the place deleted */
+			if ( this.neighbors[i].neighbor.next === this.places[indexPlace].number) {
+				indexesNeighbor.push( i );
+			} else
+			/* Place neighbor excluded to the other place */	
+			if ( this.neighbors[i].neighbor.parent === this.places[indexPlace].number) {
+				indexesNeighbor.push( i );
+			}
+		}
+		
+		/* Drop place */
+		this.places.splice(indexPlace, 1);
+		
+		/* Drop neighbors */
+		for (var i=0; i<indexesNeighbor.length; i++) {
+			this.neighbors.splice(indexesNeighbor[i], 1);
+			
+			/* Update indexes */
+			for (var j=0; j<indexesNeighbor.length; j++) {
+				indexesNeighbor[j] = indexesNeighbor[j] - 1;
+			}
+		}
+		
+	},
+	
 	creationCompleted: function() {		
 		for(var i=0;i<this.neighbors.length;i++) {
 			var entry = this.neighbors[i];			
