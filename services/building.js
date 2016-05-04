@@ -13,6 +13,7 @@ var logger  		= require('../infrastructure/logger').get(),
 	random			= require('./random'),
 	trycatch 		= require('trycatch'),
 	compatibility 	= require('../infrastructure/compatibility'),
+	maker 			= require('./maker'),
 	Protocol		= require('../public/shared/protocol').get();
 
 trycatch.configure({
@@ -102,82 +103,37 @@ exports.getSavedMap = function(request, response, next) {
 	
 };
 
-exports.getRamdomMap = function(request, response, next) {	
+exports.getRamdomizeMap = function(request, response, next) {	
 	
 	trycatch(function() {
 		
-		var level = parseInt(request.params.level) || 1;	
+		var level = parseInt(request.params.level) || 1;
 		
-		/* Create factory */
-		var buildingFactory = new BuildingFactory(level);
-		var previousAxis = random.randomAxis();
-		
-		
-		/* Create first place */
-		buildingFactory.newRoom(0)
-			.addNeighbor(1,previousAxis,random.randomAxis(previousAxis))
-			.create();
-			
-		// Atencao, o alignment do vizinho e do place deve ser o mesmo...	
-		
-		/* Create places by level */
-		for (var i=0;i<level;i++) {
-			var type = random.randomTypes();
-					
-			if (type === types.tower) {
-				/* Create tower */
-
-				previousAxis = random.randomAxis(previousAxis);
-			
-				buildingFactory.newTower(i+1)
-					.addNeighbor(i+2,previousAxis)
-					.create();
-					
+		var value = maker.ramdomizeMap(level,function(_error,_places,_map){
+			if (_error) {
+				throw new Error("Error in maker: " + _error)
 			} else {
-				/* Create Room */
 				
-				var tempPreviousAxis = random.randomAxis(previousAxis);
+				var protocol = new Protocol(settings);
+		
+				protocol.setObject({
+					places: _places,
+					map: _map
+				});
 				
-				buildingFactory.newRoom(i+1)
-					.setSize(random.randomSizes())
-					.setAlignment(random.randomAlignments(previousAxis))
-					.addNeighbor(i+2,tempPreviousAxis,random.randomAlignments(tempPreviousAxis))
-					.create();
-					
-				previousAxis = tempPreviousAxis;
+				/* Check compatibility of browsers */
+				compatibility.check(request,function(_compatible){
+					if (!_compatible) {
+						protocol.setMessage(4);
+					}
+						
+				});
+				
+				/* Return */
+				response.send(protocol);
 				
 			}
-		}
-		
-		/* Create finish */
-		buildingFactory.newTower(level+1)
-			.setFinish()
-			.create();
-		
-		/* Create places and map */
-		var places = buildingFactory.creationCompleted();
-		var map = buildingFactory.getMap();
-		
-		/* Save it */
-		buildingFactory.save();		
-		
-		var protocol = new Protocol(settings);
-		
-		protocol.setObject({
-			places: places,
-			map: map
 		});
-		
-		/* Check compatibility of browsers */
-		compatibility.check(request,function(_compatible){
-			if (!_compatible) {
-				protocol.setMessage(4);
-			}
-				
-		});
-		
-		/* Return */
-		response.send(protocol);
 		
 	}, function(err) {
 		var protocol = new Protocol(settings);

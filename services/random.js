@@ -30,44 +30,46 @@ function d100() {
 	return getRandomInt(1,101);
 };
 
-exports.randomSizes = function() {
+exports.randomizeSizes = function() {
 	return random(sizes);
 };
 
-exports.randomAlignments = function(_previousAxis) {
-	return random(alignments);
-};
-
-// Deprecated
-exports.randomAxis = function(_axis) {
-
-	/* For now, do not use the south axis */
-	var limited_axis = {
-		north: axis.north,
-		east: axis.east,		
-		west: axis.west
-	};
+exports.randomizeAlignments = function(_axis) {
 	
-	var temp = random(limited_axis);
+	var temp = random(alignments);
 	
-	if (_axis) {
-		var parent_neighbor = ( _axis + 2 ) % 4;
-		while (parent_neighbor === temp) {
-			temp = random(limited_axis);
+	/* Alignment restriction based on the axis */
+	var config = [
+		{ axis: axis.north, obj: [ alignments.center, alignments.left, alignments.right ] },
+		{ axis: axis.east,  obj: [ alignments.center, alignments.top, alignments.bottom ] },
+		{ axis: axis.south, obj: [ alignments.center, alignments.left, alignments.right ] },
+		{ axis: axis.west,  obj: [ alignments.center, alignments.top, alignments.bottom ] }
+	];
+	
+	var allowed = undefined;
+	config.forEach(function(entry){
+		if (entry.axis === _axis) {
+			allowed = entry.obj;
 		}
+	});
+	
+	var stop = false;
+			
+	while ( !stop ) {		
+		
+		for (var i=0; i<allowed.length; i++) {
+			if ( temp === allowed[i] ) {
+				stop = true;
+			}
+		}
+		
+		if ( !stop ) {
+			temp = random(alignments);
+		}
+		
 	}
 	
 	return temp;
-};
-
-// Deprecated
-exports.randomTypes = function() {
-	var result = d10();
-	if (result > 1) {
-		return types.room;
-	} else {
-		return types.tower;
-	}
 };
 
 exports.randomizeAxis = function(_avoidedAxis) {

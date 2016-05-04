@@ -50,6 +50,86 @@ describe("Randomize Functions", function(){
 		assert.strictEqual(actual0,expected0);				
 	});
 	
+	it("Test Randomize Alignments 1",function(){		
+		var expected0 = false;
+		var actual0 = false;
+		
+		var avoided = [
+			alignments.top,
+			alignments.bottom
+		];
+		
+		for (var i=0; i<1000; i++) {
+			var value = random.randomizeAlignments(axis.north);
+			if ( contains(avoided,value) ) {
+				actual0 = true;
+				break;
+			}
+		}
+				
+		assert.strictEqual(actual0,expected0);				
+	});
+	
+	it("Test Randomize Alignments 2",function(){		
+		var expected0 = false;
+		var actual0 = false;
+		
+		var avoided = [
+			alignments.top,
+			alignments.bottom
+		];
+		
+		for (var i=0; i<1000; i++) {
+			var value = random.randomizeAlignments(axis.south);
+			if ( contains(avoided,value) ) {
+				actual0 = true;
+				break;
+			}
+		}
+				
+		assert.strictEqual(actual0,expected0);				
+	});
+	
+	it("Test Randomize Alignments 3",function(){		
+		var expected0 = false;
+		var actual0 = false;
+		
+		var avoided = [
+			alignments.left,
+			alignments.right
+		];
+		
+		for (var i=0; i<1000; i++) {
+			var value = random.randomizeAlignments(axis.east);
+			if ( contains(avoided,value) ) {
+				actual0 = true;
+				break;
+			}
+		}
+				
+		assert.strictEqual(actual0,expected0);				
+	});
+	
+	it("Test Randomize Alignments 4",function(){		
+		var expected0 = false;
+		var actual0 = false;
+		
+		var avoided = [
+			alignments.left,
+			alignments.right
+		];
+		
+		for (var i=0; i<1000; i++) {
+			var value = random.randomizeAlignments(axis.west);
+			if ( contains(avoided,value) ) {
+				actual0 = true;
+				break;
+			}
+		}
+				
+		assert.strictEqual(actual0,expected0);				
+	});
+	
 });
 
 /* Helper functions */
