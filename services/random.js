@@ -26,6 +26,10 @@ function d10() {
 	return getRandomInt(1,11);
 };
 
+function d100() {
+	return getRandomInt(1,101);
+};
+
 exports.randomSizes = function() {
 	return random(sizes);
 };
@@ -34,6 +38,7 @@ exports.randomAlignments = function(_previousAxis) {
 	return random(alignments);
 };
 
+// Deprecated
 exports.randomAxis = function(_axis) {
 
 	/* For now, do not use the south axis */
@@ -55,9 +60,62 @@ exports.randomAxis = function(_axis) {
 	return temp;
 };
 
+// Deprecated
 exports.randomTypes = function() {
 	var result = d10();
 	if (result > 1) {
+		return types.room;
+	} else {
+		return types.tower;
+	}
+};
+
+exports.randomizeAxis = function(_avoidedAxis) {
+	
+	var temp = random(axis);
+	
+	if (_avoidedAxis !== 'undefined') {
+		
+		if (Object.prototype.toString.call(_avoidedAxis) === '[object Array]') {
+			
+			var count = _avoidedAxis.length;
+			
+			while ( count > 0 ) {
+				
+				/* Reset count */
+				count = 0;
+
+				/* Verifies that is avoided */
+				for (var i=0; i<_avoidedAxis.length; i++) {
+					if ( temp === _avoidedAxis[i] ) {
+						count = count + 1;
+					}
+				}
+				
+				/* If one of prevented, search for another */
+				if (count > 0) {
+					temp = random(axis);
+				}
+				
+			}
+			
+		} else {
+			
+			/* Verifies that is not the parent axis */
+			var parent_neighbor = ( _avoidedAxis + 2 ) % 4;
+			while (parent_neighbor === temp) {
+				temp = random(axis);
+			}
+		}		
+		
+	}
+	
+	return temp;
+};
+
+exports.randomizeTypes = function() {
+	var result = d100();
+	if (result > 3) {
 		return types.room;
 	} else {
 		return types.tower;
