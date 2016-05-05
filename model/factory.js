@@ -80,6 +80,13 @@ BuildingFactory.prototype = {
 		}		
 		return this;
 	},
+	
+	addNeighborInPlace: function(_number,_nextNumber,_axis,_alignment) {
+		this.place = this.getPlace(_number);
+		this.addNeighbor(_nextNumber,_axis,_alignment);
+		this.place = undefined;
+	},
+	
 	addNeighbor: function(_nextNumber,_axis,_alignment) {
 
 		var temp_alignment = alignments.center;

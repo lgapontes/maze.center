@@ -732,7 +732,7 @@ describe("Place Simulations", function(){
 			.addNeighbor(1,axis.west,alignments.top)
 			.create();
 			
-		var place0 = buildingFactory.getPlace(0);		
+		var place0 = buildingFactory.getPlace(0);
 			
 		buildingFactory.newRoom(1)			
 			.setAlignment(alignments.top)

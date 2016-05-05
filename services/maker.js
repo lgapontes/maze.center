@@ -8,16 +8,29 @@ var logger  		= require('../infrastructure/logger').get(),
 	random			= require('./random'),
 	trycatch 		= require('trycatch');
 	
+function createAxesAvoided(_previousAxis) {	
+	var axesAvoided = [];
+	var parent_neighbor = ( _previousAxis + 2 ) % 4;
+	axesAvoided.push( parent_neighbor );
+	return axesAvoided;
+}
+	
 exports.ramdomizeMap = function(_level,callback) {	
 	
 	trycatch(function() {
 		
-		// Proximo passo, aplicar as regras do simulator
+		// Reproduzir o caso http://127.0.0.1/?code=M1462408854L9ZdM1U em testes
 		
 		/* Create factory */
-		var buildingFactory = new BuildingFactory(_level);
-		var previousAxis = random.randomizeAxis();		
+		var buildingFactory = new BuildingFactory(_level);		
 		var numerology = _level + 3;
+		var countNum = 0;
+		
+		var previousAxis = random.randomizeAxis();
+		var axesAvoided = createAxesAvoided(previousAxis);
+		
+		/* Create simulator */
+		var simulator = new Simulator();
 		
 		/* Create first place */
 		buildingFactory.newRoom(0)
@@ -25,34 +38,84 @@ exports.ramdomizeMap = function(_level,callback) {
 			.addNeighbor(1,previousAxis,random.randomizeAlignments(previousAxis))
 			.create();
 		
+		/* Get place and add in simulator */
+		simulator.add( buildingFactory.getPlace(0) , undefined );
+		
 		/* Create places by numerology */
-		for (var i=0;i<numerology;i++) {
+		while (countNum < numerology) {
 			
-			var type = random.randomizeTypes();
-					
-			if (type === types.tower) {
-				/* Create tower */
+			/* Create default result */
+			var result = {};
+			result.canAdd = false;
+			
+			/* Create cleared list of axes avoided */
+			var othersAxes = [];
+			
+			while ( !result.canAdd ) {
+				
+				var type = random.randomizeTypes();
+						
+				if (type === types.tower) {
+					/* Create tower */
 
-				previousAxis = random.randomizeAxis(previousAxis);
+					previousAxis = random.randomizeAxis(axesAvoided);
+					axesAvoided = createAxesAvoided(previousAxis);
+				
+					buildingFactory.newTower(countNum+1)
+						.addNeighbor(countNum+2,previousAxis)
+						.create();
+						
+				} else {
+					/* Create Room */
+									
+					var tempPreviousAxis = random.randomizeAxis(axesAvoided);				
+					
+					buildingFactory.newRoom(countNum+1)
+						.setSize(random.randomizeSizes())
+						.setAlignment(random.randomizeAlignments(previousAxis))
+						.addNeighbor(countNum+2,tempPreviousAxis,random.randomizeAlignments(tempPreviousAxis))
+						.create();
+						
+					previousAxis = tempPreviousAxis;
+					axesAvoided = createAxesAvoided(previousAxis);
+					
+				}
+				
+				/* Check if the place can be added */
+				var place = buildingFactory.getPlace( countNum+1 );
+				var neighbor = buildingFactory.getNeighbor( countNum , countNum+1 );
 			
-				buildingFactory.newTower(i+1)
-					.addNeighbor(i+2,previousAxis)
-					.create();
-					
-			} else {
-				/* Create Room */
+				/* Simulator */			
+				result = simulator.add(place,neighbor);
 				
-				var tempPreviousAxis = random.randomizeAxis(previousAxis);
-				
-				buildingFactory.newRoom(i+1)
-					.setSize(random.randomizeSizes())
-					.setAlignment(random.randomizeAlignments(previousAxis))
-					.addNeighbor(i+2,tempPreviousAxis,random.randomizeAlignments(tempPreviousAxis))
-					.create();
+				/* If you can not be added, delete it and change the axis with parent */
+				if ( !result.canAdd ) {
 					
-				previousAxis = tempPreviousAxis;
+					/* Set axes avoided */
+					othersAxes.push(neighbor.axis);
+					axesAvoided = createAxesAvoided(previousAxis);
+					othersAxes.forEach(function(entry){
+						axesAvoided.push(entry);
+					});
+					
+					/* Create new axis */
+					previousAxis = random.randomizeAxis(axesAvoided);
+					
+					/* Drop place */
+					buildingFactory.dropPlace( countNum+1 );
+										
+					/* Add new neighbor in parent */
+					buildingFactory.addNeighborInPlace(
+						countNum,
+						countNum+1,
+						previousAxis,
+						random.randomizeAlignments(previousAxis)
+					);
+				}
 				
 			}
+				
+			countNum = countNum + 1;
 		}
 		
 		/* Create finish */

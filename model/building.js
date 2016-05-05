@@ -70,8 +70,8 @@ var Room = mongoose.model('Room', RoomSchema, 'placeCollection');
 var Tower = mongoose.model('Tower', TowerSchema, 'placeCollection');
 
 /* Clear all data */
-mongoose.connection.collections['placeCollection'].drop();
-mongoose.connection.collections['mapCollection'].drop();
+//mongoose.connection.collections['placeCollection'].drop();
+//mongoose.connection.collections['mapCollection'].drop();
 
 exports.getMap = function() {
     return Map;
